@@ -1,0 +1,24 @@
+{
+  "name": "algebra-set",
+  "version": "0.1.0",
+  "description": "algebra set",
+  "main": "index.js",
+  "directories": {
+    "test": "test",
+    "includes": "*_test.js"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "algebra",
+    "set",
+    "interval"
+  ],
+  "author": "Xavier Garcia Buils <xgbuils@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}
