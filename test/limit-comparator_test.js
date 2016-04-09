@@ -60,7 +60,7 @@ describe('limitComparator', function () {
           limit: 1
         }).should.be.equal(-2)
       })
-  
+
       it('always returns the substraction between the first and second', function () {
         limitComparator({
           value: 0,
