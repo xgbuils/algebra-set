@@ -22,8 +22,8 @@ function compactIntervals (intervals) {
     var item = arr[i]
     var rawItem = item.interval
     var itemStart = rawItem[0]
-    var diff = limitComparator(currentEnd, itemStart)
-    if (diff < 0 && (currentEnd.value !== itemStart.value || diff === -2)) {
+    var diff = currentEnd.value - itemStart.value
+    if (diff < 0 || diff === 0 && currentEnd.limit - itemStart.limit === -2) {
       result.push(new Interval(item))
       ++count
       current = result[count].interval
