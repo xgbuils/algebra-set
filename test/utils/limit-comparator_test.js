@@ -1,6 +1,5 @@
 var chai = require('chai')
-var limitComparator = require('../src/limit-comparator.js')
-var samples = require('./interval-samples')
+var limitComparator = require('../../src/utils/limit-comparator.js')
 
 chai.should()
 

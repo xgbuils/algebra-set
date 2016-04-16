@@ -1,12 +1,13 @@
 var chai = require('chai')
-var samples = require('./interval-samples')
-var parseSet = require('../src/parse-set.js')
+var samples = require('./../interval-samples')
+var raw = require('./raw-interval.js')
+var parseSet = require('../../src/utils/parse-set.js')
 
 chai.should()
 
 describe('parseSet', function () {
   it('[4,5]U [ 3 , 9)', function () {
-    var set = parseSet('[4,5]U [ 3 , 9)')
+    var set = parseSet('[4,5]U [ 3 , 9)').map(raw)
     set.should.be.deep.equal([
       samples.closed4Closed5,
       samples.closed3Opened9
@@ -14,7 +15,7 @@ describe('parseSet', function () {
   })
 
   it('(4, 8)   U[ 3 ,5)U{-1,7}', function () {
-    var set = parseSet('(4, 8)   U[ 3 ,5)U{-1,7}')
+    var set = parseSet('(4, 8)   U[ 3 ,5)U{-1,7}').map(raw)
     set.should.be.deep.equal([
       samples.opened4Opened8,
       samples.closed3Opened5,
@@ -24,14 +25,14 @@ describe('parseSet', function () {
   })
 
   it('  {    5    }    ', function () {
-    var set = parseSet('  {    5    }    ')
+    var set = parseSet('  {    5    }    ').map(raw)
     set.should.be.deep.equal([
       samples.isolated5
     ])
   })
 
   it('(3,   11  ]    ', function () {
-    var set = parseSet('(3,   11  ]    ')
+    var set = parseSet('(3,   11  ]    ').map(raw)
     set.should.be.deep.equal([
       samples.opened3Closed11
     ])

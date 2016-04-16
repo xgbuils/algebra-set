@@ -1,13 +1,12 @@
 var chai = require('chai')
-var samples = require('./interval-samples')
-var Set = require('../src/set.js')
+var TopologicalSet = require('../src/set.js')
 
 chai.should()
 
 describe('Set', function () {
   describe('containing numbers', function () {
     describe('[4, 5] U [3, 9) U (10, 11]', function () {
-      var set = new Set('[4, 5] U [3, 9) U (10, 11]')
+      var set = new TopologicalSet('[4, 5] U [3, 9) U (10, 11]')
       it('contains 8', function () {
         set.contains(8).should.be.true
       })
@@ -26,7 +25,7 @@ describe('Set', function () {
     })
 
     describe('(4, 5) U (5, 6)', function () {
-      var set = new Set('(4, 5) U (5, 6)')
+      var set = new TopologicalSet('(4, 5) U (5, 6)')
       it('contains 4.5', function () {
         set.contains(4.5).should.be.true
       })
@@ -45,7 +44,7 @@ describe('Set', function () {
     })
 
     describe('{1, 3, 4, 5, 7}', function () {
-      var set = new Set('{1, 3, 4, 5, 7}')
+      var set = new TopologicalSet('{1, 3, 4, 5, 7}')
       it('contains 1', function () {
         set.contains(1).should.be.true
       })
@@ -64,7 +63,7 @@ describe('Set', function () {
     })
 
     describe('[1,1]', function () {
-      var set = new Set('[1,1]')
+      var set = new TopologicalSet('[1,1]')
       it('contains 1', function () {
         set.contains(1).should.be.true
       })
@@ -79,7 +78,7 @@ describe('Set', function () {
     })
 
     describe('define as a function', function () {
-      var set = new Set({
+      var set = new TopologicalSet({
         contains: function (e) {
           return e > 5
         }
@@ -104,7 +103,7 @@ describe('Set', function () {
 
   describe('containing sets', function () {
     describe('(4, 5) U (5, 6)', function () {
-      var set = new Set('(4, 5) U (5, 6)')
+      var set = new TopologicalSet('(4, 5) U (5, 6)')
       it('contains (5, 6)', function () {
         set.contains('(5, 6)').should.be.true
       })
