@@ -1,5 +1,6 @@
 var limitComparator = require('./utils/limit-comparator.js')
 var parseInterval = require('./utils/parse-interval.js')
+var intervalComparator = require('./utils/interval-comparator')
 
 function Interval (e) {
   var interval
@@ -19,6 +20,40 @@ Interval.create = function () {
       value: create.apply(null, arguments)
     }
   })
+}
+
+Interval.union = function () {
+  var intervals = [].slice.call(arguments)
+  var arr = intervals
+    .filter(function (interval) {
+      return !interval.isEmpty()
+    })
+    .sort(intervalComparator)
+
+  if (arr.length === 0) {
+    return []
+  }
+
+  var count = 0
+  var current = arr[count].interval
+  var result = [arr[count]]
+
+  for (var i = 1; i < arr.length; ++i) {
+    var currentEnd = current[1]
+    var item = arr[i]
+    var rawItem = item.interval
+    var itemStart = rawItem[0]
+    var diff = currentEnd.value - itemStart.value
+    if (diff < 0 || diff === 0 && currentEnd.limit - itemStart.limit === -2) {
+      result.push(new Interval(item))
+      ++count
+      current = result[count].interval
+    } else if (limitComparator(currentEnd, rawItem[1]) < 0) {
+      result[count].interval[1] = rawItem[1]
+    }
+  }
+
+  return result
 }
 
 Interval.prototype.cartesian = function (e) {

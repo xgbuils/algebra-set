@@ -1,4 +1,3 @@
-var compactIntervals = require('./utils/compact-intervals.js')
 var parseSet = require('./utils/parse-set.js')
 var limitComparator = require('./utils/limit-comparator.js')
 var Interval = require('./interval.js')
@@ -13,7 +12,7 @@ function TopologicalSet (e) {
       return new Interval(e)
     })
   } else if (type === 'string') {
-    this._intervals = compactIntervals(parseSet(e))
+    this._intervals = Interval.union.apply(null, parseSet(e))
   } else if (isObject && typeof e.contains === 'function') {
     this.fn = e.contains
   }
