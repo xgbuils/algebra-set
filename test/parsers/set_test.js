@@ -1,7 +1,7 @@
 var chai = require('chai')
-var samples = require('./../interval-samples')
-var raw = require('./raw-interval.js')
-var parseSet = require('../../src/utils/parse-set.js')
+var samples = require('../interval-samples')
+var raw = require('../utils/raw-interval.js')
+var parseSet = require('../../src/parsers/set.js')
 
 chai.should()
 

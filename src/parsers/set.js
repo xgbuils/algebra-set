@@ -1,6 +1,6 @@
-var parseInterval = require('./parse-interval.js')
-var parseIsolatedIntervals = require('./parse-isolated-intervals.js')
+var parseIsolatedIntervals = require('./isolated-intervals.js')
 var Interval = require('../interval.js')
+var parseInterval = require('./interval.js')
 
 function parseSet (str) {
   var intervals = []

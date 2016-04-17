@@ -1,6 +1,6 @@
 var chai = require('chai')
 var samples = require('./../interval-samples')
-var parseIsolatedIntervals = require('../../src/utils/parse-isolated-intervals.js')
+var parseIsolatedIntervals = require('../../src/parsers/isolated-intervals.js')
 
 chai.should()
 

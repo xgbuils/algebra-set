@@ -1,4 +1,4 @@
-var parseSet = require('./utils/parse-set.js')
+var parseSet = require('./parsers/set.js')
 var Interval = require('./interval.js')
 
 function TopologicalSet (e) {

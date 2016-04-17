@@ -1,13 +1,16 @@
+var parseInterval = require('./parsers/interval.js')
+
 var limitComparator = require('./utils/limit-comparator.js')
-var parseInterval = require('./utils/parse-interval.js')
 var intervalComparator = require('./utils/interval-comparator')
+var create = require('./utils/interval-create.js')
+var isEmpty = require('./utils/interval-is-empty.js')
 
 function Interval (e) {
   var interval
   if (e instanceof Interval) {
     interval = copyInterval(e.interval)
   } else if (typeof e === 'string') {
-    interval = normalizeIfEmpty(create.apply(null, parseInterval(e)))
+    interval = parseInterval(e)
   }
   Object.defineProperty(this, 'interval', {
     value: interval
@@ -15,9 +18,10 @@ function Interval (e) {
 }
 
 Interval.create = function () {
+  var args = [].slice.call(arguments)
   return Object.create(Interval.prototype, {
     interval: {
-      value: create.apply(null, arguments)
+      value: args.length === 2 ? args : create.apply(null, args)
     }
   })
 }
@@ -73,50 +77,20 @@ Interval.prototype.isEmpty = function () {
 Interval.prototype.contains = function (e) {
   var a = this.interval
   var b
-  if (typeof e === 'number') {
-    b = create('[', e, e, ']')
-  } else if (e instanceof Interval) {
+  if (typeof e === 'string') {
+    e = new Interval(parseInterval(e))
+  }
+  if (e instanceof Interval) {
     if (e.isEmpty()) {
       return true
     }
     b = e.interval
   } else {
-    throw new Error(e + ' is not interval')
+    b = create('[', e, e, ']')
   }
 
   return limitComparator(b[0], a[0]) >= 0 &&
     limitComparator(b[1], a[1]) <= 0
-}
-
-var map = {
-  '(': 1,
-  '[': 0,
-  ']': 0,
-  ')': -1
-}
-
-function create (left, a, b, right) {
-  return [{
-    value: a,
-    limit: map[left]
-  }, {
-    value: b,
-    limit: map[right]
-  }]
-}
-
-function isEmpty (interval) {
-  return limitComparator(interval[0], interval[1]) > 0
-}
-
-function normalizeIfEmpty (interval) {
-  if (isEmpty(interval)) {
-    interval[1] = {
-      value: interval[0].value,
-      limit: -1
-    }
-  }
-  return interval
 }
 
 function copyInterval (interval) {
