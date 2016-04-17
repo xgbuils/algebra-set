@@ -1,5 +1,4 @@
 var parseSet = require('./utils/parse-set.js')
-var limitComparator = require('./utils/limit-comparator.js')
 var Interval = require('./interval.js')
 
 function TopologicalSet (e) {
@@ -41,10 +40,7 @@ Object.defineProperties(TopologicalSet.prototype, {
         }
         return e._intervals.every(function (eInterval) {
           return intervals.some(function (interval) {
-            var a = interval.interval
-            var b = eInterval.interval
-            return limitComparator(a[0], b[0]) <= 0 &&
-              limitComparator(a[1], b[1]) >= 0
+            return interval.contains(eInterval)
           })
         })
       } else if (typeof this.fn === 'function') {
