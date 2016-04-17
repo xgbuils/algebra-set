@@ -90,45 +90,121 @@ describe('Interval', function () {
   })
 
   describe('.contains()', function () {
-    describe('isolated: [-2, -2]', function () {
-      var interval = new Interval('[-2,-2]')
+    describe('containing numbers...', function () {
+      describe('isolated: [-2, -2]', function () {
+        var interval = new Interval('[-2,-2]')
 
-      it('contains -2', function () {
-        interval.contains(-2).should.be.true
+        it('contains -2', function () {
+          interval.contains(-2).should.be.true
+        })
+        it('does not contain -2.5', function () {
+          interval.contains(-2.5).should.be.false
+        })
+        it('does not contain 0', function () {
+          interval.contains(0).should.be.false
+        })
       })
-      it('does not contain -2.5', function () {
-        interval.contains(-2.5).should.be.false
+
+      describe('[1, 6)', function () {
+        var interval = new Interval('[1, 6)')
+
+        it('does not contain -2', function () {
+          interval.contains(-2).should.be.false
+        })
+        it('contains 1.5', function () {
+          interval.contains(1.5).should.be.true
+        })
+        it('does not contain 6', function () {
+          interval.contains(6).should.be.false
+        })
       })
-      it('does not contain 0', function () {
-        interval.contains(0).should.be.false
+
+      describe('empty: (3, -2)', function () {
+        var interval = new Interval('(3,-2)')
+
+        it('does not contain -2', function () {
+          interval.contains(-2).should.be.equal(false)
+        })
+        it('does not contain 1.5', function () {
+          interval.contains(1.5).should.be.equal(false)
+        })
+        it('does not contain 0', function () {
+          interval.contains(0).should.be.equal(false)
+        })
       })
     })
 
-    describe('[1, 6)', function () {
-      var interval = new Interval('[1, 6)')
+    describe('containing intervals...', function () {
+      describe('isolated: [-2, -2]', function () {
+        var interval = new Interval('[-2,-2]')
 
-      it('does not contain -2', function () {
-        interval.contains(-2).should.be.false
+        it('contains [-2, -2]', function () {
+          interval.contains(new Interval('[-2,-2]')).should.be.true
+        })
+        it('does not contain [1, 1]', function () {
+          interval.contains(new Interval('[1, 1]')).should.be.false
+        })
+        it('does not contain [-2, 0)', function () {
+          interval.contains(new Interval('[-2, 0)')).should.be.false
+        })
+        it('does not contain [-4, -2]', function () {
+          interval.contains(new Interval('[-4, -2]')).should.be.false
+        })
+        it('does not contain (-2, 1]', function () {
+          interval.contains(new Interval('(-2, 1]')).should.be.false
+        })
+        it('does not contain [-5, -2)', function () {
+          interval.contains(new Interval('[-5,-2)')).should.be.false
+        })
+        it('does not contain [-4, 8)', function () {
+          interval.contains(new Interval('[-4, 8)')).should.be.false
+        })
+        it('contains empty set: (8, -4]', function () {
+          interval.contains(new Interval('(8, -4]')).should.be.true
+        })
       })
-      it('contains 1.5', function () {
-        interval.contains(1.5).should.be.true
-      })
-      it('does not contain 6', function () {
-        interval.contains(6).should.be.false
-      })
-    })
 
-    describe('empty: (3, -2)', function () {
-      var interval = new Interval('(3,-2)')
+      describe('[1, 6)', function () {
+        var interval = new Interval('[1, 6)')
 
-      it('does not contain -2', function () {
-        interval.contains(-2).should.be.equal(false)
+        it('contains [2, 2]', function () {
+          interval.contains(new Interval('[2, 2]')).should.be.true
+        })
+        it('does not contain [1, 6]', function () {
+          interval.contains(new Interval('[1, 6]')).should.be.false
+        })
+        it('contains [1, 6)', function () {
+          interval.contains(new Interval('[1, 6)')).should.be.true
+        })
+        it('contains (1, 6)', function () {
+          interval.contains(new Interval('(1, 6)')).should.be.true
+        })
+        it('contains (2, 5)', function () {
+          interval.contains(new Interval('(2, 5)')).should.be.true
+        })
+        it('contains (0, 5)', function () {
+          interval.contains(new Interval('(2, 5)')).should.be.true
+        })
+        it('contains (100, 95)', function () {
+          interval.contains(new Interval('(100, 95)')).should.be.true
+        })
       })
-      it('does not contain 1.5', function () {
-        interval.contains(1.5).should.be.equal(false)
-      })
-      it('does not contain 0', function () {
-        interval.contains(0).should.be.equal(false)
+
+      describe('empty: (3, -2)', function () {
+        var interval = new Interval('(3,-2)')
+
+        it('does not contain [1, 5)', function () {
+          interval.contains(new Interval('[1, 5)')).should.be.false
+        })
+        it('empty contains empty', function () {
+          interval.contains(new Interval('(100, 10)')).should.be.true
+        })
+        it('does not contain [3, 3]', function () {
+          interval.contains(new Interval('[3, 3]')).should.be.false
+        })
+        it('does not contain [-2, -2]', function () {
+          interval.contains(new Interval('[-2, -2]')).should.be.false
+        })
       })
     })
   })

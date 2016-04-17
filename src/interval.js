@@ -7,7 +7,7 @@ function Interval (e) {
   if (e instanceof Interval) {
     interval = copyInterval(e.interval)
   } else if (typeof e === 'string') {
-    interval = create.apply(null, parseInterval(e))
+    interval = normalizeIfEmpty(create.apply(null, parseInterval(e)))
   }
   Object.defineProperty(this, 'interval', {
     value: interval
@@ -67,18 +67,25 @@ Interval.prototype.cartesian = function (e) {
 }
 
 Interval.prototype.isEmpty = function () {
-  var interval = this.interval
-  return limitComparator(interval[0], interval[1]) > 0
+  return isEmpty(this.interval)
 }
 
-Interval.prototype.contains = function (num) {
-  var interval = this.interval
-  var exactNum = {
-    value: num,
-    limit: 0
+Interval.prototype.contains = function (e) {
+  var a = this.interval
+  var b
+  if (typeof e === 'number') {
+    b = create('[', e, e, ']')
+  } else if (e instanceof Interval) {
+    if (e.isEmpty()) {
+      return true
+    }
+    b = e.interval
+  } else {
+    throw new Error(e + ' is not interval')
   }
-  return limitComparator(exactNum, interval[0]) >= 0 &&
-    limitComparator(exactNum, interval[1]) <= 0
+
+  return limitComparator(b[0], a[0]) >= 0 &&
+    limitComparator(b[1], a[1]) <= 0
 }
 
 var map = {
@@ -96,6 +103,20 @@ function create (left, a, b, right) {
     value: b,
     limit: map[right]
   }]
+}
+
+function isEmpty (interval) {
+  return limitComparator(interval[0], interval[1]) > 0
+}
+
+function normalizeIfEmpty (interval) {
+  if (isEmpty(interval)) {
+    interval[1] = {
+      value: interval[0].value,
+      limit: -1
+    }
+  }
+  return interval
 }
 
 function copyInterval (interval) {
