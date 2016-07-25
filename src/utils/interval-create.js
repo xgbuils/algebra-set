@@ -1,3 +1,5 @@
+var typeVerify = require('type-verify')
+
 var map = {
   '(': 1,
   '[': 0,
@@ -5,12 +7,16 @@ var map = {
   ')': -1
 }
 
+function cast (value) {
+  return typeVerify(value, ['Number']) ? value : map[value]
+}
+
 module.exports = function (left, a, b, right) {
   return [{
     value: a,
-    limit: map[left]
+    limit: cast(left)
   }, {
     value: b,
-    limit: map[right]
+    limit: cast(right)
   }]
 }

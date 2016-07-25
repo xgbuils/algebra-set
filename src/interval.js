@@ -17,11 +17,11 @@ function Interval (e) {
   })
 }
 
-Interval.create = function () {
+Interval.create = function (rawInterval) {
   var args = [].slice.call(arguments)
   return Object.create(Interval.prototype, {
     interval: {
-      value: args.length === 2 ? args : create.apply(null, args)
+      value: typeof rawInterval !== 'string' ? rawInterval : create.apply(null, args)
     }
   })
 }
