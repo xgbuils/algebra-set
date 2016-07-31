@@ -45,7 +45,7 @@ function TopologicalFunction (intervalFunction, domain) {
     }
   })
 
-  return tf
+  return fn
 }
 
 function extractIntervals(set) {

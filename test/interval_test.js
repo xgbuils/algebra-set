@@ -42,8 +42,8 @@ describe('Interval', function () {
 
     it('(4, 8) U [ 3 ,5) U {-1,7} --> {-1} U (4, 8)', function () {
       var set = Interval.union.apply(null, [
-        samples.opened4Opened8,
-        samples.closed3Opened5,
+        samples.OPENED_4_TO_OPENED_8,
+        samples['[3, 5)'],
         samples.isolatedMinus1,
         samples.isolated7
       ].map(wrap)).map(raw)

@@ -1,6 +1,10 @@
 module.exports = {
+  /*
+   * RAW INTERVALS
+   */
+
   // [3, 5)
-  closed3Opened5: [{
+  '[3, 5)': [{
     // exactly 3
     value: 3,
     limit: 0
@@ -33,7 +37,7 @@ module.exports = {
   }],
 
   // (4, 8)
-  opened4Opened8: [{
+  OPENED_4_TO_OPENED_8: [{
     // 4 + infinitesimal
     value: 4,
     limit: 1
@@ -76,6 +80,7 @@ module.exports = {
     limit: 0
   }],
 
+  // [3, 8)
   closed3Opened8: [{
     value: 3,
     limit: 0
@@ -84,6 +89,7 @@ module.exports = {
     limit: -1
   }],
 
+  // (3, 0] -> empty interval
   opened3Closed0: [{
     value: 3,
     limit: 1
