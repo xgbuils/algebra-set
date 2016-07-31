@@ -8,7 +8,7 @@ function parseSet (str) {
     return e.trim()
   }).forEach(function (interval) {
     if (interval[0] === '{') {
-      intervals.push.apply(intervals, parseIsolatedIntervals(interval))
+      intervals.push.apply(intervals, parseIsolatedIntervals(interval).map(Interval.create))
     } else if (['(', '['].indexOf(interval[0]) !== -1) {
       intervals.push(Interval.create(parseInterval(interval)))
     }

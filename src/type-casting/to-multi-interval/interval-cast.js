@@ -1,34 +1,24 @@
 var typeVerify = require('type-verify')
+var toIntervalFactory = require('../to-interval/')
 
 module.exports = function (TInterval) {
+  var toInterval = toIntervalFactory(TInterval)
   return function intervalCast (value) {
     var intervalList = []
     var isIntervalList = typeVerify(value, ['Array']) && value.every(function (e) {
-      if (e instanceof TInterval) {
-        return intervalList.push(e)
-      } else if (isRawInterval(e)) {
-        return intervalList.push(TInterval.create(e))
-      } else {
-        return false
+      var partialResult = toInterval(e)
+      if (e !== partialResult) {
+        return intervalList.push(partialResult)
       }
+      return false
     })
     if (isIntervalList) {
       return intervalList
     }
-    if (isRawInterval(value)) {
-      value = TInterval.create(value)
-    }
-    if (value instanceof TInterval) {
-      value = [value]
+    var result = toInterval(value)
+    if (value !== result) {
+      return [result]
     }
     return value
   }
-}
-
-function isRawInterval (e) {
-  return typeVerify(e, ['Array']) && isLimit(e[0]) && isLimit(e[1])
-}
-
-function isLimit (e) {
-  return typeVerify(e, ['Object']) && typeVerify(e.value, ['Number']) && typeVerify(e.limit, ['Number', 'String'])
 }

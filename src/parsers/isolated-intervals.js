@@ -1,4 +1,4 @@
-var Interval = require('../interval.js')
+var create = require('../utils/raw-interval-create.js')
 
 function parseIsolatedIntervals (str) {
   var matches = /^\{\s*(\S+(?:\s*,\s*\S+)*)\s*\}$/.exec(str)
@@ -12,12 +12,11 @@ function parseIsolatedIntervals (str) {
   }).map(function (e) {
     var num = Number(e)
     if (isNaN(num)) {
-      throw new Error(e + 'is not a number')
-    } else {
-      return num
+      throw new Error('"' + e + '" is not a number')
     }
+    return num
   }).map(function (num) {
-    return Interval.create('[', num, num, ']')
+    return create('[', num, num, ']')
   })
 }
 

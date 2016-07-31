@@ -2,15 +2,15 @@ var parseInterval = require('./parsers/interval.js')
 
 var limitComparator = require('./utils/limit-comparator.js')
 var intervalComparator = require('./utils/interval-comparator')
-var create = require('./utils/interval-create.js')
+var create = require('./utils/raw-interval-create.js')
 var isEmpty = require('./utils/interval-is-empty.js')
 var typeVerify = require('type-verify')
 
 function Interval (e) {
-  if (e instanceof Interval) {
-    this.interval = e.interval
-  } else if (typeof e === 'string') {
+  if (typeof e === 'string') {
     this.interval = parseInterval(e)
+  } else if (e instanceof Interval) {
+    this.interval = e.interval
   }
 }
 
