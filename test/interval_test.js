@@ -10,81 +10,81 @@ describe('Interval', function () {
   describe('Interval.create', function () {
     it('[4,5]', function () {
       var interval = Interval.create('[', 4, 5, ']').interval
-      interval.should.be.deep.equal(samples.closed4Closed5)
+      interval.should.be.deep.equal(samples['[4, 5]'])
     })
 
     it('[3, 9)', function () {
       var interval = Interval.create('[', 3, 9, ')').interval
-      interval.should.be.deep.equal(samples.closed3Opened9)
+      interval.should.be.deep.equal(samples['[3, 9)'])
     })
 
     it('(3 ,11]', function () {
       var interval = Interval.create('(', 3, 11, ']').interval
-      interval.should.be.deep.equal(samples.opened3Closed11)
+      interval.should.be.deep.equal(samples['(3, 11]'])
     })
 
     it('[ 7 , 7 ]', function () {
       var interval = Interval.create('[', 7, 7, ']').interval
-      interval.should.be.deep.equal(samples.isolated7)
+      interval.should.be.deep.equal(samples['{7}'])
     })
   })
 
   describe('Interval.union', function () {
     it('[4,5] U [ 3 , 9) --> [3, 9)', function () {
       var set = Interval.union.apply(null, [
-        samples.closed4Closed5,
-        samples.closed3Opened9
+        samples['[4, 5]'],
+        samples['[3, 9)']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([
-        samples.closed3Opened9
+        samples['[3, 9)']
       ])
     })
 
     it('(4, 8) U [ 3 ,5) U {-1,7} --> {-1} U (4, 8)', function () {
       var set = Interval.union.apply(null, [
-        samples.OPENED_4_TO_OPENED_8,
+        samples['(4, 8)'],
         samples['[3, 5)'],
-        samples.isolatedMinus1,
-        samples.isolated7
+        samples['{-1}'],
+        samples['{7}']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([
-        samples.isolatedMinus1,
-        samples.closed3Opened8
+        samples['{-1}'],
+        samples['[3, 8)']
       ])
     })
 
     it('[5, 5] --> {5}', function () {
       var set = Interval.union.apply(null, [
-        samples.isolated5
+        samples['{5}']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([
-        samples.isolated5
+        samples['{5}']
       ])
     })
 
     it('(3, 11] --> (3, 11]', function () {
       var set = Interval.union.apply(null, [
-        samples.opened3Closed11
+        samples['(3, 11]']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([
-        samples.opened3Closed11
+        samples['(3, 11]']
       ])
     })
 
     it('(3, 0] --> empty', function () {
       var set = Interval.union.apply(null, [
-        samples.opened3Closed0
+        samples['(3, 0]']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([])
     })
 
     it('(3, 0] U [7, 7] U (2, 7) --> (2, 7]', function () {
       var set = Interval.union.apply(null, [
-        samples.opened2Opened7,
-        samples.isolated7
+        samples['(2, 7)'],
+        samples['{7}']
       ].map(wrap)).map(raw)
       set.should.be.deep.equal([
-        samples.opened2Closed7
+        samples['(2, 7]']
       ])
     })
   })

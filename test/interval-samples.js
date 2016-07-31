@@ -3,7 +3,6 @@ module.exports = {
    * RAW INTERVALS
    */
 
-  // [3, 5)
   '[3, 5)': [{
     // exactly 3
     value: 3,
@@ -14,8 +13,7 @@ module.exports = {
     limit: -1
   }],
 
-  // [3, 9)
-  closed3Opened9: [{
+  '[3, 9)': [{
     // exactly 3
     value: 3,
     limit: 0
@@ -25,8 +23,7 @@ module.exports = {
     limit: -1
   }],
 
-  // [3, 9]
-  closed3Closed9: [{
+  '[3, 9]': [{
     // exactly 3
     value: 3,
     limit: 0
@@ -36,8 +33,7 @@ module.exports = {
     limit: 0
   }],
 
-  // (4, 8)
-  OPENED_4_TO_OPENED_8: [{
+  '(4, 8)': [{
     // 4 + infinitesimal
     value: 4,
     limit: 1
@@ -47,8 +43,7 @@ module.exports = {
     limit: -1
   }],
 
-  // (4, 5]
-  opened4Closed5: [{
+  '(4, 5]': [{
     // 4 + infinitesimal
     value: 4,
     limit: 1
@@ -58,8 +53,7 @@ module.exports = {
     limit: 0
   }],
 
-  // [4, 5]
-  closed4Closed5: [{
+  '[4, 5]': [{
     // exactly 4
     value: 4,
     limit: 0
@@ -69,8 +63,7 @@ module.exports = {
     limit: 0
   }],
 
-  // (3, 11]
-  opened3Closed11: [{
+  '(3, 11]': [{
     // 3 + infinitesimal
     value: 3,
     limit: 1
@@ -80,8 +73,7 @@ module.exports = {
     limit: 0
   }],
 
-  // [3, 8)
-  closed3Opened8: [{
+  '[3, 8)': [{
     value: 3,
     limit: 0
   }, {
@@ -89,8 +81,8 @@ module.exports = {
     limit: -1
   }],
 
-  // (3, 0] -> empty interval
-  opened3Closed0: [{
+  // empty interval
+  '(3, 0]': [{
     value: 3,
     limit: 1
   }, {
@@ -98,7 +90,7 @@ module.exports = {
     limit: 0
   }],
 
-  opened2Opened7: [{
+  '(2, 7)': [{
     value: 2,
     limit: 1
   }, {
@@ -106,7 +98,7 @@ module.exports = {
     limit: -1
   }],
 
-  opened2Closed7: [{
+  '(2, 7]': [{
     value: 2,
     limit: 1
   }, {
@@ -114,8 +106,7 @@ module.exports = {
     limit: 0
   }],
 
-  // [-1, -1]
-  isolatedMinus1: [{
+  '{-1}': [{
     // exactly -1
     value: -1,
     limit: 0
@@ -125,8 +116,7 @@ module.exports = {
     limit: 0
   }],
 
-  // [5, 5]
-  isolated5: [{
+  '{5}': [{
     // exactly 5
     value: 5,
     limit: 0
@@ -136,8 +126,7 @@ module.exports = {
     limit: 0
   }],
 
-  // [7, 7]
-  isolated7: [{
+  '{7}': [{
     // exactly 7
     value: 7,
     limit: 0

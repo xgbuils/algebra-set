@@ -9,10 +9,10 @@ var intervalCast = require('../../../src/type-casting/to-multi-interval/interval
 
 describe('intervalCast', function () {
   describe('when is array of raw interval', function () {
-  	var interval
-  	beforeEach(function () {
+    var interval
+    beforeEach(function () {
       interval = intervalCast(samples['[3, 5)'])
-  	})
+    })
     it('returns an array of 1 element', function () {
       expect(interval).to.be.an('array')
       expect(interval.length).to.be.equal(1)

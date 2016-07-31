@@ -8,24 +8,24 @@ describe('parseIsolatedIntervals', function () {
   it('{-1, 5, 7}', function () {
     var interval = parseIsolatedIntervals('{-1, 5, 7}').map(raw)
     interval.should.be.deep.equal([
-      samples.isolatedMinus1,
-      samples.isolated5,
-      samples.isolated7
+      samples['{-1}'],
+      samples['{5}'],
+      samples['{7}']
     ])
   })
 
   it('{ 5}', function () {
     var interval = parseIsolatedIntervals('{5}').map(raw)
     interval.should.be.deep.equal([
-      samples.isolated5
+      samples['{5}']
     ])
   })
 
   it('{5  ,-1}', function () {
     var interval = parseIsolatedIntervals('{5  ,-1}').map(raw)
     interval.should.be.deep.equal([
-      samples.isolated5,
-      samples.isolatedMinus1
+      samples['{5}'],
+      samples['{-1}']
     ])
   })
 })
