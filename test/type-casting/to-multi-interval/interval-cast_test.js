@@ -4,8 +4,7 @@ var samples = require('../../interval-samples')
 var raw = require('../../utils/raw-interval')
 
 var Interval = require('../../../src/interval.js')
-var intervalCast = require('../../../src/type-casting/to-multi-interval/interval-cast')
-
+var intervalCast = require('../../../src/type-casting/to-multi-interval/interval-cast')(Interval)
 
 describe('intervalCast', function () {
   describe('when is array of raw interval', function () {
