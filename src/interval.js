@@ -4,6 +4,7 @@ var limitComparator = require('./utils/limit-comparator.js')
 var intervalComparator = require('./utils/interval-comparator')
 var create = require('./utils/interval-create.js')
 var isEmpty = require('./utils/interval-is-empty.js')
+var typeVerify = require('type-verify')
 
 function Interval (e) {
   if (e instanceof Interval) {
@@ -72,20 +73,15 @@ Interval.prototype.isEmpty = function () {
 
 Interval.prototype.contains = function (e) {
   var a = this.interval
-  var b
-  if (typeof e === 'string') {
-    e = new Interval(parseInterval(e))
-  }
-  if (e instanceof Interval) {
-    if (e.isEmpty()) {
-      return true
-    }
-    b = e.interval
+  var interval
+  if (typeVerify(e, ['Number'])) {
+    interval = Interval.create('[', e, e, ']')
   } else {
-    b = create('[', e, e, ']')
+    interval = new Interval(e)
   }
+  var b = interval.interval
 
-  return limitComparator(b[0], a[0]) >= 0 &&
+  return interval.isEmpty() || limitComparator(b[0], a[0]) >= 0 &&
     limitComparator(b[1], a[1]) <= 0
 }
 
