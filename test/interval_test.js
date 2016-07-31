@@ -1,7 +1,6 @@
 var chai = require('chai')
 var samples = require('./interval-samples')
 var Interval = require('../src/interval.js')
-var wrap = require('./utils/wrap-interval')
 var raw = require('./utils/raw-interval')
 
 chai.should()
@@ -34,7 +33,7 @@ describe('Interval', function () {
       var set = Interval.union.apply(null, [
         samples['[4, 5]'],
         samples['[3, 9)']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([
         samples['[3, 9)']
       ])
@@ -46,7 +45,7 @@ describe('Interval', function () {
         samples['[3, 5)'],
         samples['{-1}'],
         samples['{7}']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([
         samples['{-1}'],
         samples['[3, 8)']
@@ -56,7 +55,7 @@ describe('Interval', function () {
     it('[5, 5] --> {5}', function () {
       var set = Interval.union.apply(null, [
         samples['{5}']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([
         samples['{5}']
       ])
@@ -65,7 +64,7 @@ describe('Interval', function () {
     it('(3, 11] --> (3, 11]', function () {
       var set = Interval.union.apply(null, [
         samples['(3, 11]']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([
         samples['(3, 11]']
       ])
@@ -74,7 +73,7 @@ describe('Interval', function () {
     it('(3, 0] --> empty', function () {
       var set = Interval.union.apply(null, [
         samples['(3, 0]']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([])
     })
 
@@ -82,7 +81,7 @@ describe('Interval', function () {
       var set = Interval.union.apply(null, [
         samples['(2, 7)'],
         samples['{7}']
-      ].map(wrap)).map(raw)
+      ].map(Interval.create)).map(raw)
       set.should.be.deep.equal([
         samples['(2, 7]']
       ])
