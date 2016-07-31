@@ -6,15 +6,11 @@ var create = require('./utils/interval-create.js')
 var isEmpty = require('./utils/interval-is-empty.js')
 
 function Interval (e) {
-  var interval
   if (e instanceof Interval) {
-    interval = copyInterval(e.interval)
+    this.interval = e.interval
   } else if (typeof e === 'string') {
-    interval = parseInterval(e)
+    this.interval = parseInterval(e)
   }
-  Object.defineProperty(this, 'interval', {
-    value: interval
-  })
 }
 
 Interval.create = function (rawInterval) {
@@ -49,7 +45,7 @@ Interval.union = function () {
     var itemStart = rawItem[0]
     var diff = currentEnd.value - itemStart.value
     if (diff < 0 || diff === 0 && currentEnd.limit - itemStart.limit === -2) {
-      result.push(new Interval(item))
+      result.push(Interval.create(copyInterval(item.interval)))
       ++count
       current = result[count].interval
     } else if (limitComparator(currentEnd, rawItem[1]) < 0) {
