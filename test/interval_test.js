@@ -3,6 +3,7 @@ var expect = chai.expect
 var samples = require('./interval-samples')
 var Interval = require('../src/interval.js')
 var raw = require('./utils/raw-interval')
+var clone = require('clone')
 
 describe('Interval', function () {
   describe('Interval.create', function () {
@@ -40,18 +41,35 @@ describe('Interval', function () {
   })
 
   describe('Interval.union', function () {
-    it('[4,5] U [ 3 , 9) --> [3, 9)', function () {
+    describe('[4,5] U [ 3 , 9) --> [3, 9)', function () {
+      var copies = {
+        '[4, 5]': clone(samples['[4, 5]']),
+        '[3, 9)': clone(samples['[3, 9)'])
+      }
       var intervalList = Interval.union.apply(null, [
         samples['[4, 5]'],
         samples['[3, 9)']
       ].map(Interval.create))
 
-      expect(intervalList.map(raw)).to.be.deep.equal([
-        samples['[3, 9)']
-      ])
+      it('returns expected union', function () {
+        expect(intervalList.map(raw)).to.be.deep.equal([
+          samples['[3, 9)']
+        ])
+      })
+
+      it('does not produce side effects', function () {
+        expect(samples['[4, 5]']).to.deep.equal(copies['[4, 5]'])
+        expect(samples['[3, 9)']).to.deep.equal(copies['[3, 9)'])
+      })
     })
 
-    it('(4, 8) U [ 3 ,5) U {-1,7} --> {-1} U (4, 8)', function () {
+    describe('(4, 8) U [ 3 ,5) U {-1,7} --> {-1} U (4, 8)', function () {
+      var copies = {
+        '(4, 8)': clone(samples['(4, 8)']),
+        '[3, 5)': clone(samples['[3, 5)']),
+        '{-1}': clone(samples['{-1}']),
+        '{7}': clone(samples['{7}'])
+      }
       var intervalList = Interval.union.apply(null, [
         samples['(4, 8)'],
         samples['[3, 5)'],
@@ -63,6 +81,20 @@ describe('Interval', function () {
         samples['{-1}'],
         samples['[3, 8)']
       ])
+
+      it('returns expected union', function () {
+        expect(intervalList.map(raw)).to.be.deep.equal([
+          samples['{-1}'],
+          samples['[3, 8)']
+        ])
+      })
+
+      it('does not produce side effects', function () {
+        expect(samples['(4, 8)']).to.deep.equal(copies['(4, 8)'])
+        expect(samples['[3, 5)']).to.deep.equal(copies['[3, 5)'])
+        expect(samples['{-1}']).to.deep.equal(copies['{-1}'])
+        expect(samples['{7}']).to.deep.equal(copies['{7}'])
+      })
     })
 
     it('[5, 5] --> {5}', function () {
@@ -93,15 +125,26 @@ describe('Interval', function () {
       expect(intervalList).to.be.deep.equal([])
     })
 
-    it('(3, 0] U [7, 7] U (2, 7) --> (2, 7]', function () {
+    describe('(3, 0] U [7, 7] U (2, 7) --> (2, 7]', function () {
+      var copies = {
+        '(2, 7)': clone(samples['(2, 7)']),
+        '{7}': clone(samples['{7}'])
+      }
       var intervalList = Interval.union.apply(null, [
         samples['(2, 7)'],
         samples['{7}']
       ].map(Interval.create))
 
-      expect(intervalList.map(raw)).to.be.deep.equal([
-        samples['(2, 7]']
-      ])
+      it('returns expected union', function () {
+        expect(intervalList.map(raw)).to.be.deep.equal([
+          samples['(2, 7]']
+        ])
+      })
+
+      it('does not produce side effects', function () {
+        expect(samples['(2, 7)']).to.deep.equal(copies['(2, 7)'])
+        expect(samples['{7}']).to.deep.equal(copies['{7}'])
+      })
     })
   })
 

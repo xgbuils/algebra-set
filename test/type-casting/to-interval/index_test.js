@@ -52,7 +52,7 @@ describe('toInterval', function () {
   })
 
   describe('when type of value is impossible to cast', function () {
-    it('param is the same reference to result', function () {
+    it('param is the same reference as result', function () {
       var param = {foo: 'bar'}
       var result = toInterval(param)
       expect(result).to.be.equal(param)

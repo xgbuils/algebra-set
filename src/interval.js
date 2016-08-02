@@ -37,7 +37,7 @@ Interval.union = function () {
 
   var count = 0
   var current = arr[count].interval
-  var result = [arr[count]]
+  var result = [copyInterval(arr[count])]
 
   for (var i = 1; i < arr.length; ++i) {
     var currentEnd = current[1]
@@ -46,7 +46,7 @@ Interval.union = function () {
     var itemStart = rawItem[0]
     var diff = currentEnd.value - itemStart.value
     if (diff < 0 || diff === 0 && currentEnd.limit - itemStart.limit === -2) {
-      result.push(Interval.create(copyInterval(item.interval)))
+      result.push(copyInterval(item))
       ++count
       current = result[count].interval
     } else if (limitComparator(currentEnd, rawItem[1]) < 0) {
@@ -86,12 +86,14 @@ Interval.prototype.contains = function (e) {
 }
 
 function copyInterval (interval) {
-  return interval.map(function (e) {
+  return Interval.create(interval.interval.map(function (e) {
     return {
       value: e.value,
       limit: e.limit
     }
-  })
+  }))
 }
+
+
 
 module.exports = Interval
