@@ -3,7 +3,6 @@ var parseInterval = require('./parsers/interval.js')
 var limitComparator = require('./utils/limit-comparator.js')
 var intervalComparator = require('./utils/interval-comparator')
 var create = require('./utils/raw-interval-create.js')
-var isEmpty = require('./utils/interval-is-empty.js')
 var typeVerify = require('type-verify')
 
 function Interval (e) {
@@ -68,7 +67,8 @@ Interval.prototype.cartesian = function (e) {
 }
 
 Interval.prototype.isEmpty = function () {
-  return isEmpty(this.interval)
+  var interval = this.interval
+  return limitComparator(interval[0], interval[1]) > 0
 }
 
 Interval.prototype.contains = function (e) {

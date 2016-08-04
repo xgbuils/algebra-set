@@ -11,7 +11,10 @@ function TopologicalSet (e) {
       return new Interval(e)
     })
   } else if (type === 'string') {
-    this._intervals = Interval.union.apply(null, parseSet(e))
+    var intervals = parseSet(e).filter(function (e) {
+      return !e.isEmpty()
+    })
+    this._intervals = Interval.union.apply(null, intervals)
   } else if (isObject && typeof e.contains === 'function') {
     this.fn = e.contains
   }

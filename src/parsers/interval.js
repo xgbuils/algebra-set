@@ -1,5 +1,4 @@
 var create = require('../utils/raw-interval-create.js')
-var isEmpty = require('../utils/interval-is-empty.js')
 
 function parseStringToValues (str) {
   var matches = /^\{\s*(\S+)\s*\}|([\(\[])\s*(\S+)\s*,\s*(\S+)\s*([\)\]])$/.exec(str)
@@ -29,16 +28,6 @@ function assertNum (num, value) {
   }
 }
 
-function normalizeIfEmpty (interval) {
-  if (isEmpty(interval)) {
-    interval[1] = {
-      value: interval[0].value,
-      limit: -1
-    }
-  }
-  return interval
-}
-
 module.exports = function stringToInterval (e) {
-  return normalizeIfEmpty(create.apply(null, parseStringToValues(e)))
+  return create.apply(null, parseStringToValues(e))
 }
