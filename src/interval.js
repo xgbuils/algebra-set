@@ -94,6 +94,4 @@ function copyInterval (interval) {
   }))
 }
 
-
-
 module.exports = Interval
