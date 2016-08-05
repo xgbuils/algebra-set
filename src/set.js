@@ -1,4 +1,4 @@
-var parseSet = require('./parsers/set.js')
+var parseMultiInterval = require('./parsers/multi-interval.js')
 var Interval = require('./interval.js')
 
 function TopologicalSet (e) {
@@ -11,7 +11,7 @@ function TopologicalSet (e) {
       return new Interval(e)
     })
   } else if (type === 'string') {
-    var intervals = parseSet(e).filter(function (e) {
+    var intervals = parseMultiInterval(e).filter(function (e) {
       return !e.isEmpty()
     })
     this._intervals = Interval.union.apply(null, intervals)

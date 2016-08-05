@@ -2,7 +2,7 @@ var parseIsolatedIntervals = require('./isolated-intervals.js')
 var Interval = require('../interval.js')
 var parseInterval = require('./interval.js')
 
-function parseSet (str) {
+function parseMultiInterval (str) {
   var intervals = []
   str.split('U').map(function (e) {
     return e.trim()
@@ -16,4 +16,4 @@ function parseSet (str) {
   return intervals
 }
 
-module.exports = parseSet
+module.exports = parseMultiInterval

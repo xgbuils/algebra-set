@@ -1,6 +1,6 @@
 var typeVerify = require('type-verify')
-var parseSet = require('../../parsers/set.js')
+var parseMultiInterval = require('../../parsers/multi-interval.js')
 
 module.exports = function stringCast (value) {
-  return typeVerify(value, ['String']) ? parseSet(value) : value
+  return typeVerify(value, ['String']) ? parseMultiInterval(value) : value
 }
