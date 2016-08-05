@@ -1,33 +1,21 @@
-var parseMultiInterval = require('./parsers/multi-interval.js')
 var Interval = require('./interval.js')
+var toSetFactory = require('./type-casting/to-set/')
+var predicateCast = require('./type-casting/to-set/predicate-cast.js')
 
 function TopologicalSet (e) {
-  var type = typeof e
-  var isObject = e && type === 'object'
-  this.equality = equality
-
-  if (e instanceof TopologicalSet) {
-    this._intervals = e._intervals.map(function (e) {
-      return new Interval(e)
-    })
-  } else if (type === 'string') {
-    var intervals = parseMultiInterval(e).filter(function (e) {
-      return !e.isEmpty()
-    })
-    this._intervals = Interval.union.apply(null, intervals)
-  } else if (isObject && typeof e.contains === 'function') {
-    this.fn = e.contains
+  var toSet = toSetFactory(TopologicalSet, Interval)
+  var intervals = toSet(e)
+  if (intervals !== e) {
+    this._intervals = intervals
+  } else {
+    var obj = predicateCast(e)
+    if (obj !== e) {
+      this.fn = obj.contains
+      this.equality = obj.equality
+    } else {
+      throw new Error('TODO: error')
+    }
   }
-
-  if (isObject && typeof e.equality === 'function') {
-    this.equality = e.equality
-  }
-
-  this._intervals = this._intervals || []
-}
-
-function equality (a, b) {
-  return a === b
 }
 
 Object.defineProperties(TopologicalSet.prototype, {
