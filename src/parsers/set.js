@@ -10,7 +10,6 @@ function parseSet (str) {
     if (interval[0] === '{') {
       intervals.push.apply(intervals, parseIsolatedIntervals(interval).map(Interval.create))
     } else if (['(', '['].indexOf(interval[0]) !== -1) {
-      console.log(interval)
       intervals.push(Interval.create(parseInterval(interval)))
     }
   })
