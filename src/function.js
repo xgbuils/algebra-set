@@ -49,7 +49,7 @@ function TopologicalFunction (intervalFunction, domain) {
 }
 
 function extractIntervals (set) {
-  return set._intervals.map(function (e) {
+  return set.intervals.map(function (e) {
     return e.interval
   })
 }

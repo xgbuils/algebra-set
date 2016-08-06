@@ -1,3 +1,3 @@
 module.exports = function rawSet (e) {
-  return e._intervals
+  return e.intervals
 }
