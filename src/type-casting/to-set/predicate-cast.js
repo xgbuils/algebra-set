@@ -20,5 +20,5 @@ function isFunction (value) {
 }
 
 function equality (a, b) {
-  a === b
+  return a === b
 }
