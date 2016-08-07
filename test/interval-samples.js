@@ -13,6 +13,16 @@ module.exports = {
     limit: -1
   }],
 
+  '[3, 5]': [{
+    // exactly 3
+    value: 3,
+    limit: 0
+  }, {
+    // 5 - infinitesimal
+    value: 5,
+    limit: 0
+  }],
+
   '[3, 9)': [{
     // exactly 3
     value: 3,

@@ -8,7 +8,7 @@ describe('predicateCast', function () {
     var obj
     var fn
     beforeEach(function () {
-      fn = function (a) {
+      fn = function (e) {
         e > 5
       }
       obj = predicateCast(fn)
@@ -16,10 +16,58 @@ describe('predicateCast', function () {
     it('returns an object', function () {
       expect(obj).to.be.an('object')
     })
-    it('object has a function property `.contains` with the same reference as parameter', function () {
-      expect(obj.contains).to.be.equal(fn)
+    it('object has a function property `.fn` with the same reference as parameter', function () {
+      expect(obj.fn).to.be.equal(fn)
     })
-    it('object has a function property `.equality` with the same that represents `===`', function () {
+    it('object has a function property `.equality` with that represents `===` operator', function () {
+      expect(obj.equality).to.be.a('function')
+      expect(obj.equality(3, 3)).to.be.equal(true)
+    })
+  })
+
+  describe('if it is passed an object with properties .contains and .equality', function () {
+    var obj
+    var param
+    beforeEach(function () {
+      param = {
+        contains: function (e) {
+          e > 5
+        },
+        equality: function (a, b) {
+          return Math.abs(a - b) <= 1
+        }
+      }
+      obj = predicateCast(param)
+    })
+    it('returns an object', function () {
+      expect(obj).to.be.an('object')
+    })
+    it('object has a function property `.fn` with the same reference as parameter.contains', function () {
+      expect(obj.fn).to.be.equal(param.contains)
+    })
+    it('object has a function property `.equality` with the same reference as parameter.equality', function () {
+      expect(obj.equality).to.be.equal(param.equality)
+    })
+  })
+
+  describe('if it is passed an object with property .contains and not .equality', function () {
+    var obj
+    var param
+    beforeEach(function () {
+      param = {
+        contains: function (e) {
+          e > 5
+        }
+      }
+      obj = predicateCast(param)
+    })
+    it('returns an object', function () {
+      expect(obj).to.be.an('object')
+    })
+    it('object has a function property `.fn` with the same reference as parameter.contains', function () {
+      expect(obj.fn).to.be.equal(param.contains)
+    })
+    it('object has a function property `.equality` with that represents `===` operator', function () {
       expect(obj.equality).to.be.a('function')
       expect(obj.equality(3, 3)).to.be.equal(true)
     })

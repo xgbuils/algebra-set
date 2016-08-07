@@ -10,7 +10,7 @@ module.exports = function (TSet, TInterval) {
     var intervals = castFactory([
       compactAfter(stringCast),
       compactAfter(intervalCast),
-      compactAfter(setCast)
+      setCast
     ])(value)
     return value !== intervals ? {intervals: intervals} : value
   }
@@ -22,4 +22,3 @@ module.exports = function (TSet, TInterval) {
     }
   }
 }
-
