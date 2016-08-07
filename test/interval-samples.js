@@ -43,14 +43,14 @@ module.exports = {
     limit: 0
   }],
 
-  '(4, 8)': [{
-    // 4 + infinitesimal
+  '[4, 5]': [{
+    // exactly 4
     value: 4,
-    limit: 1
+    limit: 0
   }, {
-    // 8 - infinitesimal
-    value: 8,
-    limit: -1
+    // exactly 5
+    value: 5,
+    limit: 0
   }],
 
   '(4, 5]': [{
@@ -63,14 +63,22 @@ module.exports = {
     limit: 0
   }],
 
-  '[4, 5]': [{
-    // exactly 4
+  '(4, 6)': [{
     value: 4,
-    limit: 0
+    limit: 1
   }, {
-    // exactly 5
-    value: 5,
-    limit: 0
+    value: 6,
+    limit: -1
+  }],
+
+  '(4, 8)': [{
+    // 4 + infinitesimal
+    value: 4,
+    limit: 1
+  }, {
+    // 8 - infinitesimal
+    value: 8,
+    limit: -1
   }],
 
   '(3, 11]': [{

@@ -40,9 +40,9 @@ describe('toMultiInterval', function () {
     })
   })
 
-  describe('when param is a array with a no castable type', function () {
+  describe('when param is no castable type', function () {
     it('param is the same reference to result', function () {
-      var param = true
+      var param = 45
       var result = toMultiInterval(param)
       expect(result).to.be.equal(param)
     })

@@ -1,7 +1,7 @@
 var chai = require('chai')
+var expect = chai.expect
 var TopologicalSet = require('../src/set.js')
-
-chai.should()
+var samples = require('./interval-samples.js')
 
 describe('Set', function () {
   describe('containing numbers', function () {
@@ -105,23 +105,48 @@ describe('Set', function () {
     describe('(4, 5) U (5, 6)', function () {
       var set = new TopologicalSet('(4, 5) U (5, 6)')
       it('contains (5, 6)', function () {
-        set.contains('(5, 6)').should.be.true
+        expect(set.contains('(5, 6)')).to.be.equal(true)
       })
 
       it('contains (4.5, 5) U {5.5}', function () {
-        set.contains('(4.5, 5) U {5.5}').should.be.true
+        expect(set.contains(new TopologicalSet('(4.5, 5) U {5.5}'))).to.be.equal(true)
       })
 
       it('does not contain (4, 6)', function () {
-        set.contains('(4, 6)').should.be.false
+        expect(set.contains(samples['(4, 6)'])).to.be.equal(false)
       })
 
       it('does not contain {5}', function () {
-        set.contains('{5}').should.be.false
+        expect(set.contains([
+          samples['{5}']
+        ])).to.be.equal(false)
       })
 
       it('does not contain (3, 4.5)', function () {
-        set.contains('(3, 4.5)').should.be.false
+        expect(set.contains('(3, 4.5)')).to.be.equal(false)
+      })
+    })
+
+    describe('{-1} U (3, 0] U {3, 5} U (3, 5)', function () {
+      var set = new TopologicalSet('{-1} U (3, 0] U {3, 5} U (3, 5)')
+      it('contains (3, 5)', function () {
+        expect(set.contains(samples['[3, 5)'])).to.be.equal(true)
+      })
+
+      it('contains {-1}, {4, 3}', function () {
+        expect(set.contains([
+          samples['{-1}'],
+          '{4}',
+          '[3, 3]'
+        ])).to.be.equal(true)
+      })
+
+      it('does not contain {0}', function () {
+        expect(set.contains('{0}')).to.be.equal(false)
+      })
+
+      it('does not contain [-1, 5]', function () {
+        expect(set.contains('[-1, 5]')).to.be.equal(false)
       })
     })
   })

@@ -69,7 +69,7 @@ describe('multiIntervalCast', function () {
     })
   })
 
-  describe('when param is a array with a no castable type', function () {
+  describe('when param is no castable type', function () {
     it('param is the same reference to result', function () {
       var param = true
       var result = multiIntervalCast(param)
