@@ -6,5 +6,5 @@ var castFactory = require('../cast-factory.js')
 module.exports = function (TSet, TInterval) {
   var intervalCast = intervalCastFactory(TInterval)
   var setCast = setCastFactory(TSet)
-  return castFactory([intervalCast, stringCast, setCast])
+  return castFactory([stringCast, intervalCast, setCast])
 }
