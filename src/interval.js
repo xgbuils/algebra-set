@@ -56,16 +56,6 @@ Interval.union = function () {
   return result
 }
 
-Interval.prototype.cartesian = function (e) {
-  var interval
-  if (e instanceof Interval) {
-    interval = e
-  } else if (typeof e === 'string') {
-    interval = new Interval(e)
-  }
-  return [this, interval]
-}
-
 Interval.prototype.isEmpty = function () {
   var interval = this.interval
   return limitComparator(interval[0], interval[1]) > 0

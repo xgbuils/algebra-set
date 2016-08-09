@@ -42,12 +42,6 @@ Object.defineProperties(TopologicalSet.prototype, {
         })
       })
     }
-  },
-
-  connectedComponents: {
-    value: function () {
-      return this.intervals
-    }
   }
 })
 
