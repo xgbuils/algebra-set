@@ -9,9 +9,19 @@ var toMultiInterval = require('./type-casting/to-multi-interval')(TSet, TInterva
 function TopologicalFunction (intervalFunction, domain) {
   domain = new TSet(domain || '(-Infinity, Infinity)')
 
+  if (typeof intervalFunction !== 'function') {
+    throw Error('First parameter must be a function.')
+  } else if (intervalFunction.length <= 0) {
+    throw Error('First parameter function must have 1 or more parameters.')
+  }
+
   var intervalFn = function () {
     var rawResult = intervalFunction.apply(null, arguments)
-    return toMultiInterval(rawResult)
+    var result = toMultiInterval(rawResult)
+    if (result === rawResult) {
+      throw new Error('Imposible to cast result returned by interval function.')
+    }
+    return result
   }
 
   var fn = function () {
@@ -32,7 +42,7 @@ function TopologicalFunction (intervalFunction, domain) {
             return List(intervalFn.apply(null, domainIntervals))
           })
           .toArray()
-        return TInterval.union.apply(null, imageIntervals)
+        return TSet(TInterval.union.apply(null, imageIntervals))
       }
     },
     domain: {

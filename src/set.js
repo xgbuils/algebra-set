@@ -6,6 +6,9 @@ var rawIntervalCreate = require('./utils/raw-interval-create.js')
 
 function TopologicalSet (e) {
   var obj = toSet(e)
+  if (!(this instanceof TopologicalSet)) {
+    return new TopologicalSet(e)
+  }
   if (obj === e) {
     throw new Error('TODO: error. imposible to cast')
   }

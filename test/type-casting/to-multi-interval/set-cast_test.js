@@ -1,5 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
+var rawInterval = require('../../utils/raw-interval.js')
 var rawSet = require('../../utils/raw-set.js')
 var assert = require('assert')
 
@@ -24,7 +25,7 @@ describe('setCast', function () {
       })
     })
     it('result has the same intervals as raw set parameter', function () {
-      expect(result).to.be.deep.equal(rawSet(param))
+      expect(result.map(rawInterval)).to.be.deep.equal(rawSet(param))
     })
   })
 

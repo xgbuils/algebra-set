@@ -1,7 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
 var samples = require('../../interval-samples.js')
-var rawInterval = require('../../utils/raw-interval.js')
 var rawSet = require('../../utils/raw-set.js')
 
 var TSet = require('../../../src/set.js')
@@ -40,7 +39,7 @@ describe('multiIntervalCast', function () {
       expect(result).to.be.an('object')
     })
     it('returns correct raw set', function () {
-      expect(rawSet(result).map(rawInterval)).to.deep.equal([
+      expect(rawSet(result)).to.deep.equal([
         samples['[3, 9)']
       ])
     })
