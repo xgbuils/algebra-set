@@ -2,6 +2,15 @@ module.exports = {
   /*
    * RAW INTERVALS
    */
+  '(0, 1]': [{
+    // 0 + infinitesimal
+    value: 0,
+    limit: 1
+  }, {
+    // exactly 1
+    value: 1,
+    limit: 0
+  }],
 
   '[3, 5)': [{
     // exactly 3

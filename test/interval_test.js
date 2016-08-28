@@ -25,7 +25,7 @@ describe('Interval', function () {
 
     describe('passing raw interval', function () {
       it('returns instance of Interval', function () {
-        var interval = Interval.create('(', 0, 1, ']')
+        var interval = Interval.create(samples['(0, 1]'])
         expect(interval).to.be.instanceOf(Interval)
       })
       it('returns closed interval', function () {
