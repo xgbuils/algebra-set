@@ -109,4 +109,11 @@ describe('function', function () {
       expect(test).to.throw('Imposible to cast result returned by interval function.')
     })
   })
+
+  describe('function instance', function () {
+    it('function instance computes numbers based on interval function', function () {
+      var fn = TFunction(sumFn)
+      expect(fn(2, 3)).to.be.equal(5)
+    })
+  })
 })

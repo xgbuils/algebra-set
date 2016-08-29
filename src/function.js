@@ -2,6 +2,7 @@ var Iterum = require('iterum')
 var Cartesian = Iterum.Cartesian
 var Repeat = Iterum.Repeat
 var List = Iterum.List
+var create = require('./utils/raw-interval-create.js')
 var TInterval = require('./interval.js')
 var TSet = require('./set')
 var toMultiInterval = require('./type-casting/to-multi-interval')(TSet, TInterval)
@@ -25,10 +26,10 @@ function TopologicalFunction (intervalFunction, domain) {
   }
 
   var fn = function () {
-    var args = [].slice.call(arguments).map(function (value) {
-      return TInterval.create('[', value, value, ']')
+    var args = [].map.call(arguments, function (value) {
+      return create('[', value, value, ']')
     })
-    return intervalFn.apply(null, args)[0][0].value
+    return intervalFn.apply(null, args)[0].interval[0].value
   }
 
   Object.defineProperties(fn, {
