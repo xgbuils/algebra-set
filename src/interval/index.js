@@ -1,16 +1,16 @@
-var parseInterval = require('../parsers/interval.js')
+var typeVerify = require('type-verify')
+var toIntervalFactory = require('../type-casting/to-interval/')
 
 var limitComparator = require('./limit-comparator.js')
 var intervalComparator = require('./interval-comparator')
 var create = require('./raw-interval-create.js')
-var typeVerify = require('type-verify')
 
 function Interval (e) {
-  if (typeof e === 'string') {
-    this.interval = parseInterval(e)
-  } else if (e instanceof Interval) {
-    this.interval = e.interval
+  var result = toIntervalFactory(Interval)(e)
+  if (result === e) {
+    throw new Error(e + ' is not castable to Interval')
   }
+  this.interval = result
 }
 
 Interval.create = function (rawInterval) {
@@ -25,8 +25,15 @@ Interval.create = function (rawInterval) {
 Interval.union = function () {
   var intervals = [].slice.call(arguments)
   var arr = intervals
+    .map(function (interval) {
+      var result = toIntervalFactory(Interval)(interval)
+      if (result === interval) {
+        throw new Error(interval + ' is not castable to Interval')
+      }
+      return result
+    })
     .filter(function (interval) {
-      return !interval.isEmpty()
+      return !isEmpty(interval)
     })
     .sort(intervalComparator)
 
@@ -35,53 +42,55 @@ Interval.union = function () {
   }
 
   var count = 0
-  var current = arr[count].interval
+  var current = arr[count]
   var result = [copyInterval(arr[count])]
 
   for (var i = 1; i < arr.length; ++i) {
     var currentEnd = current[1]
     var item = arr[i]
-    var rawItem = item.interval
+    var rawItem = item
     var itemStart = rawItem[0]
     var diff = currentEnd.value - itemStart.value
     if (diff < 0 || diff === 0 && currentEnd.limit - itemStart.limit === -2) {
       result.push(copyInterval(item))
       ++count
-      current = result[count].interval
+      current = result[count]
     } else if (limitComparator(currentEnd, rawItem[1]) < 0) {
-      result[count].interval[1] = rawItem[1]
+      result[count][1] = rawItem[1]
     }
   }
 
-  return result
+  return result.map(function (interval) {
+    return Interval.create(interval)
+  })
 }
 
 Interval.prototype.isEmpty = function () {
-  var interval = this.interval
-  return limitComparator(interval[0], interval[1]) > 0
+  return isEmpty(this.interval)
 }
 
 Interval.prototype.contains = function (e) {
   var a = this.interval
-  var interval
-  if (typeVerify(e, ['Number'])) {
-    interval = Interval.create('[', e, e, ']')
-  } else {
-    interval = new Interval(e)
+  var b = typeVerify(e, ['Number']) ? create('[', e, e, ']') : toIntervalFactory(Interval)(e)
+  if (b === e) {
+    throw new Error(e + ' is not castable to Interval o Number')
   }
-  var b = interval.interval
 
-  return interval.isEmpty() || limitComparator(b[0], a[0]) >= 0 &&
+  return isEmpty(b) || limitComparator(b[0], a[0]) >= 0 &&
     limitComparator(b[1], a[1]) <= 0
 }
 
 function copyInterval (interval) {
-  return Interval.create(interval.interval.map(function (e) {
+  return interval.map(function (e) {
     return {
       value: e.value,
       limit: e.limit
     }
-  }))
+  })
+}
+
+function isEmpty (interval) {
+  return limitComparator(interval[0], interval[1]) > 0
 }
 
 module.exports = Interval

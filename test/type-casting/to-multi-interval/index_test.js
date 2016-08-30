@@ -24,7 +24,7 @@ describe('toMultiInterval', function () {
     it('returns correct array of intervals', function () {
       var param = samples['(3, 0]']
       var result = toMultiInterval(param)
-      expect(result.map(raw)).to.deep.equal([
+      expect(result).to.deep.equal([
         samples['(3, 0]']
       ])
     })

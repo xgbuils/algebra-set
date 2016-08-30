@@ -1,7 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
 var samples = require('../../interval-samples')
-var raw = require('../../utils/raw-interval')
 
 var Interval = require('../../../src/interval/')
 var toInterval = require('../../../src/type-casting/to-interval/')(Interval)
@@ -12,11 +11,8 @@ describe('toInterval', function () {
     beforeEach(function () {
       interval = toInterval(samples['(2, 7)'])
     })
-    it('returns an Interval instance', function () {
-      expect(interval).to.be.instanceOf(Interval)
-    })
     it('element returned wraps the raw interval', function () {
-      expect(raw(interval)).to.be.deep.equal(samples['(2, 7)'])
+      expect(interval).to.be.deep.equal(samples['(2, 7)'])
     })
   })
 
@@ -25,11 +21,8 @@ describe('toInterval', function () {
     beforeEach(function () {
       interval = toInterval('[3, 9)')
     })
-    it('returns an Interval instance', function () {
-      expect(interval).to.be.instanceOf(Interval)
-    })
     it('element returned wraps a correct raw interval', function () {
-      expect(raw(interval)).to.be.deep.equal(samples['[3, 9)'])
+      expect(interval).to.be.deep.equal(samples['[3, 9)'])
     })
   })
 
@@ -40,11 +33,8 @@ describe('toInterval', function () {
       param = Interval.create(samples['[4, 5]'])
       result = toInterval(param)
     })
-    it('returns an Interval instance', function () {
-      expect(result).to.be.instanceOf(Interval)
-    })
     it('element returned wraps a correct raw interval', function () {
-      expect(raw(result)).to.be.deep.equal(samples['[4, 5]'])
+      expect(result).to.be.deep.equal(samples['[4, 5]'])
     })
     it('interval passed and interval returned does not have the same reference', function () {
       expect(result).to.not.be.equal(param)

@@ -1,14 +1,8 @@
 var limitComparator = require('./limit-comparator.js')
 
 function intervalComparator (x, y) {
-  var a = x.interval
-  var b = y.interval
-  var startCmp = limitComparator(a[0], b[0])
-  if (startCmp !== 0) {
-    return startCmp
-  } else {
-    return limitComparator(b[1], a[1])
-  }
+  var startCmp = limitComparator(x[0], y[0])
+  return startCmp !== 0 ? startCmp : limitComparator(y[1], x[1])
 }
 
 module.exports = intervalComparator

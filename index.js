@@ -3,7 +3,7 @@ var TInterval = require('./src/interval/')
 var TFunction = require('./src/function/')
 
 module.exports = {
-    Set: TSet,
-    Interval: TInterval,
-    Function: TFunction
+  Set: TSet,
+  Interval: TInterval,
+  Function: TFunction
 }

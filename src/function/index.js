@@ -29,7 +29,7 @@ function TopologicalFunction (intervalFunction, domain) {
     var args = [].map.call(arguments, function (value) {
       return create('[', value, value, ']')
     })
-    return intervalFn.apply(null, args)[0].interval[0].value
+    return intervalFn.apply(null, args)[0][0].value
   }
 
   Object.defineProperties(fn, {

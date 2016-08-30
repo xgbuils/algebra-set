@@ -49,7 +49,7 @@ describe('Interval', function () {
       var intervalList = Interval.union.apply(null, [
         samples['[4, 5]'],
         samples['[3, 9)']
-      ].map(Interval.create))
+      ])
 
       it('returns expected union', function () {
         expect(intervalList.map(raw)).to.be.deep.equal([
@@ -75,7 +75,7 @@ describe('Interval', function () {
         samples['[3, 5)'],
         samples['{-1}'],
         samples['{7}']
-      ].map(Interval.create))
+      ])
 
       expect(intervalList.map(raw)).to.be.deep.equal([
         samples['{-1}'],
@@ -100,7 +100,7 @@ describe('Interval', function () {
     it('[5, 5] --> {5}', function () {
       var intervalList = Interval.union.apply(null, [
         samples['{5}']
-      ].map(Interval.create))
+      ])
 
       expect(intervalList.map(raw)).to.be.deep.equal([
         samples['{5}']
@@ -110,7 +110,7 @@ describe('Interval', function () {
     it('(3, 11] --> (3, 11]', function () {
       var intervalList = Interval.union.apply(null, [
         samples['(3, 11]']
-      ].map(Interval.create))
+      ])
 
       expect(intervalList.map(raw)).to.be.deep.equal([
         samples['(3, 11]']
@@ -120,7 +120,7 @@ describe('Interval', function () {
     it('(3, 0] --> empty', function () {
       var intervalList = Interval.union.apply(null, [
         samples['(3, 0]']
-      ].map(Interval.create))
+      ])
 
       expect(intervalList).to.be.deep.equal([])
     })
@@ -133,7 +133,7 @@ describe('Interval', function () {
       var intervalList = Interval.union.apply(null, [
         samples['(2, 7)'],
         samples['{7}']
-      ].map(Interval.create))
+      ])
 
       it('returns expected union', function () {
         expect(intervalList.map(raw)).to.be.deep.equal([

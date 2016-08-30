@@ -7,12 +7,12 @@ module.exports = function (TInterval) {
     if (typeof value === 'string') {
       interval = parseInterval(value)
     } else if (isRawInterval(value)) {
-      interval = value
+      interval = [value[0], value[1]]
     } else if (value instanceof TInterval) {
       interval = value.interval
     } else {
       return value
     }
-    return TInterval.create(interval)
+    return interval
   }
 }
