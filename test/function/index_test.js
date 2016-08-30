@@ -1,9 +1,9 @@
 var chai = require('chai')
 var expect = chai.expect
-var samples = require('./interval-samples')
-var TSet = require('../src/set.js')
-var rawSet = require('./utils/raw-set.js')
-var TFunction = require('../src/function.js')
+var samples = require('../interval-samples')
+var TSet = require('../../src/set/')
+var rawSet = require('../utils/raw-set.js')
+var TFunction = require('../../src/function/')
 
 var sumFn = function (a, b) {
   return [{

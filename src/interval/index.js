@@ -1,8 +1,8 @@
-var parseInterval = require('./parsers/interval.js')
+var parseInterval = require('../parsers/interval.js')
 
-var limitComparator = require('./utils/limit-comparator.js')
-var intervalComparator = require('./utils/interval-comparator')
-var create = require('./utils/raw-interval-create.js')
+var limitComparator = require('./limit-comparator.js')
+var intervalComparator = require('./interval-comparator')
+var create = require('./raw-interval-create.js')
 var typeVerify = require('type-verify')
 
 function Interval (e) {

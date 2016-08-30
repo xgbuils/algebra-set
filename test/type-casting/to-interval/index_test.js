@@ -3,7 +3,7 @@ var expect = chai.expect
 var samples = require('../../interval-samples')
 var raw = require('../../utils/raw-interval')
 
-var Interval = require('../../../src/interval.js')
+var Interval = require('../../../src/interval/')
 var toInterval = require('../../../src/type-casting/to-interval/')(Interval)
 
 describe('toInterval', function () {

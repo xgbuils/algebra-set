@@ -1,7 +1,7 @@
 var chai = require('chai')
 var expect = chai.expect
-var TopologicalSet = require('../src/set.js')
-var samples = require('./interval-samples.js')
+var TopologicalSet = require('../../src/set/')
+var samples = require('../interval-samples.js')
 
 describe('Set', function () {
   describe('containing numbers', function () {

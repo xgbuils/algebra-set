@@ -4,8 +4,8 @@ var rawInterval = require('../../utils/raw-interval.js')
 var rawSet = require('../../utils/raw-set.js')
 var assert = require('assert')
 
-var TSet = require('../../../src/set.js')
-var Interval = require('../../../src/interval.js')
+var TSet = require('../../../src/set/')
+var Interval = require('../../../src/interval/')
 var setCast = require('../../../src/type-casting/to-multi-interval/set-cast.js')(TSet)
 
 describe('setCast', function () {

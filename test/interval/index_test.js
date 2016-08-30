@@ -1,8 +1,8 @@
 var chai = require('chai')
 var expect = chai.expect
-var samples = require('./interval-samples')
-var Interval = require('../src/interval.js')
-var raw = require('./utils/raw-interval')
+var samples = require('../interval-samples')
+var Interval = require('../../src/interval/')
+var raw = require('../utils/raw-interval')
 var clone = require('clone')
 
 describe('Interval', function () {

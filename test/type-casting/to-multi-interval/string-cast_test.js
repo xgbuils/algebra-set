@@ -4,8 +4,8 @@ var samples = require('../../interval-samples.js')
 var rawInterval = require('../../utils/raw-interval.js')
 var assert = require('assert')
 
-var TSet = require('../../../src/set.js')
-var Interval = require('../../../src/interval.js')
+var TSet = require('../../../src/set/')
+var Interval = require('../../../src/interval/')
 var stringCast = require('../../../src/type-casting/to-multi-interval/string-cast.js')
 
 describe('stringCast', function () {

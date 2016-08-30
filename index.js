@@ -1,4 +1,9 @@
-var TopoLogicalSet = require('./src/set.js')
-TopoLogicalSet.Interval = require('./src/interval.js')
+var TSet = require('./src/set/')
+var TInterval = require('./src/interval/')
+var TFunction = require('./src/function/')
 
-module.exports = TopoLogicalSet
+module.exports = {
+    Set: TSet,
+    Interval: TInterval,
+    Function: TFunction
+}

@@ -1,4 +1,4 @@
-var create = require('../utils/raw-interval-create.js')
+var create = require('../interval/raw-interval-create.js')
 
 function parseIsolatedIntervals (str) {
   var matches = /^\{\s*(\S+(?:\s*,\s*\S+)*)\s*\}$/.exec(str)

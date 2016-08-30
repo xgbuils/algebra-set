@@ -1,6 +1,6 @@
 require('chai').should()
-var intervalComparator = require('../../src/utils/interval-comparator.js')
-var Interval = require('../../src/interval.js')
+var intervalComparator = require('../../src/interval/interval-comparator.js')
+var Interval = require('../../src/interval/')
 var samples = require('../interval-samples')
 
 describe('intervalComparator', function () {

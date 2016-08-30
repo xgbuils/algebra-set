@@ -3,8 +3,8 @@ var expect = chai.expect
 var samples = require('../../interval-samples.js')
 var rawSet = require('../../utils/raw-set.js')
 
-var TSet = require('../../../src/set.js')
-var TInterval = require('../../../src/interval.js')
+var TSet = require('../../../src/set/')
+var TInterval = require('../../../src/interval/')
 var multiIntervalCast = require('../../../src/type-casting/to-set/multi-interval-cast')(TSet, TInterval)
 
 describe('multiIntervalCast', function () {

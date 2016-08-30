@@ -1,8 +1,8 @@
-var Interval = require('./interval.js')
-var toSetFactory = require('./type-casting/to-set/')
-var toSet = toSetFactory(TopologicalSet, Interval)
 var typeVerify = require('type-verify')
-var rawIntervalCreate = require('./utils/raw-interval-create.js')
+var toSetFactory = require('../type-casting/to-set/')
+var Interval = require('../interval/')
+var rawIntervalCreate = require('../interval/raw-interval-create.js')
+var toSet = toSetFactory(TopologicalSet, Interval)
 
 function TopologicalSet (e) {
   var obj = toSet(e)

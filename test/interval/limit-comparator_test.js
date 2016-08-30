@@ -1,6 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
-var limitComparator = require('../../src/utils/limit-comparator.js')
+var limitComparator = require('../../src/interval/limit-comparator.js')
 
 describe('limitComparator', function () {
   describe('when property value of first item is greater than second', function () {
