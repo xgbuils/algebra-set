@@ -6,40 +6,6 @@ var raw = require('../utils/raw-interval')
 var clone = require('clone')
 
 describe('Interval', function () {
-  describe('Interval.create', function () {
-    describe('passing 4 parameters', function () {
-      it('returns instance of Interval', function () {
-        var interval = Interval.create('(', 0, 1, ']')
-        expect(interval).to.be.instanceOf(Interval)
-      })
-      it('returns closed interval', function () {
-        var interval = Interval.create('[', 4, 5, ']')
-        expect(raw(interval)).to.be.deep.equal(samples['[4, 5]'])
-      })
-
-      it('returns opened interval', function () {
-        var interval = Interval.create('(', 4, 8, ')')
-        expect(raw(interval)).to.be.deep.equal(samples['(4, 8)'])
-      })
-    })
-
-    describe('passing raw interval', function () {
-      it('returns instance of Interval', function () {
-        var interval = Interval.create(samples['(0, 1]'])
-        expect(interval).to.be.instanceOf(Interval)
-      })
-      it('returns closed interval', function () {
-        var interval = Interval.create(samples['{5}'])
-        expect(raw(interval)).to.be.deep.equal(samples['{5}'])
-      })
-
-      it('returns opened interval', function () {
-        var interval = Interval.create(samples['(2, 7)'])
-        expect(raw(interval)).to.be.deep.equal(samples['(2, 7)'])
-      })
-    })
-  })
-
   describe('Interval.union', function () {
     describe('[4,5] U [ 3 , 9) --> [3, 9)', function () {
       var copies = {

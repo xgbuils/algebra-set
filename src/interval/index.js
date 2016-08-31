@@ -1,6 +1,6 @@
 var typeVerify = require('type-verify')
 var toIntervalFactory = require('../type-casting/to-interval/')
-
+var IntervalFactory = require('./factory.js')
 var limitComparator = require('./limit-comparator.js')
 var intervalComparator = require('./interval-comparator')
 var create = require('./raw-interval-create.js')
@@ -11,15 +11,6 @@ function Interval (e) {
     throw new Error(e + ' is not castable to Interval')
   }
   this.interval = result
-}
-
-Interval.create = function (rawInterval) {
-  var args = [].slice.call(arguments)
-  return Object.create(Interval.prototype, {
-    interval: {
-      value: typeof rawInterval !== 'string' ? rawInterval : create.apply(null, args)
-    }
-  })
 }
 
 Interval.union = function () {
@@ -60,9 +51,7 @@ Interval.union = function () {
     }
   }
 
-  return result.map(function (interval) {
-    return Interval.create(interval)
-  })
+  return result.map(IntervalFactory(Interval))
 }
 
 Interval.prototype.isEmpty = function () {

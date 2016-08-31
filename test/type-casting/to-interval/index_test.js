@@ -30,7 +30,7 @@ describe('toInterval', function () {
     var param
     var result
     beforeEach(function () {
-      param = Interval.create(samples['[4, 5]'])
+      param = new Interval('[4, 5]')
       result = toInterval(param)
     })
     it('element returned wraps a correct raw interval', function () {

@@ -23,7 +23,7 @@ describe('toMultiInterval', function () {
   describe('when param is raw interval', function () {
     it('returns correct array of intervals', function () {
       var param = samples['(3, 0]']
-      var result = toMultiInterval(param)
+      var result = toMultiInterval(param).map(raw)
       expect(result).to.deep.equal([
         samples['(3, 0]']
       ])

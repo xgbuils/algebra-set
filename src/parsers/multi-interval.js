@@ -1,5 +1,4 @@
 var parseIsolatedIntervals = require('./isolated-intervals.js')
-var Interval = require('../interval/')
 var parseInterval = require('./interval.js')
 
 function parseMultiInterval (str) {
@@ -8,9 +7,9 @@ function parseMultiInterval (str) {
     return e.trim()
   }).forEach(function (interval) {
     if (interval[0] === '{') {
-      intervals.push.apply(intervals, parseIsolatedIntervals(interval).map(Interval.create))
+      intervals.push.apply(intervals, parseIsolatedIntervals(interval))
     } else if (['(', '['].indexOf(interval[0]) !== -1) {
-      intervals.push(Interval.create(parseInterval(interval)))
+      intervals.push(parseInterval(interval))
     }
   })
   return intervals
