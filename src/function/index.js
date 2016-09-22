@@ -6,6 +6,7 @@ var create = require('../interval/raw-interval-create.js')
 var TInterval = require('../interval/')
 var TSet = require('../set/')
 var toMultiInterval = require('../type-casting/to-multi-interval/')(TSet, TInterval)
+var rawInterval = require('../interval/raw-interval.js')
 
 function TopologicalFunction (intervalFunction, domain) {
   domain = new TSet(domain || '(-Infinity, Infinity)')
@@ -29,7 +30,7 @@ function TopologicalFunction (intervalFunction, domain) {
     var args = [].map.call(arguments, function (value) {
       return create('[', value, value, ']')
     })
-    return intervalFn.apply(null, args)[0].interval[0].value
+    return rawInterval(intervalFn.apply(null, args)[0])[0].value
   }
 
   Object.defineProperties(fn, {
@@ -61,7 +62,7 @@ function TopologicalFunction (intervalFunction, domain) {
 
 function extractIntervals (set) {
   return set.intervals.map(function (e) {
-    return e.interval
+    return rawInterval(e)
   })
 }
 

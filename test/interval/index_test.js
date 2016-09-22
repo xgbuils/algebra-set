@@ -1,115 +1,37 @@
 var chai = require('chai')
 var expect = chai.expect
-var samples = require('../interval-samples')
 var Interval = require('../../src/interval/')
-var raw = require('../utils/raw-interval')
-var clone = require('clone')
+var raw = require('../../src/interval/raw-interval.js')
+var samples = require('../interval-samples.js')
 
 describe('Interval', function () {
-  describe('Interval.union', function () {
-    describe('[4,5] U [ 3 , 9) --> [3, 9)', function () {
-      var copies = {
-        '[4, 5]': clone(samples['[4, 5]']),
-        '[3, 9)': clone(samples['[3, 9)'])
-      }
-      var intervalList = Interval.union.apply(null, [
-        samples['[4, 5]'],
-        samples['[3, 9)']
-      ])
+  describe('.union()', function () {
+    describe('if it is passed an array of castable intervals', function () {
+      it('it returns an array with raw intervals that represents the union', function () {
+        var intervalList = Interval.union(
+          samples['(4, 8)'],
+          '[3, 5)',
+          new Interval('{-1}')
+        )
 
-      it('returns expected union', function () {
-        expect(intervalList.map(raw)).to.be.deep.equal([
-          samples['[3, 9)']
-        ])
-      })
-
-      it('does not produce side effects', function () {
-        expect(samples['[4, 5]']).to.deep.equal(copies['[4, 5]'])
-        expect(samples['[3, 9)']).to.deep.equal(copies['[3, 9)'])
-      })
-    })
-
-    describe('(4, 8) U [ 3 ,5) U {-1,7} --> {-1} U (4, 8)', function () {
-      var copies = {
-        '(4, 8)': clone(samples['(4, 8)']),
-        '[3, 5)': clone(samples['[3, 5)']),
-        '{-1}': clone(samples['{-1}']),
-        '{7}': clone(samples['{7}'])
-      }
-      var intervalList = Interval.union.apply(null, [
-        samples['(4, 8)'],
-        samples['[3, 5)'],
-        samples['{-1}'],
-        samples['{7}']
-      ])
-
-      expect(intervalList.map(raw)).to.be.deep.equal([
-        samples['{-1}'],
-        samples['[3, 8)']
-      ])
-
-      it('returns expected union', function () {
         expect(intervalList.map(raw)).to.be.deep.equal([
           samples['{-1}'],
           samples['[3, 8)']
         ])
       })
-
-      it('does not produce side effects', function () {
-        expect(samples['(4, 8)']).to.deep.equal(copies['(4, 8)'])
-        expect(samples['[3, 5)']).to.deep.equal(copies['[3, 5)'])
-        expect(samples['{-1}']).to.deep.equal(copies['{-1}'])
-        expect(samples['{7}']).to.deep.equal(copies['{7}'])
-      })
     })
 
-    it('[5, 5] --> {5}', function () {
-      var intervalList = Interval.union.apply(null, [
-        samples['{5}']
-      ])
+    describe('if it is passed an array with no castable interval', function () {
+      it('it returns an array with raw intervals that represents the union', function () {
+        function test () {
+          Interval.union(
+            samples['(4, 8)'],
+            5,
+            new Interval('{-1}')
+          )
+        }
 
-      expect(intervalList.map(raw)).to.be.deep.equal([
-        samples['{5}']
-      ])
-    })
-
-    it('(3, 11] --> (3, 11]', function () {
-      var intervalList = Interval.union.apply(null, [
-        samples['(3, 11]']
-      ])
-
-      expect(intervalList.map(raw)).to.be.deep.equal([
-        samples['(3, 11]']
-      ])
-    })
-
-    it('(3, 0] --> empty', function () {
-      var intervalList = Interval.union.apply(null, [
-        samples['(3, 0]']
-      ])
-
-      expect(intervalList).to.be.deep.equal([])
-    })
-
-    describe('(3, 0] U [7, 7] U (2, 7) --> (2, 7]', function () {
-      var copies = {
-        '(2, 7)': clone(samples['(2, 7)']),
-        '{7}': clone(samples['{7}'])
-      }
-      var intervalList = Interval.union.apply(null, [
-        samples['(2, 7)'],
-        samples['{7}']
-      ])
-
-      it('returns expected union', function () {
-        expect(intervalList.map(raw)).to.be.deep.equal([
-          samples['(2, 7]']
-        ])
-      })
-
-      it('does not produce side effects', function () {
-        expect(samples['(2, 7)']).to.deep.equal(copies['(2, 7)'])
-        expect(samples['{7}']).to.deep.equal(copies['{7}'])
+        expect(test).to.throw('5 is not castable to Interval')
       })
     })
   })

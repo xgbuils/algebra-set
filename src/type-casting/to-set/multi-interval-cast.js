@@ -15,7 +15,7 @@ module.exports = function (TSet, TInterval) {
     return value !== intervals ? {intervals: intervals} : value
   }
 
-  function compactAfter (cb, fns) {
+  function compactAfter (cb) {
     return function (value) {
       var intervals = cb(value)
       return value !== intervals ? TInterval.union.apply(null, intervals) : value

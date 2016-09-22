@@ -1,7 +1,7 @@
 var chai = require('chai')
 var expect = chai.expect
 var samples = require('../../interval-samples')
-var raw = require('../../utils/raw-interval')
+var raw = require('../../../src/interval/raw-interval')
 
 var Interval = require('../../../src/interval/')
 var intervalCast = require('../../../src/type-casting/to-multi-interval/interval-cast')(Interval)

@@ -1,6 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
-var rawInterval = require('../../utils/raw-interval.js')
+var rawInterval = require('../../../src/interval/raw-interval.js')
 var rawSet = require('../../utils/raw-set.js')
 var assert = require('assert')
 

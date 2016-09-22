@@ -1,7 +1,11 @@
 var typeVerify = require('type-verify')
 var toSetFactory = require('../type-casting/to-set/')
 var Interval = require('../interval/')
+var IntervalFactory = require('../interval/factory.js')
+var toMultiInterval = require('../type-casting/to-multi-interval/')
+var union = require('../interval/union.js')
 var rawIntervalCreate = require('../interval/raw-interval-create.js')
+var rawInterval = require('../interval/raw-interval.js')
 var toSet = toSetFactory(TopologicalSet, Interval)
 
 function TopologicalSet (e) {
@@ -19,6 +23,23 @@ function TopologicalSet (e) {
       })
     }
   }
+}
+
+TopologicalSet.union = function () {
+  var intervals = []
+  intervals.forEach.call(arguments, function (set) {
+    var result = toMultiInterval(TopologicalSet, Interval)(set)
+    if (result === set) {
+      throw new Error(set + ' is not castable to array of intervals')
+    }
+    intervals.push.apply(intervals, result.map(rawInterval))
+  })
+
+  return Object.create(TopologicalSet.prototype, {
+    intervals: {
+      value: union(intervals).map(IntervalFactory(Interval))
+    }
+  })
 }
 
 Object.defineProperties(TopologicalSet.prototype, {
