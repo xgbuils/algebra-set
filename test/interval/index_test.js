@@ -5,7 +5,7 @@ var raw = require('../../src/interval/raw-interval.js')
 var samples = require('../interval-samples.js')
 
 describe('Interval', function () {
-  describe('.union()', function () {
+  describe('Interval.union', function () {
     describe('if it is passed an array of castable intervals', function () {
       it('it returns an array with raw intervals that represents the union', function () {
         var intervalList = Interval.union(
@@ -33,6 +33,20 @@ describe('Interval', function () {
 
         expect(test).to.throw('5 is not castable to Interval')
       })
+    })
+  })
+
+  describe('.union', function () {
+    it('union method works in the same way that static union method', function () {
+      var interval1 = new Interval('{-1}')
+      var interval2 = samples['(4, 8)']
+      var interval3 = '[3, 5)'
+      var intervalList = interval1.union(interval2, interval3)
+
+      expect(intervalList.map(raw)).to.be.deep.equal([
+        samples['{-1}'],
+        samples['[3, 8)']
+      ])
     })
   })
 

@@ -27,19 +27,33 @@ Interval.union = function () {
   return union(arr).map(IntervalFactory(Interval))
 }
 
-Interval.prototype.isEmpty = function (interval) {
-  return isEmpty(rawInterval(interval))
-}
+Object.defineProperties(Interval.prototype, {
+  isEmpty: {
+    value: function (interval) {
+      return isEmpty(rawInterval(interval))
+    }
+  },
 
-Interval.prototype.contains = function (e) {
-  var a = rawInterval(this)
-  var b = typeVerify(e, ['Number']) ? create('[', e, e, ']') : toIntervalFactory(Interval)(e)
-  if (b === e) {
-    throw new Error(e + ' is not castable to Interval o Number')
+  contains: {
+    value: function (e) {
+      var a = rawInterval(this)
+      var b = typeVerify(e, ['Number']) ? create('[', e, e, ']') : toIntervalFactory(Interval)(e)
+      if (b === e) {
+        throw new Error(e + ' is not castable to Interval o Number')
+      }
+
+      return isEmpty(b) || limitComparator(b[0], a[0]) >= 0 &&
+        limitComparator(b[1], a[1]) <= 0
+    }
+  },
+
+  union: {
+    value: function () {
+      var intervals = [this]
+      intervals.push.apply(intervals, arguments)
+      return Interval.union.apply(null, intervals)
+    }
   }
-
-  return isEmpty(b) || limitComparator(b[0], a[0]) >= 0 &&
-    limitComparator(b[1], a[1]) <= 0
-}
+})
 
 module.exports = Interval
