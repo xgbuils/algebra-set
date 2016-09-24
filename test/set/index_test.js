@@ -45,6 +45,23 @@ describe('Set', function () {
     })
   })
 
+  describe('.union', function () {
+    it('union method works in the same way that static union method', function () {
+      var set1 = new TopologicalSet('(4, 5) U [8, 9]')
+      var set2 = '{7} U [3, 5]'
+      var set3 = samples['(0, 1]']
+
+      var result = set1.union(set2, set3)
+
+      expect(rawSet(result)).to.be.deep.equal([
+        samples['(0, 1]'],
+        samples['[3, 5]'],
+        samples['{7}'],
+        samples['[8, 9]']
+      ])
+    })
+  })
+
   describe('.contains', function () {
     describe('containing numbers', function () {
       describe('[4, 5] U [3, 9) U (10, 11]', function () {

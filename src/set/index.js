@@ -66,6 +66,14 @@ Object.defineProperties(TopologicalSet.prototype, {
         })
       })
     }
+  },
+
+  union: {
+    value: function () {
+      var sets = [this]
+      sets.push.apply(sets, arguments)
+      return TopologicalSet.union.apply(null, sets)
+    }
   }
 })
 
