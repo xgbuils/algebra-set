@@ -8,4 +8,3 @@ module.exports = function (TSet, TInterval) {
   var setCast = setCastFactory(TSet)
   return castFactory([setCast, multiIntervalCast, predicateCast])
 }
-

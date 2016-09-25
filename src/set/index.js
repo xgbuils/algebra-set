@@ -56,27 +56,24 @@ Object.defineProperties(TopologicalSet.prototype, {
   contains: {
     value: function (e) {
       var isNumber = typeVerify(e, ['Number'])
-      if (this.fns.length > 0) {
-        return isNumber ? this.fns.some(function (obj) {
-          return obj.fn(e)
-        }) : null
-      }
+      var resultByPredicate = false
       if (isNumber) {
+        resultByPredicate = containsByPredicates(this.fns, e)
+        if (resultByPredicate) {
+          return resultByPredicate
+        }
         e = rawIntervalCreate('[', e, e, ']')
+      } else if (this.fns.length > 0) {
+        resultByPredicate = null
       }
+
       var obj = toSet(e)
       if (obj === e) {
         throw new Error(e + ' is not castable to Set')
-      } else if (obj.fn) {
-        return null
       }
 
-      var intervals = this.intervals
-      return obj.intervals.every(function (objInterval) {
-        return intervals.some(function (interval) {
-          return interval.contains(objInterval)
-        })
-      })
+      var resultByIntervals = containsByIntervals(this.intervals, obj.intervals)
+      return resultByIntervals || resultByPredicate
     }
   },
 
@@ -88,5 +85,19 @@ Object.defineProperties(TopologicalSet.prototype, {
     }
   }
 })
+
+function containsByPredicates (predicates, num) {
+  return predicates.some(function (obj) {
+    return obj.fn(num)
+  })
+}
+
+function containsByIntervals (intervals1, intervals2) {
+  return intervals2.every(function (i2) {
+    return intervals1.some(function (i1) {
+      return i1.contains(i2)
+    })
+  })
+}
 
 module.exports = TopologicalSet
