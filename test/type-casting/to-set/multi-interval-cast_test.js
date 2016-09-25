@@ -49,25 +49,6 @@ describe('multiIntervalCast', function () {
     })
   })
 
-  describe('when param is a Set', function () {
-    var param
-    var result
-    beforeEach(function () {
-      param = new TSet('{5} U {-1, 7}')
-      result = multiIntervalCast(param)
-    })
-    it('returns an array with the same elements', function () {
-      expect(result).to.be.an('object')
-    })
-    it('returns correct raw set', function () {
-      expect(rawSet(result)).to.deep.equal(rawSet(param))
-    })
-    it('returns an object that has not properties .fn and .equality', function () {
-      expect(result).to.have.not.property('contains')
-      expect(result).to.have.not.property('equality')
-    })
-  })
-
   describe('when param is no castable type', function () {
     it('param is the same reference to result', function () {
       var param = true

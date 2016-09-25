@@ -16,12 +16,12 @@ describe('predicateCast', function () {
     it('returns an object', function () {
       expect(obj).to.be.an('object')
     })
-    it('object has a function property `.fn` with the same reference as parameter', function () {
-      expect(obj.fn).to.be.equal(fn)
+    it('object `.fns` property is an array that first element has a `fn` function property with the same reference as parameter', function () {
+      expect(obj.fns[0].fn).to.be.equal(fn)
     })
-    it('object has a function property `.equality` with that represents `===` operator', function () {
-      expect(obj.equality).to.be.a('function')
-      expect(obj.equality(3, 3)).to.be.equal(true)
+    it('object `.fns` property is an array that first element has an `equality` function property that represents `===` operator', function () {
+      expect(obj.fns[0].equality).to.be.a('function')
+      expect(obj.fns[0].equality(3, 3)).to.be.equal(true)
     })
   })
 
@@ -42,11 +42,11 @@ describe('predicateCast', function () {
     it('returns an object', function () {
       expect(obj).to.be.an('object')
     })
-    it('object has a function property `.fn` with the same reference as parameter.contains', function () {
-      expect(obj.fn).to.be.equal(param.contains)
+    it('object `fns` property is an array that first element has a `fn` function property with the same reference as parameter.contains', function () {
+      expect(obj.fns[0].fn).to.be.equal(param.contains)
     })
-    it('object has a function property `.equality` with the same reference as parameter.equality', function () {
-      expect(obj.equality).to.be.equal(param.equality)
+    it('object `fns` property is an array that first element has an `equality` function property with the same reference as parameter.equality', function () {
+      expect(obj.fns[0].equality).to.be.equal(param.equality)
     })
   })
 
@@ -64,12 +64,12 @@ describe('predicateCast', function () {
     it('returns an object', function () {
       expect(obj).to.be.an('object')
     })
-    it('object has a function property `.fn` with the same reference as parameter.contains', function () {
-      expect(obj.fn).to.be.equal(param.contains)
+    it('object `fns` property is an array that first element has a `fn` function property with the same reference as parameter.contains', function () {
+      expect(obj.fns[0].fn).to.be.equal(param.contains)
     })
-    it('object has a function property `.equality` with that represents `===` operator', function () {
-      expect(obj.equality).to.be.a('function')
-      expect(obj.equality(3, 3)).to.be.equal(true)
+    it('object `fns` property is an array that first element has an `equality` function property that represents `===` operator', function () {
+      expect(obj.fns[0].equality).to.be.a('function')
+      expect(obj.fns[0].equality(3, 3)).to.be.equal(true)
     })
   })
 

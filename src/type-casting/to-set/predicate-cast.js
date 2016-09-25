@@ -12,7 +12,10 @@ module.exports = function (value) {
   } else {
     return value
   }
-  return obj
+  return {
+    intervals: [],
+    fns: [obj]
+  }
 }
 
 function isFunction (value) {

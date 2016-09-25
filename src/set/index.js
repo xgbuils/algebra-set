@@ -2,7 +2,6 @@ var typeVerify = require('type-verify')
 var toSetFactory = require('../type-casting/to-set/')
 var Interval = require('../interval/')
 var IntervalFactory = require('../interval/factory.js')
-var toMultiInterval = require('../type-casting/to-multi-interval/')
 var union = require('../interval/union.js')
 var rawIntervalCreate = require('../interval/raw-interval-create.js')
 var rawInterval = require('../interval/raw-interval.js')
@@ -27,17 +26,28 @@ function TopologicalSet (e) {
 
 TopologicalSet.union = function () {
   var intervals = []
+  var fns = []
   intervals.forEach.call(arguments, function (set) {
-    var result = toMultiInterval(TopologicalSet, Interval)(set)
+    var result = toSet(set)
+    var resultIntervals = result.intervals
+    var resultFns = result.fns
     if (result === set) {
-      throw new Error(set + ' is not castable to array of intervals')
+      throw new Error(set + ' is not castable to set')
     }
-    intervals.push.apply(intervals, result.map(rawInterval))
+    if (resultIntervals.length > 0) {
+      intervals.push.apply(intervals, resultIntervals.map(rawInterval))
+    }
+    if (resultFns.length > 0) {
+      fns.push.apply(fns, resultFns)
+    }
   })
 
   return Object.create(TopologicalSet.prototype, {
     intervals: {
       value: union(intervals).map(IntervalFactory(Interval))
+    },
+    fns: {
+      value: fns
     }
   })
 }
@@ -46,8 +56,10 @@ Object.defineProperties(TopologicalSet.prototype, {
   contains: {
     value: function (e) {
       var isNumber = typeVerify(e, ['Number'])
-      if (this.fn) {
-        return isNumber ? this.fn.call(null, e) : null
+      if (this.fns.length > 0) {
+        return isNumber ? this.fns.some(function (obj) {
+          return obj.fn(e)
+        }) : null
       }
       if (isNumber) {
         e = rawIntervalCreate('[', e, e, ']')
