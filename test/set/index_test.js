@@ -246,6 +246,11 @@ describe('Set', function () {
         it('set contained by intervals returns true', function () {
           expect(set.contains('(7, 9) U {2.5}')).to.be.equal(true)
         })
+
+        it('set with predicates is imposible to know if is contained inside ohter set', function () {
+          var container = new TopologicalSet('[0, 10]')
+          expect(container.contains(set)).to.be.equal(null)
+        })
       })
     })
   })

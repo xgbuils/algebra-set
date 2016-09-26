@@ -70,6 +70,8 @@ Object.defineProperties(TopologicalSet.prototype, {
       var obj = toSet(e)
       if (obj === e) {
         throw new Error(e + ' is not castable to Set')
+      } else if (obj.fns.length > 0) {
+        return null
       }
 
       var resultByIntervals = containsByIntervals(this.intervals, obj.intervals)
