@@ -254,4 +254,23 @@ describe('Set', function () {
       })
     })
   })
+
+  describe('.isEmpty', function () {
+    it('set with predicates is imposible to know if is empty', function () {
+      var set = TopologicalSet.union(function (e) {
+        return e >= 10 || e <= 5
+      })
+      expect(set.isEmpty()).to.be.equal(null)
+    })
+
+    it('returns true if is empty set', function () {
+      var set = new TopologicalSet('[2, 0) U (1, 1) U (10, 0)')
+      expect(set.isEmpty()).to.be.equal(true)
+    })
+
+    it('returns false if is not empty set', function () {
+      var set = new TopologicalSet('[2, 0) U [1, 1] U (10, 0)')
+      expect(set.isEmpty()).to.be.equal(false)
+    })
+  })
 })

@@ -53,6 +53,12 @@ TopologicalSet.union = function () {
 }
 
 Object.defineProperties(TopologicalSet.prototype, {
+  isEmpty: {
+    value: function () {
+      return this.fns.length > 0 ? null : this.intervals.length === 0
+    }
+  },
+
   contains: {
     value: function (e) {
       var isNumber = typeVerify(e, ['Number'])
