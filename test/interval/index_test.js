@@ -167,6 +167,18 @@ describe('Interval', function () {
           expect(interval.contains('[-2, -2]')).to.be.equal(false)
         })
       })
+
+      describe('.isEmpty', function () {
+        it('returns true if is empty interval', function () {
+          var interval = new Interval('[2, 0)')
+          expect(interval.isEmpty()).to.be.equal(true)
+        })
+
+        it('returns false if is not empty interval', function () {
+          var interval = new Interval('(2, 7)')
+          expect(interval.isEmpty()).to.be.equal(false)
+        })
+      })
     })
   })
 })

@@ -29,8 +29,8 @@ Interval.union = function () {
 
 Object.defineProperties(Interval.prototype, {
   isEmpty: {
-    value: function (interval) {
-      return isEmpty(rawInterval(interval))
+    value: function () {
+      return isEmpty(rawInterval(this))
     }
   },
 
