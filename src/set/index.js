@@ -2,8 +2,9 @@ var typeVerify = require('type-verify')
 var toSetFactory = require('../type-casting/to-set/')
 var Interval = require('../interval/')
 var IntervalFactory = require('../interval/factory.js')
-var union = require('../interval/union.js')
-var rawIntervalCreate = require('../interval/raw-interval-create.js')
+var intervalUtils = require('math.interval-utils')
+var union = intervalUtils.union
+var numToInterval = intervalUtils.numToInterval
 var rawInterval = require('../interval/raw-interval.js')
 var toSet = toSetFactory(TopologicalSet, Interval)
 
@@ -68,7 +69,7 @@ Object.defineProperties(TopologicalSet.prototype, {
         if (resultByPredicate) {
           return resultByPredicate
         }
-        e = rawIntervalCreate('[', e, e, ']')
+        e = numToInterval(e)
       } else if (this.fns.length > 0) {
         resultByPredicate = null
       }

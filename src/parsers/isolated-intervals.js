@@ -1,4 +1,5 @@
-var create = require('../interval/raw-interval-create.js')
+var intervalUtils = require('math.interval-utils')
+var numToInterval = intervalUtils.numToInterval
 
 function parseIsolatedIntervals (str) {
   var matches = /^\{\s*(\S+(?:\s*,\s*\S+)*)\s*\}$/.exec(str)
@@ -16,7 +17,7 @@ function parseIsolatedIntervals (str) {
     }
     return num
   }).map(function (num) {
-    return create('[', num, num, ']')
+    return numToInterval(num)
   })
 }
 

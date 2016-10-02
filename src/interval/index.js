@@ -1,11 +1,12 @@
 var typeVerify = require('type-verify')
 var toIntervalFactory = require('../type-casting/to-interval/')
 var IntervalFactory = require('./factory.js')
-var limitComparator = require('./limit-comparator.js')
 var rawInterval = require('./raw-interval.js')
-var create = require('./raw-interval-create.js')
-var union = require('./union.js')
-var isEmpty = require('./is-empty.js')
+var intervalUtils = require('math.interval-utils')
+var isEmpty = intervalUtils.isEmpty
+var contains = intervalUtils.contains
+var numToInterval = intervalUtils.numToInterval
+var union = intervalUtils.union
 
 function Interval (e) {
   var result = toIntervalFactory(Interval)(e)
@@ -37,13 +38,12 @@ Object.defineProperties(Interval.prototype, {
   contains: {
     value: function (e) {
       var a = rawInterval(this)
-      var b = typeVerify(e, ['Number']) ? create('[', e, e, ']') : toIntervalFactory(Interval)(e)
+      var b = typeVerify(e, ['Number']) ? numToInterval(e) : toIntervalFactory(Interval)(e)
       if (b === e) {
         throw new Error(e + ' is not castable to Interval o Number')
       }
 
-      return isEmpty(b) || limitComparator(b[0], a[0]) >= 0 &&
-        limitComparator(b[1], a[1]) <= 0
+      return contains(a, b)
     }
   },
 
