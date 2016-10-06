@@ -1,11 +1,11 @@
 var chai = require('chai')
 var expect = chai.expect
-var rawInterval = require('../../../src/interval/raw-interval.js')
+var rawInterval = require('math.interval/src/raw-interval')
 var rawSet = require('../../utils/raw-set.js')
 var assert = require('assert')
 
 var TSet = require('../../../src/set/')
-var Interval = require('../../../src/interval/')
+var Interval = require('math.interval')
 var setCast = require('../../../src/type-casting/to-multi-interval/set-cast.js')(TSet)
 
 describe('setCast', function () {

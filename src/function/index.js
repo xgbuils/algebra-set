@@ -4,10 +4,10 @@ var Repeat = Iterum.Repeat
 var List = Iterum.List
 var intervalUtils = require('math.interval-utils')
 var numToInterval = intervalUtils.numToInterval
-var TInterval = require('../interval/')
+var TInterval = require('math.interval')
 var TSet = require('../set/')
 var toMultiInterval = require('../type-casting/to-multi-interval/')(TSet, TInterval)
-var rawInterval = require('../interval/raw-interval.js')
+var rawInterval = require('math.interval/src/raw-interval')
 
 function TopologicalFunction (intervalFunction, domain) {
   domain = new TSet(domain || '(-Infinity, Infinity)')

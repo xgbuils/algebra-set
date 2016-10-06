@@ -1,5 +1,5 @@
 var TSet = require('./src/set/')
-var TInterval = require('./src/interval/')
+var TInterval = require('math.interval')
 var TFunction = require('./src/function/')
 
 module.exports = {

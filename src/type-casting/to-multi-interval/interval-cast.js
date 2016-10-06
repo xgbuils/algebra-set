@@ -1,26 +1,22 @@
 var typeVerify = require('type-verify')
-var Interval = require('../../interval/')
-var IntervalInstanceFactory = require('../../interval/factory.js')(Interval)
-var toIntervalFactory = require('../to-interval/')
+var Interval = require('math.interval')
+var toInterval = require('math.interval/src/cast')(Interval)
 
-module.exports = function (TInterval) {
-  var toInterval = toIntervalFactory(TInterval)
-  return function intervalCast (value) {
-    var intervalList = []
-    var isIntervalList = typeVerify(value, ['Array']) && value.every(function (e) {
-      var partialResult = toInterval(e)
-      if (e !== partialResult) {
-        return intervalList.push(IntervalInstanceFactory(partialResult))
-      }
-      return false
-    })
-    if (isIntervalList) {
-      return intervalList
+module.exports = function intervalCast (value) {
+  var intervalList = []
+  var isIntervalList = typeVerify(value, ['Array']) && value.every(function (e) {
+    var partialResult = toInterval(e)
+    if (e !== partialResult) {
+      return intervalList.push(new Interval(partialResult))
     }
-    var result = toInterval(value)
-    if (value !== result) {
-      return [IntervalInstanceFactory(result)]
-    }
-    return value
+    return false
+  })
+  if (isIntervalList) {
+    return intervalList
   }
+  var result = toInterval(value)
+  if (value !== result) {
+    return [new Interval(result)]
+  }
+  return value
 }

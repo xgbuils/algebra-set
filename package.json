@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "iterum": "^0.8.2",
+    "math.interval": "^0.1.0",
     "math.interval-utils": "^0.1.0",
     "type-verify": "^0.3.0"
   }
