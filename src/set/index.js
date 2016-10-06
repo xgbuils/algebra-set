@@ -1,11 +1,10 @@
 var typeVerify = require('type-verify')
 var toSetFactory = require('../type-casting/to-set/')
-var Interval = require('../interval/')
-var IntervalFactory = require('../interval/factory.js')
+var Interval = require('math.interval')
 var intervalUtils = require('math.interval-utils')
 var union = intervalUtils.union
 var numToInterval = intervalUtils.numToInterval
-var rawInterval = require('../interval/raw-interval.js')
+var rawInterval = require('math.interval/src/raw-interval')
 var toSet = toSetFactory(TopologicalSet, Interval)
 
 function TopologicalSet (e) {
@@ -45,7 +44,9 @@ TopologicalSet.union = function () {
 
   return Object.create(TopologicalSet.prototype, {
     intervals: {
-      value: union(intervals).map(IntervalFactory(Interval))
+      value: union(intervals).map(function (interval) {
+        return new Interval(interval)
+      })
     },
     fns: {
       value: fns

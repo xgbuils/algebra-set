@@ -1,5 +1,5 @@
 var parseIsolatedIntervals = require('./isolated-intervals.js')
-var parseInterval = require('./interval.js')
+var parseInterval = require('math.interval-utils').parser
 
 function parseMultiInterval (str) {
   var intervals = []
