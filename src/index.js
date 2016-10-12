@@ -8,15 +8,24 @@ var union = require('math.interval-utils').union
 var MSet = require('math.set')
 var rawSet = require('math.set/src/raw-set')
 var toMultiInterval = require('math.set/src/cast/')(MSet, false)
+var typeVerify = require('type-verify')
 
 function MFunction (intervalFunction, domain) {
     var length = intervalFunction.length
-    domain = new MSet(domain || '(-Infinity, Infinity)')
 
     if (typeof intervalFunction !== 'function') {
         throw Error('First parameter must be a function.')
     } else if (intervalFunction.length <= 0) {
         throw Error('First parameter function must have 1 or more parameters.')
+    }
+    if (domain === undefined) {
+        domain = Repeat(new MSet('(-Infinity, Infinity)'), length).toArray()
+    } else if (typeVerify(domain, ['Array'])) {
+        domain = domain.map(function (set) {
+            return new MSet(set)
+        })
+    } else {
+        throw Error('domain parameter ' + domain + ' is not an array.')
     }
 
     var intervalFn = function () {
