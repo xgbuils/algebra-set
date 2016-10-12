@@ -10,6 +10,7 @@ var rawSet = require('math.set/src/raw-set')
 var toMultiInterval = require('math.set/src/cast/')(MSet, false)
 
 function MFunction (intervalFunction, domain) {
+    var length = intervalFunction.length
     domain = new MSet(domain || '(-Infinity, Infinity)')
 
     if (typeof intervalFunction !== 'function') {
@@ -37,9 +38,7 @@ function MFunction (intervalFunction, domain) {
     Object.defineProperties(fn, {
         image: {
             get: function () {
-                var length = intervalFunction.length
-                var intervals = rawSet(domain)
-                var intervalsList = Repeat(intervals, length).toArray()
+                var intervalsList = domain.map(rawSet)
                 var imageIntervals = Cartesian.apply(null, intervalsList)
                     .map(function (domainIntervals) {
                         return List(intervalFn.apply(null, domainIntervals))
@@ -50,7 +49,9 @@ function MFunction (intervalFunction, domain) {
         },
         domain: {
             set: function (value) {
-                domain = new MSet(value)
+                domain = value.map(function (set) {
+                    return new MSet(set)
+                })
             },
             get: function () {
                 return domain
