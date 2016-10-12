@@ -8,8 +8,9 @@
     "includes": "*_test.js"
   },
   "scripts": {
-    "test": "mocha --recursive",
-    "lint": "standard"
+    "mocha": "mocha --recursive",
+    "lint": "eslint ./**/*.js",
+    "test": "npm run lint && npm run mocha"
   },
   "keywords": [
     "algebra",
@@ -19,21 +20,9 @@
   "author": "Xavier Garcia Buils <xgbuils@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^3.7.1",
     "chai": "^3.5.0",
-    "clone": "^1.0.2",
-    "mocha": "^2.4.5",
-    "standard": "^6.0.8"
-  },
-  "standard": {
-    "globals": [
-      "describe",
-      "context",
-      "before",
-      "beforeEach",
-      "after",
-      "afterEach",
-      "it"
-    ]
+    "mocha": "^2.4.5"
   },
   "dependencies": {
     "iterum": "^0.8.2",
