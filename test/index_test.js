@@ -121,5 +121,14 @@ describe('function', function () {
             var fn = MFunction(sumFn)
             expect(fn(2, 3)).to.be.equal(5)
         })
+
+        it('if parameter does not belong to domain, it throws an error', function () {
+            function test () {
+                var fn = MFunction(sumFn)
+                fn.domain = ['[0, 3)', '(1, 3)']
+                fn(2, 3)
+            }
+            expect(test).to.be.throw('parameter 2 with value 3 does not belong to domain.')
+        })
     })
 })

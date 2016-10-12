@@ -38,8 +38,13 @@ function MFunction (intervalFunction, domain) {
     }
 
     var fn = function () {
-        var args = [].map.call(arguments, function (value) {
-            return numToInterval(value)
+        var args = [].map.call(arguments, function (value, index) {
+            var isolatedInterval = numToInterval(value)
+            if (!domain[index].contains(isolatedInterval)) {
+                throw Error('parameter ' + (index + 1) + ' with value '
+                    + value + ' does not belong to domain.')
+            }
+            return isolatedInterval
         })
         return intervalFn.apply(null, args)[0][0].value
     }
