@@ -44,7 +44,7 @@ function intervalSum (a, b) {
 ## API
 
 ### Function
-#### constructor(intervalFunction)
+#### constructor(intervalFunction, domain)
 
 Constructor creates an instance of javascript Function. This function is constructed based on a function parameter `intervalFunction` that defines the behaviour of the created function when it is applied to intervals with this [data structure](https://github.com/xgbuils/math.interval-utils#interval).
 
@@ -68,7 +68,10 @@ sum(2, 6) // returns 8
 sum(5, 5) // returns 10
 ```
 ##### intervalFunction (...intervals)
-It is the parameter that given an interval parameters returns the interval resulting of the operation.
+It is the parameter that given interval parameters, it returns the interval resulting of the operation.
+
+##### domain
+`domain` parameter is an array of SetCastable values that defines the domain of created function.
 
 #### .domain
 `domain` property is an array of instances of [`math.set`](https://github.com/xgbuils/math.set). The length of array corresponds with the number of parameters of function instance. The `domain` property is an array of Real sets by default:
