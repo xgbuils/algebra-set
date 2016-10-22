@@ -98,6 +98,12 @@ describe('function', function () {
             expect(rawSet(fn.image)).to.be.deep.equal(rawSet(expectedImage))
         })
 
+        it('if domain is empty, image is empty', function () {
+            var domain = ['[3, 2)', '(1, 8)']
+            var fn = MFunction(sumFn, domain)
+            expect(fn.image.isEmpty()).to.be.equal(true)
+        })
+
         it('image is not settable', function () {
             var domain = ['(2, 3] U {5}', '(2, 3] U {5}']
             var image = '[3, 5)'

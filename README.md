@@ -46,7 +46,7 @@ function intervalSum (a, b) {
 ### Function
 #### constructor(intervalFunction, domain)
 
-Constructor creates an instance of javascript Function. This function is constructed based on a function parameter `intervalFunction` that defines the behaviour of the created function when it is applied to intervals with this [data structure](https://github.com/xgbuils/math.interval-utils#interval).
+Constructor creates an instance of javascript Function based on a function parameter `intervalFunction`. `intervalFunction` function defines the behaviour of the created function when it is applied to intervals with this [data structure](https://github.com/xgbuils/math.interval-utils#interval).
 
 For example, in sum operation, given intervals `(a, b]` and `[c, d)`, the result is the interval `(a + c, b + d)`. Investigating a bit, it is posible to deduce that the function that given two intervals returns the interval that represents the sum of intervals is:
 ``` javascript
@@ -68,10 +68,10 @@ sum(2, 6) // returns 8
 sum(5, 5) // returns 10
 ```
 ##### intervalFunction (...intervals)
-It is the parameter that given interval parameters, it returns the interval resulting of the operation.
+This parameter function has the same arity as function created by constructor. It must receive interval parameters and return a [SetCastable](https://github.com/xgbuils/math.set#setcastable) value that represents the image function that created function when is applied to these intervals.
 
 ##### domain
-`domain` parameter is an array of SetCastable values that defines the domain of created function.
+`domain` is an optional parameter. It is an array of SetCastable values that defines the domain of created function.
 
 #### .domain
 `domain` property is an array of instances of [`math.set`](https://github.com/xgbuils/math.set). The length of array corresponds with the number of parameters of function instance. The `domain` property is an array of Real sets by default:
@@ -88,8 +88,6 @@ Besides, if domain is set with an array of  [SetCastable](https://github.com/xgb
 sum.domain = ['(2, 4)', '{3, 4, 5} U [0, 1)']
 sum.domain // now it returns [new MSet('(2, 4)'), new MSet('{3, 4, 5} U [0, 1)')]
 ```
-
-
 
 #### .image
 `image` property is an instance of [`math.set`](https://github.com/xgbuils/math.set) that depends on the domain of function instance and `intervalFunction` constructor parameter. For example:
