@@ -21,14 +21,19 @@ var badReturnFn = function (a) {
 
 describe('function', function () {
     describe('constructor', function () {
-        it('using new returns an instance of MFunction', function () {
+        it('using new returns an instance of Function', function () {
             var instance = new MFunction(sumFn)
             expect(instance).to.be.an.instanceOf(Function)
         })
 
-        it('using function without new it also returns an isntance of MFunction', function () {
+        it('using function without new it also returns an isntance of Function', function () {
             var instance = MFunction(sumFn)
             expect(instance).to.be.an.instanceOf(Function)
+        })
+
+        it('constructor of instance is MFunction', function () {
+            var instance = new MFunction(sumFn)
+            expect(instance.constructor).to.be.equal(MFunction)
         })
 
         it('if first parameter is not a function, throws an error', function () {

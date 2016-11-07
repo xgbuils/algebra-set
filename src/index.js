@@ -70,9 +70,18 @@ function MFunction (intervalFunction, domain) {
             get: function () {
                 return domain
             }
+        },
+        constructor: {
+            get: function () {
+                return MFunction
+            }
+        },
+        arity: {
+            get: function () {
+                return length
+            }
         }
     })
-
     return fn
 }
 
