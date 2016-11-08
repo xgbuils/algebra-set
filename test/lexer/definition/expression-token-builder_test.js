@@ -7,7 +7,7 @@ describe('lexer/definition/ExpressionTokenBuilder', function () {
     var a
     var functions
     var sets
-    beforeEach (function () {
+    beforeEach(function () {
         sum = 'sumFn'
         a = '{1}'
         functions = {

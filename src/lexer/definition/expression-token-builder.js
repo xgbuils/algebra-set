@@ -1,6 +1,6 @@
 var LexerTokenBuilder = require('./lexer-token-builder')
 
-function ExpresionTokenBuilder(functions, sets) {
+function ExpresionTokenBuilder (functions, sets) {
     this.functions = functions
     this.sets = sets
 }

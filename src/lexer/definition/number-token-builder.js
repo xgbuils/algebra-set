@@ -1,6 +1,6 @@
 var LexerTokenBuilder = require('./lexer-token-builder')
 
-function NumberTokenBuilder() {}
+function NumberTokenBuilder () {}
 
 NumberTokenBuilder.prototype = Object.create(LexerTokenBuilder.prototype)
 NumberTokenBuilder.prototype.constructor = NumberTokenBuilder

@@ -4,10 +4,9 @@ var TokenCalculator = require('../../../src/lexer/definition/token-calculator')
 
 describe('lexer/definition/TokenCalculator', function () {
     var sum
-    var a
     var functions
     var sets
-    beforeEach (function () {
+    beforeEach(function () {
         sum = 'sumFn'
         functions = {
             sum: sum

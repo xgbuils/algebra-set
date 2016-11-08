@@ -2,8 +2,8 @@ var chai = require('chai')
 var expect = chai.expect
 var MSet = require('math.set')
 var rawSet = require('math.set/src/raw-set')
-var MFunction = require('../../src/')
-var parser = require('../../src/parser/definition.js')
+var MFunction = require('../../../src/')
+var parser = require('../../../src/parser/definition/')
 
 var sumFn = function (a, b) {
     return [{

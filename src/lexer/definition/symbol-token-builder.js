@@ -1,6 +1,6 @@
 var LexerTokenBuilder = require('./lexer-token-builder')
 
-function SymbolTokenBuilder() {}
+function SymbolTokenBuilder () {}
 
 SymbolTokenBuilder.prototype = Object.create(LexerTokenBuilder.prototype)
 SymbolTokenBuilder.prototype.constructor = SymbolTokenBuilder
