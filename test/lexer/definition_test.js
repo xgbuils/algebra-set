@@ -2,7 +2,7 @@ var chai = require('chai')
 var expect = chai.expect
 var MSet = require('math.set')
 var MFunction = require('../../src/')
-var lexer = require('../../src/lexer/definition.js')
+var lexer = require('../../src/lexer/definition/')
 
 var sumFn = function (a, b) {
     return a + b

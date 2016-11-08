@@ -1,4 +1,4 @@
-var lexer = require('../lexer/definition.js')
+var lexer = require('../lexer/definition/')
 var FunctionToken = require('../parser/definition/function-token.js')
 var ParenthesisLeftToken = require('../parser/definition/parenthesis-left-token.js')
 var SetToken = require('../parser/definition/set-token.js')
