@@ -3,6 +3,7 @@ var expect = chai.expect
 var MSet = require('math.set')
 var rawSet = require('math.set/src/raw-set')
 var MFunction = require('../../../src/')
+var lexer = require('../../../src/lexer/definition')
 var parser = require('../../../src/parser/definition/')
 
 var sumFn = function (a, b) {
@@ -24,7 +25,8 @@ describe('parser/definition', function () {
             var params = {
                 a: a
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             expect(result).to.be.deep.equal(a)
         })
     })
@@ -42,7 +44,8 @@ describe('parser/definition', function () {
                 a: a,
                 b: b
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             var expected = MSet('(3, 7)')
             expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
         })
@@ -58,7 +61,8 @@ describe('parser/definition', function () {
                 a: a,
                 b: b
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             expect(result.map(rawSet)).to.be.deep.equal([rawSet(a), rawSet(b)])
         })
     })
@@ -79,7 +83,8 @@ describe('parser/definition', function () {
                     b: b,
                     c: c
                 }
-                parser(string, functions, params)
+                var lex = lexer(string, functions, params)
+                parser(lex.build())
             }
 
             expect(test).to.throw('Expected token `,` instead `)` in column 9. `sum` arity must be 2.')
@@ -98,7 +103,8 @@ describe('parser/definition', function () {
                 var params = {
                     a: a
                 }
-                parser(string, functions, params)
+                var lex = lexer(string, functions, params)
+                parser(lex.build())
             }
 
             expect(test).to.throw('Expected token `,` instead `)` in column 6. `sum` arity must be 2.')
@@ -120,7 +126,8 @@ describe('parser/definition', function () {
                 b: b,
                 c: c
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             var expected = MSet('[8, 15)')
             expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
         })
@@ -141,7 +148,8 @@ describe('parser/definition', function () {
                 b: b,
                 c: c
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             expect(result).to.be.deep.equal([[a, [b, a]], c])
         })
     })
@@ -161,7 +169,8 @@ describe('parser/definition', function () {
                 b: b,
                 c: c
             }
-            var result = parser(string, functions, params)
+            var lex = lexer(string, functions, params)
+            var result = parser(lex.build())
             var first = result[0]
             var second = result[1]
             expect(first.map(rawSet)).to.be.deep.equal([a, MSet('[3, 7)')].map(rawSet))

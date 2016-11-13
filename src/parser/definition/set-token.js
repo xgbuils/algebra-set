@@ -1,7 +1,7 @@
 var ParserToken = require('./parser-token')
 
-function SetToken (token, globalStatus) {
-    ParserToken.call(this, token, globalStatus, [
+function SetToken (parserStatus) {
+    ParserToken.call(this, parserStatus, [
         'START_EXPR',
         'ARG_FUNCTION',
         'ARG_TUPLE'
@@ -11,16 +11,12 @@ function SetToken (token, globalStatus) {
 SetToken.prototype = Object.create(ParserToken.prototype)
 
 SetToken.prototype.nextStatus = function () {
-    var globalStatus = this.globalStatus
-    var status = globalStatus.status
-    var current = this.current
-    if (status === 'START_EXPR') {
-        globalStatus.status = 'END_EXPR'
-        current.array = this.value
-    } else {
-        globalStatus.status = status.replace('ARG', 'COMMA')
-        this.current.array.push(this.value)
-    }
+    var parserStatus = this.parserStatus
+    var status = parserStatus.getStatus()
+    parserStatus.getCurrent().array.push(this.value)
+    return status === 'START_EXPR'
+        ? 'END_EXPR'
+        : status.replace('ARG', 'COMMA')
 }
 
 module.exports = SetToken

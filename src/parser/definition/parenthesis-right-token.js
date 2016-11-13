@@ -1,7 +1,7 @@
 var ParserToken = require('./parser-token')
 
-function ParenthesisRightToken (token, globalStatus) {
-    ParserToken.call(this, token, globalStatus, [
+function ParenthesisRightToken (parserStatus) {
+    ParserToken.call(this, parserStatus, [
         'COMMA_FUNCTION',
         'COMMA_TUPLE'
     ])
@@ -10,10 +10,9 @@ function ParenthesisRightToken (token, globalStatus) {
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
 
 ParenthesisRightToken.prototype.nextStatus = function () {
-    var globalStatus = this.globalStatus
-    var stack = globalStatus.stack
-    var status = globalStatus.status
-    var current = this.current
+    var parserStatus = this.parserStatus
+    var status = parserStatus.getStatus()
+    var current = parserStatus.getCurrent()
     var array = current.array
     var value
     if (status === 'COMMA_FUNCTION') {
@@ -27,16 +26,7 @@ ParenthesisRightToken.prototype.nextStatus = function () {
     } else {
         value = array
     }
-    stack.pop()
-    --globalStatus.pos
-    current = stack[globalStatus.pos]
-    array = current.array
-    if (array) {
-        array.push(value)
-    } else {
-        current.array = value
-    }
-    globalStatus.status = current.status
+    return parserStatus.pop(value)
 }
 
 function incorrectArity (token, fnName, arity) {

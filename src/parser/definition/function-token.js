@@ -1,7 +1,7 @@
 var ParserToken = require('./parser-token')
 
-function FunctionToken (token, globalStatus) {
-    ParserToken.call(this, token, globalStatus, [
+function FunctionToken (parserStatus) {
+    ParserToken.call(this, parserStatus, [
         'START_EXPR',
         'ARG_FUNCTION',
         'ARG_TUPLE'
@@ -11,23 +11,19 @@ function FunctionToken (token, globalStatus) {
 FunctionToken.prototype = Object.create(ParserToken.prototype)
 
 FunctionToken.prototype.nextStatus = function () {
-    var globalStatus = this.globalStatus
-    var status = globalStatus.status
-    var stack = globalStatus.stack
-    this.current.status = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
-    stack.push({
+    var parserStatus = this.parserStatus
+    var status = parserStatus.getStatus()
+    var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
+    parserStatus.push(nextStatus, {
         fn: this.value,
         fnName: this.key,
         array: []
     })
-    globalStatus.status = 'ARG_FUNCTION'
-    ++globalStatus.pos
-    var it = globalStatus.iterator.next()
-    var token = it.value
-    var tokenValue = token.value
-    if (tokenValue !== '(') {
+    var token = parserStatus.nextToken()
+    if (token.value !== '(') {
         throw new Error('token `(` is expected after `' + token.key + '`')
     }
+    return 'ARG_FUNCTION'
 }
 
 module.exports = FunctionToken

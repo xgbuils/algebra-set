@@ -1,26 +1,25 @@
-
-function ParserToken (token, globalStatus, validStatus) {
+function ParserToken (parserStatus, validStatus) {
     this.validStatus = validStatus
-    this.globalStatus = globalStatus
-    var stack = globalStatus.stack
-    this.current = stack[globalStatus.pos]
+    this.parserStatus = parserStatus
+    var stack = this.stack = parserStatus.stack
+    var token = parserStatus.token
+    this.current = stack[parserStatus.pos]
     this.value = token.value
     this.key = token.key
     this.column = token.column
 }
 
 ParserToken.prototype.process = function () {
-    var globalStatus = this.globalStatus
-    if (this.validStatus.indexOf(globalStatus.status) !== -1) {
-        this.nextStatus()
-        return globalStatus
-    } else {
-        throw new Error(unexpectedToken(this))
-    }
-}
+    var parserStatus = this.parserStatus
 
-function unexpectedToken (token) {
-    return 'Unexpected token ' + token.key + ' in column ' + token.column + '.'
+    if (this.validStatus.indexOf(parserStatus.getStatus()) !== -1) {
+        parserStatus.setStatus(this.nextStatus())
+        parserStatus.token = parserStatus.nextToken() || {type: 'default'}
+        return parserStatus.getCurrent()
+    } else {
+        throw new Error('Unexpected token ' + this.key +
+            ' in column ' + this.column + '.')
+    }
 }
 
 module.exports = ParserToken

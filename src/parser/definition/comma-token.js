@@ -1,7 +1,7 @@
 var ParserToken = require('./parser-token')
 
-function CommaToken (token, globalStatus) {
-    ParserToken.call(this, token, globalStatus, [
+function CommaToken (parserStatus) {
+    ParserToken.call(this, parserStatus, [
         'COMMA_FUNCTION',
         'COMMA_TUPLE'
     ])
@@ -10,16 +10,16 @@ function CommaToken (token, globalStatus) {
 CommaToken.prototype = Object.create(ParserToken.prototype)
 
 CommaToken.prototype.nextStatus = function () {
-    var globalStatus = this.globalStatus
-    var status = globalStatus.status
-    var current = this.current
+    var parserStatus = this.parserStatus
+    var status = parserStatus.getStatus()
+    var current = parserStatus.getCurrent()
     if (status === 'COMMA_FUNCTION') {
         var arity = current.fn.arity
         if (current.array.length >= arity) {
             throw new Error(incorrectArity(this, current.fnName, arity))
         }
     }
-    globalStatus.status = status.replace('COMMA', 'ARG')
+    return status.replace('COMMA', 'ARG')
 }
 
 function incorrectArity (token, fnName, arity) {
