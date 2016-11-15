@@ -4,7 +4,8 @@ var SymbolTokenBuilder = require('./symbol-token-builder.js')
 
 function TokenCalculator (functions, sets) {
     this.builders = [
-        new ExpressionTokenBuilder(functions, sets),
+        new ExpressionTokenBuilder(functions, 'function'),
+        new ExpressionTokenBuilder(sets, 'set'),
         new NumberTokenBuilder(),
         new SymbolTokenBuilder()
     ]
