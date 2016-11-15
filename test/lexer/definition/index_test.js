@@ -1,11 +1,13 @@
 var chai = require('chai')
 var expect = chai.expect
 var lexer = require('../../../src/lexer/definition/')
+var numToInterval = require('math.interval-utils').numToInterval
+var MSet = require('math.set')
 
 describe('lexer/definition', function () {
     describe('(sum(a, b), mul(sum(c, a), c)', function () {
         it('returns an iterum instance with correct values', function () {
-            var string = '(sum(a, b), mul(sum(c, a), c)'
+            var string = '(sum(a, b), mul(sum(c, 8), c)'
             var sum = 'sumFn'
             var mul = 'mulFn'
             var a = '{1}'
@@ -92,8 +94,8 @@ describe('lexer/definition', function () {
                 type: ',',
                 column: 22
             }, {
-                value: a,
-                key: 'a',
+                value: new MSet(numToInterval(8)),
+                key: '8',
                 type: 'set',
                 column: 24
             }, {

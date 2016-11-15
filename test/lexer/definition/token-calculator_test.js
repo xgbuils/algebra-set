@@ -1,5 +1,7 @@
 var chai = require('chai')
 var expect = chai.expect
+var numToInterval = require('math.interval-utils').numToInterval
+var MSet = require('math.set')
 var TokenCalculator = require('../../../src/lexer/definition/token-calculator')
 
 describe('lexer/definition/TokenCalculator', function () {
@@ -28,16 +30,16 @@ describe('lexer/definition/TokenCalculator', function () {
         })
     })
 
-    it('with numeric key builds a number type token', function () {
+    it('with numeric key builds a set type token with this singleton number set', function () {
         var tokenCalculator = new TokenCalculator(functions, sets)
         var key = '42'
-        var num = Number(key)
+        var set = new MSet(numToInterval(Number(key)))
         var column = 6
         var token = tokenCalculator.calculate(key, column)
 
         expect(token).to.be.deep.equal({
-            value: num,
-            type: 'number',
+            value: set,
+            type: 'set',
             key: key,
             column: column
         })

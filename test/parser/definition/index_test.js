@@ -113,7 +113,7 @@ describe('parser/definition', function () {
 
     describe('given nested function expression', function () {
         it('returns the set that means', function () {
-            var string = 'sum(sum(a, sum(b, a)), c)'
+            var string = 'sum(sum(a, sum(b, 8)), c)'
             var a = MSet('[2, 3)')
             var b = MSet('[1, 4)')
             var c = MSet('[3, 5]')
@@ -128,7 +128,7 @@ describe('parser/definition', function () {
             }
             var lex = lexer(string, functions, params)
             var result = parser(lex.build())
-            var expected = MSet('[8, 15)')
+            var expected = MSet('[14, 20)')
             expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
         })
     })
