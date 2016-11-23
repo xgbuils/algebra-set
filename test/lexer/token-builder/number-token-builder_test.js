@@ -3,7 +3,7 @@ var expect = chai.expect
 var rawSet = require('math.set/src/raw-set')
 var numToInterval = require('math.interval-utils').numToInterval
 var MSet = require('math.set')
-var NumberTokenBuilder = require('../../../src/lexer/definition/number-token-builder')
+var NumberTokenBuilder = require('../../../src/lexer/token-builder/number-token-builder')
 
 describe('lexer/definition/NumberTokenBuilder', function () {
     it('with numeric key builds a set type token with this singleton number set', function () {

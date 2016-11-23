@@ -33,7 +33,7 @@
     "iterum": "^0.8.3",
     "math.interval": "^0.1.0",
     "math.interval-utils": "^0.2.0",
-    "math.set": "^0.1.0",
+    "math.set": "^0.2.0",
     "type-verify": "^0.3.0"
   },
   "devDependencies": {

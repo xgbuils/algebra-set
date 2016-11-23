@@ -1,12 +1,13 @@
 var ExpressionTokenBuilder = require('../token-builder/expression-token-builder.js')
-var NumberTokenBuilder = require('../token-builder/number-token-builder.js')
+var SetTokenBuilder = require('../token-builder/set-token-builder.js')
+var IntegerTokenBuilder = require('../token-builder/integer-token-builder.js')
 var SymbolTokenBuilder = require('../token-builder/symbol-token-builder.js')
 
-function TokenCalculator (functions, sets) {
+function TokenCalculator (sets) {
     this.builders = [
-        new ExpressionTokenBuilder(functions, 'function'),
         new ExpressionTokenBuilder(sets, 'set'),
-        new NumberTokenBuilder(),
+        new SetTokenBuilder(),
+        new IntegerTokenBuilder(),
         new SymbolTokenBuilder()
     ]
 }

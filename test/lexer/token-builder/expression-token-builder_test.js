@@ -1,6 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
-var ExpressionTokenBuilder = require('../../../src/lexer/definition/expression-token-builder')
+var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder')
 
 describe('lexer/definition/ExpressionTokenBuilder', function () {
     var sum
