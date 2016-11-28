@@ -4,7 +4,7 @@ var rawSet = require('math.set/src/raw-set')
 var MSet = require('math.set')
 var SetTokenBuilder = require('../../../src/lexer/token-builder/set-token-builder')
 
-describe('NumberTokenBuilder', function () {
+describe('SetTokenBuilder', function () {
     it('with key castable to set builds a set type', function () {
         var setTokenBuilder = new SetTokenBuilder()
         var key = '(12, 134]'
