@@ -9,7 +9,7 @@ IntegerTokenBuilder.prototype.build = function () {
     var key = this.key
     var num = parseInt(key)
     if (num === Number(key)) {
-        return this.createToken(num, 'number')
+        return this.createToken(num, 'integer')
     }
 }
 

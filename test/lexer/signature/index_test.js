@@ -4,7 +4,7 @@ var lexer = require('../../../src/lexer/signature/')
 var MSet = require('math.set')
 
 describe('lexer/signature', function () {
-    describe('(sum(a, b), mul(sum(c, a), c)', function () {
+    describe('(R^3 x ((2, 4) U {5})^2) x S_5', function () {
         it('returns an iterum instance with correct values', function () {
             var string = '(R^3 x ((2, 4) U {5})^2) x S_5'
             var R = 'R'
@@ -32,7 +32,7 @@ describe('lexer/signature', function () {
             }, {
                 value: 3,
                 key: '3',
-                type: 'number',
+                type: 'integer',
                 column: 4
             }, {
                 value: 'x',
@@ -62,7 +62,7 @@ describe('lexer/signature', function () {
             }, {
                 value: 2,
                 key: '2',
-                type: 'number',
+                type: 'integer',
                 column: 23
             }, {
                 value: ')',

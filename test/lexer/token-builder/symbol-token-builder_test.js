@@ -2,7 +2,7 @@ var chai = require('chai')
 var expect = chai.expect
 var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder')
 
-describe('lexer/definition/SymbolTokenBuilder', function () {
+describe('SymbolTokenBuilder', function () {
     it('given a key builds a token with the same value and type as key', function () {
         var symbolTokenBuilder = new SymbolTokenBuilder()
         var key = ','

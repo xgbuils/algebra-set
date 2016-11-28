@@ -5,7 +5,7 @@ var numToInterval = require('math.interval-utils').numToInterval
 var MSet = require('math.set')
 var NumberTokenBuilder = require('../../../src/lexer/token-builder/number-token-builder')
 
-describe('lexer/definition/NumberTokenBuilder', function () {
+describe('NumberTokenBuilder', function () {
     it('with numeric key builds a set type token with this singleton number set', function () {
         var numberTokenBuilder = new NumberTokenBuilder()
         var key = '123.34'
