@@ -4,6 +4,12 @@ var lexer = require('../../../src/lexer/definition/')
 var numToInterval = require('math.interval-utils').numToInterval
 var MSet = require('math.set')
 
+var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder.js')
+var NumberTokenBuilder = require('../../../src/lexer/token-builder/number-token-builder.js')
+var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
+
+var TokenCalculator = require('../../../src/lexer/token-calculator')
+
 describe('lexer/definition', function () {
     describe('(sum(a, b), mul(sum(c, a), c)', function () {
         it('returns an iterum instance with correct values', function () {
@@ -17,12 +23,18 @@ describe('lexer/definition', function () {
                 sum: sum,
                 mul: mul
             }
-            var params = {
+            var sets = {
                 a: a,
                 b: b,
                 c: c
             }
-            var result = lexer(string, functions, params)
+            var tokenCalculator = new TokenCalculator([
+                new ExpressionTokenBuilder(functions, 'function'),
+                new ExpressionTokenBuilder(sets, 'set'),
+                new NumberTokenBuilder(),
+                new SymbolTokenBuilder()
+            ])
+            var result = lexer(string, tokenCalculator)
             expect(result.toArray()).to.be.deep.equal([{
                 value: '(',
                 key: '(',

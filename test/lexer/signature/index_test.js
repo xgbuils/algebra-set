@@ -3,6 +3,13 @@ var expect = chai.expect
 var lexer = require('../../../src/lexer/signature/')
 var MSet = require('math.set')
 
+var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder.js')
+var SetTokenBuilder = require('../../../src/lexer/token-builder/set-token-builder.js')
+var IntegerTokenBuilder = require('../../../src/lexer/token-builder/integer-token-builder.js')
+var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
+
+var TokenCalculator = require('../../../src/lexer/token-calculator')
+
 describe('lexer/signature', function () {
     describe('(R^3 x ((2, 4) U {5})^2) x S_5', function () {
         it('returns an iterum instance with correct values', function () {
@@ -13,7 +20,13 @@ describe('lexer/signature', function () {
                 R: R,
                 S_5: S_5
             }
-            var result = lexer(string, sets)
+            var tokenCalculator = new TokenCalculator([
+                new ExpressionTokenBuilder(sets, 'set'),
+                new SetTokenBuilder(),
+                new IntegerTokenBuilder(),
+                new SymbolTokenBuilder()
+            ])
+            var result = lexer(string, tokenCalculator)
             expect(result.toArray()).to.be.deep.equal([{
                 value: '(',
                 key: '(',
