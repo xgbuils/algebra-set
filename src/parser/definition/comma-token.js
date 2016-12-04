@@ -8,6 +8,7 @@ function CommaToken (parserStatus) {
 }
 
 CommaToken.prototype = Object.create(ParserToken.prototype)
+CommaToken.prototype.constructor = CommaToken
 
 CommaToken.prototype.nextStatus = function () {
     var parserStatus = this.parserStatus

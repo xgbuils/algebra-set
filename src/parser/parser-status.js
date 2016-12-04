@@ -14,22 +14,29 @@ function ParserStatus (lexerGenerator) {
     this.iterator = iterator
     this.token = token
     this.done = done
+    this.memo = {}
 }
 
 ParserStatus.prototype.push = function (status, objStatus) {
+    this.memo = {}
     var stack = this.stack
     stack[this.pos].status = status
-    stack.push(objStatus)
+    stack.push(extend({}, objStatus))
     ++this.pos
 }
 
 ParserStatus.prototype.pop = function (value) {
+    this.memo = {}
     var stack = this.stack
     stack.pop()
     --this.pos
     var current = stack[this.pos]
     current.array.push(value)
     return current.status
+}
+
+ParserStatus.prototype.save = function (obj) {
+    extend(this.memo, obj)
 }
 
 ParserStatus.prototype.getCurrent = function () {
@@ -56,6 +63,16 @@ ParserStatus.prototype.nextToken = function () {
 
 ParserStatus.prototype.isDone = function () {
     return this.done && this.getStatus() === 'END_EXPR'
+}
+
+function extend (source, obj) {
+    source = source || {}
+    for (var key in obj) {
+        if (obj[key]) {
+            source[key] = obj[key]
+        }
+    }
+    return source
 }
 
 module.exports = ParserStatus

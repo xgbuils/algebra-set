@@ -11,7 +11,6 @@ function ParserProcessor (lexerGenerator) {
 
 ParserProcessor.prototype.process = function () {
     var parserStatus = this.parserStatus
-
     var status = (new {
         'function': FunctionToken,
         'set': SetToken,

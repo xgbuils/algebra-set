@@ -8,6 +8,7 @@ function ParenthesisRightToken (parserStatus) {
 }
 
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
+ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 
 ParenthesisRightToken.prototype.nextStatus = function () {
     var parserStatus = this.parserStatus

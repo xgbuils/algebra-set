@@ -9,21 +9,15 @@ function FunctionToken (parserStatus) {
 }
 
 FunctionToken.prototype = Object.create(ParserToken.prototype)
+FunctionToken.prototype.constructor = FunctionToken
 
 FunctionToken.prototype.nextStatus = function () {
     var parserStatus = this.parserStatus
-    var status = parserStatus.getStatus()
-    var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
-    parserStatus.push(nextStatus, {
+    parserStatus.save({
         fn: this.value,
-        fnName: this.key,
-        array: []
+        fnName: this.key
     })
-    var token = parserStatus.nextToken()
-    if (token.value !== '(') {
-        throw new Error('token `(` is expected after `' + token.key + '`')
-    }
-    return 'ARG_FUNCTION'
+    return parserStatus.getStatus()
 }
 
 module.exports = FunctionToken

@@ -9,6 +9,7 @@ function SetToken (parserStatus) {
 }
 
 SetToken.prototype = Object.create(ParserToken.prototype)
+SetToken.prototype.constructor = SetToken
 
 SetToken.prototype.nextStatus = function () {
     var parserStatus = this.parserStatus
