@@ -11,9 +11,8 @@ function SetToken (parserStatus) {
 SetToken.prototype = Object.create(ParserToken.prototype)
 SetToken.prototype.constructor = SetToken
 
-SetToken.prototype.nextStatus = function () {
+SetToken.prototype.nextStatus = function (status) {
     var parserStatus = this.parserStatus
-    var status = parserStatus.getStatus()
     parserStatus.getCurrent().array.push(this.value)
     return status === 'START_EXPR'
         ? 'END_EXPR'

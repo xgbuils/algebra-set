@@ -12,8 +12,9 @@ function ParserToken (parserStatus, validStatus) {
 ParserToken.prototype.process = function () {
     var parserStatus = this.parserStatus
 
-    if (this.validStatus.indexOf(parserStatus.getStatus()) !== -1) {
-        parserStatus.setStatus(this.nextStatus())
+    var status = parserStatus.getStatus()
+    if (this.validStatus.indexOf(status) !== -1) {
+        parserStatus.setStatus(this.nextStatus(status))
         parserStatus.token = parserStatus.nextToken() || {type: 'default'}
         return parserStatus.getCurrent()
     } else {

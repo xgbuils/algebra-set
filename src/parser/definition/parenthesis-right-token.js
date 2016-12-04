@@ -10,9 +10,8 @@ function ParenthesisRightToken (parserStatus) {
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 
-ParenthesisRightToken.prototype.nextStatus = function () {
+ParenthesisRightToken.prototype.nextStatus = function (status) {
     var parserStatus = this.parserStatus
-    var status = parserStatus.getStatus()
     var current = parserStatus.getCurrent()
     var array = current.array
     var value
