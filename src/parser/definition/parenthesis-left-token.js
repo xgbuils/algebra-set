@@ -16,11 +16,7 @@ ParenthesisLeftToken.prototype.nextStatus = function (status) {
     var fn = parserStatus.memo.fn
     var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
 
-    parserStatus.push(nextStatus, {
-        fn: fn,
-        fnName: parserStatus.memo.fnName,
-        array: []
-    })
+    parserStatus.push(nextStatus)
     return fn ? 'ARG_FUNCTION' : 'ARG_TUPLE'
 }
 

@@ -10,9 +10,7 @@ function CommaToken (parserStatus) {
 CommaToken.prototype = Object.create(ParserToken.prototype)
 CommaToken.prototype.constructor = CommaToken
 
-CommaToken.prototype.nextStatus = function (status) {
-    var parserStatus = this.parserStatus
-    var current = parserStatus.getCurrent()
+CommaToken.prototype.nextStatus = function (status, current) {
     if (status === 'COMMA_FUNCTION') {
         var arity = current.fn.arity
         if (current.array.length >= arity) {

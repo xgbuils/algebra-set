@@ -24,7 +24,7 @@ ParserProcessor.prototype.process = function () {
                 }
             }
         }
-    }[parserStatus.getToken().type](parserStatus)).process()
+    }[parserStatus.getTokenType()](parserStatus)).process()
     return status
 }
 
@@ -35,7 +35,7 @@ ParserProcessor.prototype.next = function () {
     var done = this.done
     if (!done) {
         if (parserStatus.isDone()) {
-            result = parserStatus.getCurrent().array[0]
+            result = parserStatus.getValue()
             this.done = true
         } else {
             result = status

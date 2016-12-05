@@ -12,8 +12,7 @@ SetToken.prototype = Object.create(ParserToken.prototype)
 SetToken.prototype.constructor = SetToken
 
 SetToken.prototype.nextStatus = function (status) {
-    var parserStatus = this.parserStatus
-    parserStatus.getCurrent().array.push(this.value)
+    this.parserStatus.addValue(this.value)
     return status === 'START_EXPR'
         ? 'END_EXPR'
         : status.replace('ARG', 'COMMA')

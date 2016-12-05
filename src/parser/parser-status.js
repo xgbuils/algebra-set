@@ -17,52 +17,47 @@ function ParserStatus (lexerGenerator) {
     this.memo = {}
 }
 
-ParserStatus.prototype.push = function (status, objStatus) {
-    this.memo = {}
+ParserStatus.prototype.push = function (status) {
     var stack = this.stack
     stack[this.pos].status = status
-    stack.push(extend({}, objStatus))
+    stack.push(extend({
+        array: []
+    }, this.memo))
+    this.memo = {}
     ++this.pos
 }
 
-ParserStatus.prototype.pop = function (value) {
-    this.memo = {}
+ParserStatus.prototype.pop = function () {
     var stack = this.stack
     stack.pop()
     --this.pos
-    var current = stack[this.pos]
-    current.array.push(value)
-    return current.status
+    this.memo = {}
+    return stack[this.pos].status
 }
 
 ParserStatus.prototype.save = function (obj) {
     extend(this.memo, obj)
 }
 
-ParserStatus.prototype.getCurrent = function () {
-    return this.stack[this.pos]
+ParserStatus.prototype.addValue = function (value) {
+    currentStatus(this).array.push(value)
 }
 
-ParserStatus.prototype.setStatus = function (status) {
-    this.getCurrent().status = status
+ParserStatus.prototype.getValue = function () {
+    return currentStatus(this).array[0]
 }
 
-ParserStatus.prototype.getStatus = function () {
-    return this.getCurrent().status
-}
-
-ParserStatus.prototype.getToken = function () {
-    return this.token
-}
-
-ParserStatus.prototype.nextToken = function () {
-    var it = this.iterator.next()
-    this.done = it.done
-    return this.value = it.value
+ParserStatus.prototype.getTokenType = function () {
+    return this.token.type
 }
 
 ParserStatus.prototype.isDone = function () {
-    return this.done && this.getStatus() === 'END_EXPR'
+    var status = this.stack[this.pos].status
+    return this.done && status === 'END_EXPR'
+}
+
+function currentStatus (parserStatus) {
+    return parserStatus.stack[parserStatus.pos]
 }
 
 function extend (source, obj) {
