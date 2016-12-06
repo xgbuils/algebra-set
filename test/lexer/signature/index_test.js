@@ -92,6 +92,8 @@ describe('lexer/signature', function () {
                 key: 'S_5',
                 type: 'set',
                 column: 28
+            }, {
+                type: 'end'
             }])
         })
     })

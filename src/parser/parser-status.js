@@ -52,8 +52,7 @@ ParserStatus.prototype.getTokenType = function () {
 }
 
 ParserStatus.prototype.isDone = function () {
-    var status = this.stack[this.pos].status
-    return this.done && status === 'END_EXPR'
+    return this.token.type === 'end'
 }
 
 function currentStatus (parserStatus) {

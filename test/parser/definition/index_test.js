@@ -18,6 +18,12 @@ function createToken (value, type, column, key) {
     }
 }
 
+function createEndToken () {
+    return {
+        type: 'end'
+    }
+}
+
 var sumFn = function (a, b) {
     return [{
         value: a[0].value + b[0].value,
@@ -35,7 +41,8 @@ describe('parser/definition', function () {
 
             // a
             var lex = List([
-                createToken(a, 'set')
+                createToken(a, 'set'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             expect(result).to.be.deep.equal(a)
@@ -55,7 +62,8 @@ describe('parser/definition', function () {
                 createToken(a, 'set'),
                 createToken(',', ','),
                 createToken(b, 'set'),
-                createToken(')', ')')
+                createToken(')', ')'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             var expected = MSet('(3, 7)')
@@ -74,7 +82,8 @@ describe('parser/definition', function () {
                 createToken(a, 'set'),
                 createToken(',', ','),
                 createToken(b, 'set'),
-                createToken(')', ')')
+                createToken(')', ')'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             expect(result.map(rawSet)).to.be.deep.equal([rawSet(a), rawSet(b)])
@@ -100,7 +109,8 @@ describe('parser/definition', function () {
                     createToken(b, 'set'),
                     createToken(',', ',', column, ','),
                     createToken(c, 'set'),
-                    createToken(')', ')')
+                    createToken(')', ')'),
+                    createEndToken()
                 ])
                 parser(lex.build())
             }
@@ -123,7 +133,8 @@ describe('parser/definition', function () {
                     createToken(sum, 'function', 2, sumKey),
                     createToken('(', '('),
                     createToken(a, 'set'),
-                    createToken(')', ')', column, ')')
+                    createToken(')', ')', column, ')'),
+                    createEndToken()
                 ])
                 parser(lex.build())
             }
@@ -157,7 +168,8 @@ describe('parser/definition', function () {
                 createToken(')', ')'),
                 createToken(',', ','),
                 createToken(c, 'set'),
-                createToken(')', ')')
+                createToken(')', ')'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             var expected = MSet('[14, 20)')
@@ -185,7 +197,8 @@ describe('parser/definition', function () {
                 createToken(')', ')'),
                 createToken(',', ','),
                 createToken(c, 'set'),
-                createToken(')', ')')
+                createToken(')', ')'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             expect(result).to.be.deep.equal([[a, [b, a]], c])
@@ -219,7 +232,8 @@ describe('parser/definition', function () {
                 createToken(',', ','),
                 createToken(b, 'set'),
                 createToken(')', ')'),
-                createToken(')', ')')
+                createToken(')', ')'),
+                createEndToken()
             ])
             var result = parser(lex.build())
             var first = result[0]

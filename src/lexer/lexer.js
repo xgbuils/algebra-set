@@ -1,6 +1,10 @@
 var Iterum = require('iterum')
+var Value = Iterum.Value
 
 function lexer (string, tokenCalculator, regexp) {
+    var endToken = {
+        type: 'end'
+    }
     return Iterum(function () {
         var column = 1
 
@@ -21,6 +25,7 @@ function lexer (string, tokenCalculator, regexp) {
             }
         }
     })
+    .concat(Value(endToken))
 }
 
 function checkError (match, regexp, string, column) {

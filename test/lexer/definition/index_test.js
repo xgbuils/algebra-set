@@ -130,6 +130,8 @@ describe('lexer/definition', function () {
                 key: ')',
                 type: ')',
                 column: 29
+            }, {
+                type: 'end'
             }])
         })
     })

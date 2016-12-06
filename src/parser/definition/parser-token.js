@@ -29,7 +29,7 @@ function updateStatus (parserStatus, nextStatus, current) {
     current.status = nextStatus
     var it = parserStatus.iterator.next()
     parserStatus.done = it.done
-    parserStatus.token = (parserStatus.value = it.value) || {type: 'default'}
+    parserStatus.token = (parserStatus.value = it.value)
     return current
 }
 
