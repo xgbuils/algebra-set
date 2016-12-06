@@ -9,10 +9,8 @@ function EndToken (parserStatus) {
 EndToken.prototype = Object.create(ParserToken.prototype)
 EndToken.prototype.constructor = EndToken
 
-EndToken.prototype.process = function () {
-    return {
-    	done: true
-    }
+EndToken.prototype.nextStatus = function (status) {
+    return status
 }
 
 module.exports = EndToken
