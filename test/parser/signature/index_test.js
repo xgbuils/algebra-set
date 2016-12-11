@@ -1,0 +1,121 @@
+var chai = require('chai')
+var expect = chai.expect
+var MSet = require('math.set')
+var rawSet = require('math.set/src/raw-set')
+
+var Iterum = require('iterum')
+var List = Iterum.List
+
+var parser = require('../../../src/parser/signature/')
+
+function createToken (value, type, column, key) {
+    return {
+        value: value,
+        type: type,
+        column: column,
+        key: key
+    }
+}
+
+function createEndToken (column) {
+    return {
+        type: 'end',
+        key: '<<END OF LINE>>',
+        column: column
+    }
+}
+
+describe('parser/definition', function () {
+    describe('valid expressions', function () {
+        describe('given simple set', function () {
+            it('returns an array with the same set that means', function () {
+                var set = MSet('(2, 3)')
+
+                // a
+                var lex = List([
+                    createToken(set, 'set'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(rawSet(result[0])).to.be.deep.equal(rawSet(set))
+            })
+        })
+
+        describe('given a cartesian product of simple sets', function () {
+            it('returns the array of sets that means', function () {
+                var a = MSet('(2, 3)')
+                var b = MSet('[1, 4)')
+                var c = MSet('{1, 2, 5}')
+
+                // (2, 3) x [1, 4) x {1, 2, 5}
+                var lex = List([
+                    createToken(a, 'set'),
+                    createToken('x', 'x'),
+                    createToken(b, 'set'),
+                    createToken('x', 'x'),
+                    createToken(c, 'set'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(rawSet(result[0])).to.be.deep.equal(rawSet(a))
+                expect(rawSet(result[1])).to.be.deep.equal(rawSet(b))
+                expect(rawSet(result[2])).to.be.deep.equal(rawSet(c))
+            })
+        })
+
+        describe('given a cartesian product wrapped with parenthesis', function () {
+            it('returns the array of sets that means wrapped in array', function () {
+                var a = MSet('{1, 2, 5}')
+                var b = MSet('[0, 1)')
+
+                // ({1, 2, 5} x [0, 1))
+                var lex = List([
+                    createToken('(', '('),
+                    createToken(a, 'set'),
+                    createToken('x', 'x'),
+                    createToken(b, 'set'),
+                    createToken(')', ')'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(result.length).to.be.equal(1)
+                expect(result[0].map(rawSet)).to.be.deep.equal([a, b].map(rawSet))
+            })
+        })
+
+        describe('given a castesian product of cartesian products', function () {
+            it('returns the array of sets that means', function () {
+                var a = MSet('{1}')
+                var b = MSet('(-1, 2)')
+                var c = MSet('{2, 0}')
+                var d = MSet('{5} U [3, 4]')
+
+                // ({1} x (-1, 2)) x ({2, 0} x {5} U [3, 4])
+                var lex = List([
+                    createToken('(', '('),
+                    createToken(a, 'set'),
+                    createToken('x', 'x'),
+                    createToken(b, 'set'),
+                    createToken(')', ')'),
+                    createToken('x', 'x'),
+                    createToken('(', '('),
+                    createToken(c, 'set'),
+                    createToken('x', 'x'),
+                    createToken(d, 'set'),
+                    createToken(')', ')'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(result.length).to.be.equal(2)
+                expect(result[0].length).to.be.equal(2)
+                expect(result[1].length).to.be.equal(2)
+                expect(result[0].map(rawSet)).to.be.deep.equal([a, b].map(rawSet))
+                expect(result[1].map(rawSet)).to.be.deep.equal([c, d].map(rawSet))
+            })
+        })
+    })
+
+    describe('invalid expressions', function () {
+
+    })
+})

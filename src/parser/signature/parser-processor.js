@@ -1,8 +1,7 @@
 var ParserStatus = require('../parser-status')
-var FunctionToken = require('./function-token')
 var ParenthesisLeftToken = require('./parenthesis-left-token')
 var SetToken = require('./set-token.js')
-var CommaToken = require('./comma-token.js')
+var CartesianToken = require('./cartesian-token.js')
 var ParenthesisRightToken = require('./parenthesis-right-token')
 var EndToken = require('./end-token')
 
@@ -13,11 +12,10 @@ function ParserProcessor (lexerGenerator) {
 ParserProcessor.prototype.process = function () {
     var parserStatus = this.parserStatus
     var ParserTokenConstr = {
-        'function': FunctionToken,
         'set': SetToken,
         '(': ParenthesisLeftToken,
         ')': ParenthesisRightToken,
-        ',': CommaToken,
+        'x': CartesianToken,
         'end': EndToken
     }[parserStatus.getTokenType()]
     if (ParserTokenConstr) {

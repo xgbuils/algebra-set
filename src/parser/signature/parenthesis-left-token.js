@@ -3,7 +3,7 @@ var ParserToken = require('../parser-token')
 function ParenthesisLeftToken (parserStatus) {
     ParserToken.call(this, parserStatus, [
         'START_EXPR',
-        'ARG_FUNCTION',
+        'NESTED_ARG_TUPLE',
         'ARG_TUPLE'
     ])
 }
@@ -12,12 +12,11 @@ ParenthesisLeftToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisLeftToken.prototype.constructor = ParenthesisLeftToken
 
 ParenthesisLeftToken.prototype.nextStatus = function (status) {
-    var parserStatus = this.parserStatus
-    var fn = parserStatus.memo.fn
-    var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
-
-    parserStatus.push(nextStatus)
-    return fn ? 'ARG_FUNCTION' : 'ARG_TUPLE'
+    if (status === 'START_EXPR') {
+        this.parserStatus.push('END_EXPR')
+    }
+    this.parserStatus.push('NESTED_COMMA_TUPLE')
+    return 'NESTED_ARG_TUPLE'
 }
 
 module.exports = ParenthesisLeftToken

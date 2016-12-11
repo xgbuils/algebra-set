@@ -5,6 +5,7 @@ function ParserToken (parserStatus, validStatus) {
     this.value = token.value
     this.key = token.key
     this.column = token.column
+    this.type = token.type
 }
 
 ParserToken.prototype.process = function () {
@@ -13,7 +14,8 @@ ParserToken.prototype.process = function () {
     var status = current.status
     if (this.validStatus.indexOf(status) !== -1) {
         var nextStatus = this.nextStatus(status, current)
-        return updateStatus(parserStatus, nextStatus, current)
+        updateStatus(parserStatus, nextStatus, current)
+        return nextStatus
     } else {
         throw new Error('Unexpected token ' + this.key +
             ' in column ' + this.column + '.')
@@ -30,7 +32,6 @@ function updateStatus (parserStatus, nextStatus, current) {
     var it = parserStatus.iterator.next()
     parserStatus.done = it.done
     parserStatus.token = (parserStatus.value = it.value)
-    return current
 }
 
 module.exports = ParserToken

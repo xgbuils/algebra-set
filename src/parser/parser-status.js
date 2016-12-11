@@ -48,7 +48,8 @@ ParserStatus.prototype.getValue = function () {
 }
 
 ParserStatus.prototype.getTokenType = function () {
-    return this.token.type
+    var token = this.token
+    return token && token.type
 }
 
 ParserStatus.prototype.isDone = function () {
