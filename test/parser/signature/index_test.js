@@ -31,7 +31,7 @@ describe('parser/definition', function () {
             it('returns an array with the same set that means', function () {
                 var set = MSet('(2, 3)')
 
-                // a
+                // (2, 3)
                 var lex = List([
                     createToken(set, 'set'),
                     createEndToken()
@@ -111,6 +111,71 @@ describe('parser/definition', function () {
                 expect(result[1].length).to.be.equal(2)
                 expect(result[0].map(rawSet)).to.be.deep.equal([a, b].map(rawSet))
                 expect(result[1].map(rawSet)).to.be.deep.equal([c, d].map(rawSet))
+            })
+        })
+
+        describe('given a castesian power', function () {
+            it('returns the array of sets that means', function () {
+                var a = MSet('(2, 4)')
+                var power = 3
+
+                // (2, 4)^3
+                var lex = List([
+                    createToken(a, 'set'),
+                    createToken('^', '^'),
+                    createToken(power, 'number'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(result.map(rawSet)).to.be.deep.equal([a, a, a].map(rawSet))
+            })
+        })
+
+        describe('given a cartesian power and cartesian product', function () {
+            it('cartesian power has more priority', function () {
+                var a = MSet('(2, 4)')
+                var b = MSet('{1, 2}')
+                var power = 3
+
+                // (2, 4) x {1, 2}^3
+                var lex = List([
+                    createToken(a, 'set'),
+                    createToken('x', 'x'),
+                    createToken(b, 'set'),
+                    createToken('^', '^'),
+                    createToken(power, 'number'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(result.map(rawSet)).to.be.deep.equal([a, b, b, b].map(rawSet))
+            })
+        })
+
+        describe('given a cartesian power and cartesian product with parenthesis', function () {
+            it('cartesian product has more priority', function () {
+                var a = MSet('(2, 4)')
+                var b = MSet('{1, 2}')
+                var power = 3
+
+                // ((2, 4) x {1, 2})^3
+                var lex = List([
+                    createToken('(', '('),
+                    createToken(a, 'set'),
+                    createToken('x', 'x'),
+                    createToken(b, 'set'),
+                    createToken(')', ')'),
+                    createToken('^', '^'),
+                    createToken(power, 'number'),
+                    createEndToken()
+                ])
+                var result = parser(lex.build())
+                expect(result.map(function (product) {
+                    return product.map(rawSet)
+                })).to.be.deep.equal([
+                    [a, b].map(rawSet),
+                    [a, b].map(rawSet),
+                    [a, b].map(rawSet)
+                ])
             })
         })
     })

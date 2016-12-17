@@ -3,9 +3,7 @@ var ParserToken = require('../parser-token')
 function CartesianToken (parserStatus) {
     ParserToken.call(this, parserStatus, [
         'NESTED_COMMA_TUPLE',
-        'COMMA_TUPLE',
-        'NESTED_POWER_NUMBER',
-        'POWER_NUMBER'
+        'COMMA_TUPLE'
     ])
 }
 
