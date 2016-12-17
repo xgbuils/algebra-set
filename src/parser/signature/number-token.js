@@ -2,7 +2,6 @@ var ParserToken = require('../parser-token')
 
 function NumberToken (parserStatus) {
     ParserToken.call(this, parserStatus, [
-        'START_EXPR',
         'NESTED_ARG_NUMBER',
         'ARG_NUMBER'
     ])

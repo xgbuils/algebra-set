@@ -181,6 +181,110 @@ describe('parser/definition', function () {
     })
 
     describe('invalid expressions', function () {
+        describe('given only a left parenthesis', function () {
+            it('throws an error', function () {
+                var column = 5
 
+                function test () {
+                    // (
+                    var lex = List([
+                        createToken('(', '('),
+                        createEndToken(column)
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+            })
+        })
+
+        describe('given only a right parenthesis', function () {
+            it('throws an error', function () {
+                var column = 90
+                var key = ')'
+
+                function test () {
+                    // )
+                    var lex = List([
+                        createToken(')', ')', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
+
+        describe('given only a power symbol', function () {
+            it('throws an error', function () {
+                var column = 32
+                var key = '^'
+
+                function test () {
+                    // ^
+                    var lex = List([
+                        createToken('^', '^', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
+
+        describe('given only a cartesian product symbol', function () {
+            it('throws an error', function () {
+                var column = 61
+                var key = 'x'
+
+                function test () {
+                    // x
+                    var lex = List([
+                        createToken('x', 'x', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
+
+        describe('given only a number', function () {
+            it('throws an error', function () {
+                var column = 21
+                var number = 5
+                var key = number.toString()
+
+                function test () {
+                    // 5
+                    var lex = List([
+                        createToken(number, 'number', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
+
+        describe('given empty list of tokens', function () {
+            it('throws an error', function () {
+                var column = 12
+
+                function test () {
+                    //
+                    var lex = List([
+                        createEndToken(column)
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+            })
+        })
     })
 })
