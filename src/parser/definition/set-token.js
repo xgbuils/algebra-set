@@ -1,7 +1,7 @@
 var ParserToken = require('../parser-token')
 
-function SetToken (parserStatus) {
-    ParserToken.call(this, parserStatus, [
+function SetToken (token) {
+    ParserToken.call(this, token, [
         'START_EXPR',
         'ARG_FUNCTION',
         'ARG_TUPLE'

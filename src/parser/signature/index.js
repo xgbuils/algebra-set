@@ -1,12 +1,12 @@
-var ParserProcessor = require('../parser-processor')
+var ParserStatus = require('../parser-status')
 
 function parser (lexerGenerator, parserTokenClasses) {
-    var processor = new ParserProcessor(lexerGenerator, parserTokenClasses)
-    var status = processor.next()
+    var parserStatus = new ParserStatus(lexerGenerator, parserTokenClasses)
+    var status = parserStatus.next()
     var value
     while (!status.done) {
         value = status.value
-        status = processor.next()
+        status = parserStatus.next()
     }
     return value
 }

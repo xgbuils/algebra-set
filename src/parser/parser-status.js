@@ -1,4 +1,5 @@
-function ParserStatus (lexerGenerator) {
+function ParserStatus (lexerGenerator, parserTokenClasses) {
+    this.parserTokenClasses = parserTokenClasses
     var iterator = lexerGenerator()
     var it = iterator.next()
     var token = it.value
@@ -47,13 +48,48 @@ ParserStatus.prototype.getValue = function () {
     return currentStatus(this).array[0]
 }
 
-ParserStatus.prototype.getTokenType = function () {
-    var token = this.token
-    return token && token.type
+ParserStatus.prototype.next = function () {
+    var token = nextToken(this)
+    var status
+    if (token) {
+        status = nextStatus(this, token)
+    }
+    var done = !status
+    return {
+        value: done ? undefined : this.getValue(),
+        done: done
+    }
 }
 
-ParserStatus.prototype.isDone = function () {
-    return this.token.type === 'end'
+function nextToken (parserStatus) {
+    var rawToken = parserStatus.token || {}
+    var ParserTokenConstr = parserStatus.parserTokenClasses[rawToken.type]
+    if (ParserTokenConstr) {
+        var token = new ParserTokenConstr(rawToken)
+        return token
+    }
+}
+
+function nextStatus (parserStatus, token) {
+    var current = currentStatus(parserStatus)
+    var status = current.status
+    if (token.validStatus.indexOf(status) !== -1) {
+        token.bind(parserStatus)
+        var nextStatus = token.nextStatus(status, current)
+        return updateStatus(parserStatus, nextStatus)
+    } else {
+        throw new Error('Unexpected token ' + token.key +
+            ' in column ' + token.column + '.')
+    }
+}
+
+function updateStatus (parserStatus, nextStatus) {
+    var current = currentStatus(parserStatus)
+    current.status = nextStatus
+    var it = parserStatus.iterator.next()
+    parserStatus.done = it.done
+    parserStatus.token = (parserStatus.value = it.value)
+    return nextStatus
 }
 
 function currentStatus (parserStatus) {

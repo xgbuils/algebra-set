@@ -1,7 +1,7 @@
 var ParserToken = require('../parser-token')
 
-function CommaToken (parserStatus) {
-    ParserToken.call(this, parserStatus, [
+function CommaToken (token) {
+    ParserToken.call(this, token, [
         'COMMA_FUNCTION',
         'COMMA_TUPLE'
     ])

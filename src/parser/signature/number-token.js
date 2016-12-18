@@ -1,7 +1,7 @@
 var ParserToken = require('../parser-token')
 
-function NumberToken (parserStatus) {
-    ParserToken.call(this, parserStatus, [
+function NumberToken (token) {
+    ParserToken.call(this, token, [
         'NESTED_ARG_NUMBER',
         'ARG_NUMBER'
     ])
