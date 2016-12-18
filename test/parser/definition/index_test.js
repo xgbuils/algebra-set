@@ -7,7 +7,23 @@ var MFunction = require('../../../src/')
 var Iterum = require('iterum')
 var List = Iterum.List
 
+var FunctionToken = require('../../../src/parser/definition/function-token')
+var ParenthesisLeftToken = require('../../../src/parser/definition/parenthesis-left-token')
+var SetToken = require('../../../src/parser/definition/set-token.js')
+var CommaToken = require('../../../src/parser/definition/comma-token.js')
+var ParenthesisRightToken = require('../../../src/parser/definition/parenthesis-right-token')
+var EndToken = require('../../../src/parser/definition/end-token')
+
 var parser = require('../../../src/parser/definition/')
+
+var parserTokenClasses = {
+    'function': FunctionToken,
+    'set': SetToken,
+    '(': ParenthesisLeftToken,
+    ')': ParenthesisRightToken,
+    ',': CommaToken,
+    'end': EndToken
+}
 
 function createToken (value, type, column, key) {
     return {
@@ -47,7 +63,7 @@ describe('parser/definition', function () {
                     createToken(a, 'set'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 expect(result).to.be.deep.equal(a)
             })
         })
@@ -68,7 +84,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 var expected = MSet('(3, 7)')
                 expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
             })
@@ -88,7 +104,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 expect(result.map(rawSet)).to.be.deep.equal([rawSet(a), rawSet(b)])
             })
         })
@@ -115,7 +131,7 @@ describe('parser/definition', function () {
                         createToken(')', ')'),
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
 
                 expect(test).to.throw('Expected token `,` instead `)` in column ' +
@@ -139,7 +155,7 @@ describe('parser/definition', function () {
                         createToken(')', ')', column, ')'),
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
 
                 expect(test).to.throw('Expected token `,` instead `)` in column ' +
@@ -174,7 +190,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 var expected = MSet('[14, 20)')
                 expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
             })
@@ -203,7 +219,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 expect(result).to.be.deep.equal([[a, [b, a]], c])
             })
         })
@@ -238,7 +254,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build())
+                var result = parser(lex.build(), parserTokenClasses)
                 var first = result[0]
                 var second = result[1]
                 expect(first.map(rawSet)).to.be.deep.equal([a, MSet('[3, 7)')].map(rawSet))
@@ -259,7 +275,7 @@ describe('parser/definition', function () {
                         createToken('(', '('),
                         endToken
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + endToken.key +
                     ' in column ' + column + '.')
@@ -277,7 +293,7 @@ describe('parser/definition', function () {
                         rightToken,
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + rightToken.key +
                     ' in column ' + column + '.')
@@ -295,7 +311,7 @@ describe('parser/definition', function () {
                         commaToken,
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + commaToken.key +
                     ' in column ' + column + '.')
@@ -313,7 +329,7 @@ describe('parser/definition', function () {
                         createToken(MFunction(sumFn), 'function'),
                         functionToken
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + functionToken.key +
                     ' in column ' + column + '.')
@@ -330,7 +346,7 @@ describe('parser/definition', function () {
                     var lex = List([
                         endToken
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + endToken.key +
                     ' in column ' + column + '.')
@@ -354,7 +370,7 @@ describe('parser/definition', function () {
                         createToken(b, 'set'),
                         createEndToken(column)
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + endToken.key +
                     ' in column ' + column + '.')
@@ -378,7 +394,7 @@ describe('parser/definition', function () {
                         createToken(',', ','),
                         createEndToken(column)
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + endToken.key +
                     ' in column ' + column + '.')
@@ -404,7 +420,7 @@ describe('parser/definition', function () {
                         extraRightToken,
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + extraRightToken.key +
                     ' in column ' + column + '.')
@@ -437,7 +453,7 @@ describe('parser/definition', function () {
                         createToken(')', ')'),
                         createEndToken()
                     ])
-                    parser(lex.build())
+                    parser(lex.build(), parserTokenClasses)
                 }
                 expect(test).to.throw('Unexpected token ' + functionToken.key +
                     ' in column ' + column + '.')
