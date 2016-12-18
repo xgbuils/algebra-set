@@ -286,5 +286,72 @@ describe('parser/definition', function () {
                 expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
             })
         })
+
+        describe('given not ended cartesian product', function () {
+            it('throws an error', function () {
+                var column = 16
+
+                function test () {
+                    var a = MSet('(2, 4)')
+
+                    //
+                    var lex = List([
+                        createToken(a, 'set'),
+                        createToken('x', 'x'),
+                        createEndToken(column)
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+            })
+        })
+
+        describe('given extra right parenthesis in cartesian product', function () {
+            it('throws an error', function () {
+                var column = 23
+                var key = ')'
+
+                function test () {
+                    var a = MSet('(2, 4)')
+                    var b = MSet('{8}')
+
+                    //
+                    var lex = List([
+                        createToken(a, 'set'),
+                        createToken('x', 'x'),
+                        createToken(b, 'set'),
+                        createToken(')', ')', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
+
+        describe('given set as exponent of cartesian power', function () {
+            it('throws an error', function () {
+                var column = 16
+                var key = '{8}'
+
+                function test () {
+                    var a = MSet('(2, 4)')
+                    var b = MSet(key)
+
+                    //
+                    var lex = List([
+                        createToken(a, 'set'),
+                        createToken('^', '^'),
+                        createToken(b, 'set', column, key),
+                        createEndToken()
+                    ])
+                    parser(lex.build())
+                }
+
+                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+            })
+        })
     })
 })
