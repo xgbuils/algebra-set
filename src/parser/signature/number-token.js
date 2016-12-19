@@ -10,12 +10,11 @@ function NumberToken (token) {
 NumberToken.prototype = Object.create(ParserToken.prototype)
 NumberToken.prototype.constructor = NumberToken
 
-NumberToken.prototype.nextStatus = function (status, current) {
-    var array = current.array
-    var value = array.pop()
+NumberToken.prototype.nextStatus = function (status, values) {
+    var value = values.pop()
     var power = this.value
     for (var i = 0; i < power; ++i) {
-        array.push(value)
+        values.push(value)
     }
 
     return status.replace('ARG_NUMBER', 'COMMA_TUPLE')

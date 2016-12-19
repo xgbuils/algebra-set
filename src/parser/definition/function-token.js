@@ -12,7 +12,7 @@ FunctionToken.prototype = Object.create(ParserToken.prototype)
 FunctionToken.prototype.constructor = FunctionToken
 
 FunctionToken.prototype.nextStatus = function (status) {
-    this.parserStatus.save({
+    this.parserStatus.prepare({
         fn: this.value,
         fnName: this.key
     })

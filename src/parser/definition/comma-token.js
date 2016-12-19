@@ -10,11 +10,13 @@ function CommaToken (token) {
 CommaToken.prototype = Object.create(ParserToken.prototype)
 CommaToken.prototype.constructor = CommaToken
 
-CommaToken.prototype.nextStatus = function (status, current) {
+CommaToken.prototype.nextStatus = function (status, values) {
+    var parserStatus = this.parserStatus
     if (status === 'COMMA_FUNCTION') {
-        var arity = current.fn.arity
-        if (current.array.length >= arity) {
-            throw new Error(incorrectArity(this, current.fnName, arity))
+        var fn = parserStatus.attr('fn')
+        var arity = fn.arity
+        if (values.length >= arity) {
+            throw new Error(incorrectArity(this, parserStatus.attr('fnName'), arity))
         }
     }
     return status.replace('COMMA', 'ARG')

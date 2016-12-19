@@ -1,8 +1,10 @@
 function ParserStatus (lexerGenerator, parserTokenClasses) {
+    if (!(this instanceof ParserStatus)) {
+        return new ParserStatus(lexerGenerator, parserTokenClasses)
+    }
     this.parserTokenClasses = parserTokenClasses
     var iterator = lexerGenerator()
     var it = iterator.next()
-    var token = it.value
     var done = it.done
     if (done) {
         throw new Error('empty string')
@@ -10,42 +12,52 @@ function ParserStatus (lexerGenerator, parserTokenClasses) {
     this.pos = 0
     this.stack = [{
         array: [],
-        status: 'START_EXPR'
+        status: 'START_EXPR',
+        attributes: {}
     }]
     this.iterator = iterator
-    this.token = token
+    this.token = it.value
     this.done = done
-    this.memo = {}
+    this.toPush = {}
 }
 
 ParserStatus.prototype.push = function (status) {
     var stack = this.stack
     stack[this.pos].status = status
-    stack.push(extend({
-        array: []
-    }, this.memo))
-    this.memo = {}
+    stack.push({
+        array: [],
+        attributes: this.toPush
+    })
+    this.toPush = {}
     ++this.pos
 }
 
 ParserStatus.prototype.pop = function () {
     var stack = this.stack
-    stack.pop()
+    var current = stack.pop()
     --this.pos
-    this.memo = {}
-    return stack[this.pos].status
+    this.toPush = {}
+    return current.array
 }
 
-ParserStatus.prototype.save = function (obj) {
-    extend(this.memo, obj)
+ParserStatus.prototype.prepare = function (obj) {
+    extend(this.toPush, obj)
+}
+
+ParserStatus.prototype.prepared = function (key) {
+    return this.toPush[key]
+}
+
+ParserStatus.prototype.attr = function (key) {
+    return currentStatus(this).attributes[key]
 }
 
 ParserStatus.prototype.addValue = function (value) {
     currentStatus(this).array.push(value)
 }
 
-ParserStatus.prototype.getValue = function () {
-    return currentStatus(this).array[0]
+ParserStatus.prototype.currentStatus = function () {
+    return currentStatus(this).status
 }
 
 ParserStatus.prototype.next = function () {
@@ -56,7 +68,7 @@ ParserStatus.prototype.next = function () {
     }
     var done = !status
     return {
-        value: done ? undefined : this.getValue(),
+        value: done ? undefined : getValue(this),
         done: done
     }
 }
@@ -75,7 +87,7 @@ function nextStatus (parserStatus, token) {
     var status = current.status
     if (token.validStatus.indexOf(status) !== -1) {
         token.bind(parserStatus)
-        var nextStatus = token.nextStatus(status, current)
+        var nextStatus = token.nextStatus(status, current.array)
         return updateStatus(parserStatus, nextStatus)
     } else {
         throw new Error('Unexpected token ' + token.key +
@@ -88,12 +100,16 @@ function updateStatus (parserStatus, nextStatus) {
     current.status = nextStatus
     var it = parserStatus.iterator.next()
     parserStatus.done = it.done
-    parserStatus.token = (parserStatus.value = it.value)
+    parserStatus.token = it.value
     return nextStatus
 }
 
 function currentStatus (parserStatus) {
     return parserStatus.stack[parserStatus.pos]
+}
+
+function getValue (parserStatus) {
+    return currentStatus(parserStatus).array[0]
 }
 
 function extend (source, obj) {

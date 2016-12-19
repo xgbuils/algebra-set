@@ -9,11 +9,11 @@ function ParenthesisRightToken (token) {
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 
-ParenthesisRightToken.prototype.nextStatus = function (status, current) {
+ParenthesisRightToken.prototype.nextStatus = function (status, values) {
     var parserStatus = this.parserStatus
-    var nextStatus = parserStatus.pop()
-    parserStatus.addValue(current.array)
-    return nextStatus
+    parserStatus.pop()
+    parserStatus.addValue(values)
+    return parserStatus.currentStatus()
 }
 
 module.exports = ParenthesisRightToken

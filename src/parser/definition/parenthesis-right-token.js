@@ -10,24 +10,23 @@ function ParenthesisRightToken (token) {
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 
-ParenthesisRightToken.prototype.nextStatus = function (status, current) {
+ParenthesisRightToken.prototype.nextStatus = function (status, values) {
     var parserStatus = this.parserStatus
-    var array = current.array
     var value
     if (status === 'COMMA_FUNCTION') {
-        var fn = current.fn
-        if (array.length < fn.arity) {
-            throw new Error(incorrectArity(this, current.fnName, fn.arity))
+        var fn = parserStatus.attr('fn')
+        if (values.length < fn.arity) {
+            throw new Error(incorrectArity(this, parserStatus.attr('fnName'), fn.arity))
         }
-        var domain = array
+        var domain = values
         fn.domain = domain
         value = fn.image
     } else {
-        value = array
+        value = values
     }
-    var nextStatus = parserStatus.pop()
+    parserStatus.pop()
     parserStatus.addValue(value)
-    return nextStatus
+    return parserStatus.currentStatus()
 }
 
 function incorrectArity (token, fnName, arity) {

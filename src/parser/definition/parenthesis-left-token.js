@@ -13,7 +13,7 @@ ParenthesisLeftToken.prototype.constructor = ParenthesisLeftToken
 
 ParenthesisLeftToken.prototype.nextStatus = function (status) {
     var parserStatus = this.parserStatus
-    var fn = parserStatus.memo.fn
+    var fn = parserStatus.prepared('fn')
     var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARG', 'COMMA')
 
     parserStatus.push(nextStatus)
