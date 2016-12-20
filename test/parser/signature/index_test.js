@@ -14,6 +14,8 @@ var PowerToken = require('../../../src/parser/signature/power-token')
 var NumberToken = require('../../../src/parser/signature/number-token')
 var EndToken = require('../../../src/parser/signature/end-token')
 
+var parserStatus = require('../../../src/parser/parser-status')
+var parserGenerator = require('../../../src/parser/parser-generator')
 var parser = require('../../../src/parser/parser')
 
 var parserTokenClasses = {
@@ -54,7 +56,8 @@ describe('parser/definition', function () {
                     createToken(set, 'set'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(rawSet(result[0])).to.be.deep.equal(rawSet(set))
             })
         })
@@ -74,7 +77,8 @@ describe('parser/definition', function () {
                     createToken(c, 'set'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(rawSet(result[0])).to.be.deep.equal(rawSet(a))
                 expect(rawSet(result[1])).to.be.deep.equal(rawSet(b))
                 expect(rawSet(result[2])).to.be.deep.equal(rawSet(c))
@@ -95,7 +99,8 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(result.length).to.be.equal(1)
                 expect(result[0].map(rawSet)).to.be.deep.equal([a, b].map(rawSet))
             })
@@ -123,7 +128,8 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(result.length).to.be.equal(2)
                 expect(result[0].length).to.be.equal(2)
                 expect(result[1].length).to.be.equal(2)
@@ -144,7 +150,8 @@ describe('parser/definition', function () {
                     createToken(power, 'number'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(result.map(rawSet)).to.be.deep.equal([a, a, a].map(rawSet))
             })
         })
@@ -164,7 +171,8 @@ describe('parser/definition', function () {
                     createToken(power, 'number'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(result.map(rawSet)).to.be.deep.equal([a, b, b, b].map(rawSet))
             })
         })
@@ -186,7 +194,8 @@ describe('parser/definition', function () {
                     createToken(power, 'number'),
                     createEndToken()
                 ])
-                var result = parser(lex.build(), parserTokenClasses)
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var result = parser(parserIterator)
                 expect(result.map(function (product) {
                     return product.map(rawSet)
                 })).to.be.deep.equal([
@@ -209,7 +218,8 @@ describe('parser/definition', function () {
                         createToken('(', '('),
                         createEndToken(column)
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
@@ -227,7 +237,8 @@ describe('parser/definition', function () {
                         createToken(')', ')', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
@@ -245,7 +256,8 @@ describe('parser/definition', function () {
                         createToken('^', '^', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
@@ -263,7 +275,8 @@ describe('parser/definition', function () {
                         createToken('x', 'x', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
@@ -282,7 +295,8 @@ describe('parser/definition', function () {
                         createToken(number, 'number', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
@@ -298,7 +312,8 @@ describe('parser/definition', function () {
                     var lex = List([
                         createEndToken(column)
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
@@ -318,7 +333,8 @@ describe('parser/definition', function () {
                         createToken('x', 'x'),
                         createEndToken(column)
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
@@ -342,7 +358,8 @@ describe('parser/definition', function () {
                         createToken(')', ')', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
@@ -365,7 +382,8 @@ describe('parser/definition', function () {
                         createToken(b, 'set', column, key),
                         createEndToken()
                     ])
-                    parser(lex.build(), parserTokenClasses)
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    parser(parserIterator)
                 }
 
                 expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')

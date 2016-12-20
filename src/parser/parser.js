@@ -1,7 +1,5 @@
-var parserGenerator = require('./parser-generator')
-
-function parser (lexerGenerator, parserTokenClasses) {
-    var iterator = parserGenerator(lexerGenerator, parserTokenClasses)
+function parser (parserIterator) {
+    var iterator = parserIterator
     var status = iterator.next()
     var value
     while (!status.done) {
