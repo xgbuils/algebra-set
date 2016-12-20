@@ -3,8 +3,8 @@ var ParserToken = require('../parser-token')
 function SetToken (token) {
     ParserToken.call(this, token, [
         'START_EXPR',
-        'NESTED_ARG_TUPLE',
-        'ARG_TUPLE'
+        'NESTED_ARGUMENT_TUPLE',
+        'ARGUMENT_TUPLE'
     ])
 }
 
@@ -18,8 +18,8 @@ SetToken.prototype.nextStatus = function (status) {
     }
     parserStatus.addValue(this.value)
     return status === 'START_EXPR'
-        ? 'COMMA_TUPLE'
-        : status.replace('ARG', 'COMMA')
+        ? 'SEPARATOR_TUPLE'
+        : status.replace('ARGUMENT', 'SEPARATOR')
 }
 
 module.exports = SetToken

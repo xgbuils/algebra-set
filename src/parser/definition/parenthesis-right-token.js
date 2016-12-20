@@ -2,8 +2,8 @@ var ParserToken = require('../parser-token')
 
 function ParenthesisRightToken (token) {
     ParserToken.call(this, token, [
-        'COMMA_FUNCTION',
-        'COMMA_TUPLE'
+        'SEPARATOR_FUNCTION',
+        'SEPARATOR_TUPLE'
     ])
 }
 
@@ -13,7 +13,7 @@ ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 ParenthesisRightToken.prototype.nextStatus = function (status, values) {
     var parserStatus = this.parserStatus
     var value
-    if (status === 'COMMA_FUNCTION') {
+    if (status === 'SEPARATOR_FUNCTION') {
         var fn = parserStatus.attr('fn')
         if (values.length < fn.arity) {
             throw new Error(incorrectArity(this, parserStatus.attr('fnName'), fn.arity))

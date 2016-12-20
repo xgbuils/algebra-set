@@ -3,8 +3,8 @@ var ParserToken = require('../parser-token')
 function EndToken (token) {
     ParserToken.call(this, token, [
         'END_EXPR',
-        'COMMA_TUPLE',
-        'NESTED_COMMA_TUPLE'
+        'SEPARATOR_TUPLE',
+        'NESTED_SEPARATOR_TUPLE'
     ])
 }
 

@@ -2,8 +2,8 @@ var ParserToken = require('../parser-token')
 
 function NumberToken (token) {
     ParserToken.call(this, token, [
-        'NESTED_ARG_NUMBER',
-        'ARG_NUMBER'
+        'NESTED_ARGUMENT_NUMBER',
+        'ARGUMENT_NUMBER'
     ])
 }
 
@@ -17,7 +17,7 @@ NumberToken.prototype.nextStatus = function (status, values) {
         values.push(value)
     }
 
-    return status.replace('ARG_NUMBER', 'COMMA_TUPLE')
+    return status.replace('ARGUMENT_NUMBER', 'SEPARATOR_TUPLE')
 }
 
 module.exports = NumberToken

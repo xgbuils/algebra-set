@@ -2,7 +2,7 @@ var ParserToken = require('../parser-token')
 
 function ParenthesisRightToken (token) {
     ParserToken.call(this, token, [
-        'NESTED_COMMA_TUPLE'
+        'NESTED_SEPARATOR_TUPLE'
     ])
 }
 
