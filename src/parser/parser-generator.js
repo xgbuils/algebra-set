@@ -3,21 +3,13 @@ function ParserGenerator (lexerGenerator, parserTokenClasses) {
         return new ParserGenerator(lexerGenerator, parserTokenClasses)
     }
     this.parserTokenClasses = parserTokenClasses
-    var iterator = lexerGenerator()
-    var it = iterator.next()
-    var done = it.done
-    if (done) {
-        throw new Error('empty string')
-    }
     this.pos = 0
     this.stack = [{
         array: [],
         status: 'START_EXPR',
         attributes: {}
     }]
-    this.iterator = iterator
-    this.token = it.value
-    this.done = done
+    this.iterator = lexerGenerator()
     this.toPush = {}
 }
 
@@ -64,7 +56,7 @@ ParserGenerator.prototype.next = function () {
     var token = nextToken(this)
     var status
     if (token) {
-        status = nextStatus(this, token)
+        status = doNextStatus(this, token)
     }
     var done = !status
     return {
@@ -74,6 +66,9 @@ ParserGenerator.prototype.next = function () {
 }
 
 function nextToken (parserStatus) {
+    var it = parserStatus.iterator.next()
+    parserStatus.done = it.done
+    parserStatus.token = it.value
     var rawToken = parserStatus.token || {}
     var ParserTokenConstr = parserStatus.parserTokenClasses[rawToken.type]
     if (ParserTokenConstr) {
@@ -82,26 +77,12 @@ function nextToken (parserStatus) {
     }
 }
 
-function nextStatus (parserStatus, token) {
+function doNextStatus (parserStatus, token) {
     var current = currentStatus(parserStatus)
-    var status = current.status
-    if (token.validStatus.indexOf(status) !== -1) {
-        token.bind(parserStatus)
-        var nextStatus = token.nextStatus(status, current.array)
-        return updateStatus(parserStatus, nextStatus)
-    } else {
-        throw new Error('Unexpected token ' + token.key +
-            ' in column ' + token.column + '.')
-    }
-}
-
-function updateStatus (parserStatus, nextStatus) {
-    var current = currentStatus(parserStatus)
-    current.status = nextStatus
-    var it = parserStatus.iterator.next()
-    parserStatus.done = it.done
-    parserStatus.token = it.value
-    return nextStatus
+    token.bind(parserStatus)
+    return token.next(current.status, current.array, function (nextStatus) {
+        return currentStatus(parserStatus).status = nextStatus
+    })
 }
 
 function currentStatus (parserStatus) {

@@ -4,13 +4,13 @@ function PowerToken (token) {
     ParserToken.call(this, token, [
         'NESTED_SEPARATOR_TUPLE',
         'SEPARATOR_TUPLE'
-    ])
+    ], next)
 }
 
 PowerToken.prototype = Object.create(ParserToken.prototype)
 PowerToken.prototype.constructor = PowerToken
 
-PowerToken.prototype.nextStatus = function (status) {
+function next (status) {
     return status.replace('SEPARATOR_TUPLE', 'ARGUMENT_NUMBER')
 }
 

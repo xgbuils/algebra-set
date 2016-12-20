@@ -5,13 +5,13 @@ function FunctionToken (token) {
         'START_EXPR',
         'ARGUMENT_FUNCTION',
         'ARGUMENT_TUPLE'
-    ])
+    ], next)
 }
 
 FunctionToken.prototype = Object.create(ParserToken.prototype)
 FunctionToken.prototype.constructor = FunctionToken
 
-FunctionToken.prototype.nextStatus = function (status) {
+function next (status) {
     this.parserStatus.prepare({
         fn: this.value,
         fnName: this.key

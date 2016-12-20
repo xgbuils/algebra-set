@@ -5,13 +5,13 @@ function ParenthesisLeftToken (token) {
         'START_EXPR',
         'NESTED_ARGUMENT_TUPLE',
         'ARGUMENT_TUPLE'
-    ])
+    ], next)
 }
 
 ParenthesisLeftToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisLeftToken.prototype.constructor = ParenthesisLeftToken
 
-ParenthesisLeftToken.prototype.nextStatus = function (status) {
+function next (status) {
     if (status === 'START_EXPR') {
         this.parserStatus.push('END_EXPR')
     }

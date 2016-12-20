@@ -4,13 +4,13 @@ function NumberToken (token) {
     ParserToken.call(this, token, [
         'NESTED_ARGUMENT_NUMBER',
         'ARGUMENT_NUMBER'
-    ])
+    ], next)
 }
 
 NumberToken.prototype = Object.create(ParserToken.prototype)
 NumberToken.prototype.constructor = NumberToken
 
-NumberToken.prototype.nextStatus = function (status, values) {
+function next (status, values) {
     var value = values.pop()
     var power = this.value
     for (var i = 0; i < power; ++i) {

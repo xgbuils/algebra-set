@@ -4,13 +4,13 @@ function CommaToken (token) {
     ParserToken.call(this, token, [
         'SEPARATOR_FUNCTION',
         'SEPARATOR_TUPLE'
-    ])
+    ], next)
 }
 
 CommaToken.prototype = Object.create(ParserToken.prototype)
 CommaToken.prototype.constructor = CommaToken
 
-CommaToken.prototype.nextStatus = function (status, values) {
+function next (status, values) {
     var parserStatus = this.parserStatus
     if (status === 'SEPARATOR_FUNCTION') {
         var fn = parserStatus.attr('fn')

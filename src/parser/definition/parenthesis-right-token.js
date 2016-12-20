@@ -4,13 +4,13 @@ function ParenthesisRightToken (token) {
     ParserToken.call(this, token, [
         'SEPARATOR_FUNCTION',
         'SEPARATOR_TUPLE'
-    ])
+    ], next)
 }
 
 ParenthesisRightToken.prototype = Object.create(ParserToken.prototype)
 ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 
-ParenthesisRightToken.prototype.nextStatus = function (status, values) {
+function next (status, values) {
     var parserStatus = this.parserStatus
     var value
     if (status === 'SEPARATOR_FUNCTION') {

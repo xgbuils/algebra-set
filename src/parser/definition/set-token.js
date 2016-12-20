@@ -5,13 +5,13 @@ function SetToken (token) {
         'START_EXPR',
         'ARGUMENT_FUNCTION',
         'ARGUMENT_TUPLE'
-    ])
+    ], next)
 }
 
 SetToken.prototype = Object.create(ParserToken.prototype)
 SetToken.prototype.constructor = SetToken
 
-SetToken.prototype.nextStatus = function (status) {
+function next (status) {
     this.parserStatus.addValue(this.value)
     return status === 'START_EXPR'
         ? 'END_EXPR'
