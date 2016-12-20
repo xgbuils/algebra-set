@@ -3,74 +3,102 @@ function ParserGenerator (lexerGenerator, parserTokenClasses) {
         return new ParserGenerator(lexerGenerator, parserTokenClasses)
     }
     this.parserTokenClasses = parserTokenClasses
-    this.pos = 0
-    this.stack = [{
-        array: [],
-        status: 'START_EXPR',
-        attributes: {}
-    }]
     this.iterator = lexerGenerator()
-    this.toPush = {}
-}
-
-ParserGenerator.prototype.push = function (status) {
-    var stack = this.stack
-    stack[this.pos].status = status
-    stack.push({
-        array: [],
-        attributes: this.toPush
-    })
-    this.toPush = {}
-    ++this.pos
-}
-
-ParserGenerator.prototype.pop = function () {
-    var stack = this.stack
-    var current = stack.pop()
-    --this.pos
-    this.toPush = {}
-    return current.array
-}
-
-ParserGenerator.prototype.prepare = function (obj) {
-    extend(this.toPush, obj)
-}
-
-ParserGenerator.prototype.prepared = function (key) {
-    return this.toPush[key]
-}
-
-ParserGenerator.prototype.attr = function (key) {
-    return currentStatus(this).attributes[key]
-}
-
-ParserGenerator.prototype.addValue = function (value) {
-    currentStatus(this).array.push(value)
-}
-
-ParserGenerator.prototype.currentStatus = function () {
-    return currentStatus(this).status
+    this.parserStatus = parserStatus()
 }
 
 ParserGenerator.prototype.next = function () {
     var token = nextToken(this)
     var status
     if (token) {
-        status = doNextStatus(this, token)
+        status = doNextStatus(this.parserStatus, token)
     }
     var done = !status
     return {
-        value: done ? undefined : getValue(this),
+        value: done ? undefined : this.parserStatus.getArray()[0],
         done: done
     }
 }
 
-function nextToken (parserStatus) {
-    var it = parserStatus.iterator.next()
-    parserStatus.done = it.done
-    parserStatus.token = it.value
-    var rawToken = parserStatus.token || {}
-    var ParserTokenConstr = parserStatus.parserTokenClasses[rawToken.type]
+function parserStatus () {
+    var obj = {}
+    var pos = 0
+    var stack = [{
+        array: [],
+        status: 'START_EXPR',
+        attributes: {}
+    }]
+    var toPushAttributes = {}
+    var set = function (key, value) {
+        setAttributes(stack[pos].attributes, key, value)
+    }
+    var get = function (key) {
+        return getAttributes(stack[pos].attributes, key)
+    }
+    set.to = {
+        push: function (key, value) {
+            setAttributes(toPushAttributes, key, value)
+        }
+    }
+    get.to = {
+        push: function (key) {
+            return getAttributes(toPushAttributes, key)
+        }
+    }
+    obj.set = set
+    obj.get = get
+    obj.addValue = function (value) {
+        stack[pos].array.push(value)
+    }
+    obj.getStatus = function () {
+        return stack[pos].status
+    }
+    obj.getArray = function () {
+        return stack[pos].array
+    }
+    obj.setStatus = function (newStatus) {
+        stack[pos].status = newStatus
+    }
+    obj.push = function (status) {
+        stack[pos].status = status
+        stack.push({
+            array: [],
+            attributes: toPushAttributes
+        })
+        toPushAttributes = {}
+        ++pos
+    }
+    obj.pop = function () {
+        var current = stack.pop()
+        --pos
+        toPushAttributes = {}
+        return current.array
+    }
+    return obj
+}
+
+function setAttributes (attributes, key, value) {
+    var obj = {}
+    if (typeof key === 'string') {
+        obj[key] = value
+    } else {
+        obj = key
+    }
+    extend(attributes, obj)
+}
+
+function getAttributes (attributes, key) {
+    if (typeof key === 'string') {
+        return attributes[key]
+    }
+}
+
+function nextToken (parserIterator) {
+    var it = parserIterator.iterator.next()
+    parserIterator.done = it.done
+    parserIterator.token = it.value
+    var rawToken = parserIterator.token || {}
+    var ParserTokenConstr = parserIterator.parserTokenClasses[rawToken.type]
     if (ParserTokenConstr) {
         var token = new ParserTokenConstr(rawToken)
         return token
@@ -78,19 +106,13 @@ function nextToken (parserStatus) {
 }
 
 function doNextStatus (parserStatus, token) {
-    var current = currentStatus(parserStatus)
+    var status = parserStatus.getStatus()
+    var array = parserStatus.getArray()
     token.bind(parserStatus)
-    return token.next(current.status, current.array, function (nextStatus) {
-        return currentStatus(parserStatus).status = nextStatus
+    return token.next(status, array, function (nextStatus) {
+        parserStatus.setStatus(nextStatus)
+        return nextStatus
     })
-}
-
-function currentStatus (parserStatus) {
-    return parserStatus.stack[parserStatus.pos]
-}
-
-function getValue (parserStatus) {
-    return currentStatus(parserStatus).array[0]
 }
 
 function extend (source, obj) {

@@ -12,8 +12,9 @@ EndToken.prototype = Object.create(ParserToken.prototype)
 EndToken.prototype.constructor = EndToken
 
 function next () {
-    var array = this.parserStatus.pop()
-    this.parserStatus.addValue(array)
+    var parserStatus = this.parserStatus
+    var array = parserStatus.pop()
+    parserStatus.addValue(array)
     return true
 }
 

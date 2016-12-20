@@ -13,7 +13,7 @@ function next (status, values) {
     var parserStatus = this.parserStatus
     parserStatus.pop()
     parserStatus.addValue(values)
-    return parserStatus.currentStatus()
+    return parserStatus.getStatus()
 }
 
 module.exports = ParenthesisRightToken

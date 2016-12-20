@@ -14,9 +14,9 @@ function next (status, values) {
     var parserStatus = this.parserStatus
     var value
     if (status === 'SEPARATOR_FUNCTION') {
-        var fn = parserStatus.attr('fn')
+        var fn = parserStatus.get('fn')
         if (values.length < fn.arity) {
-            throw new Error(incorrectArity(this, parserStatus.attr('fnName'), fn.arity))
+            throw new Error(incorrectArity(this, parserStatus.get('fnName'), fn.arity))
         }
         var domain = values
         fn.domain = domain
@@ -26,7 +26,7 @@ function next (status, values) {
     }
     parserStatus.pop()
     parserStatus.addValue(value)
-    return parserStatus.currentStatus()
+    return parserStatus.getStatus()
 }
 
 function incorrectArity (token, fnName, arity) {

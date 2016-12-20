@@ -13,10 +13,10 @@ CommaToken.prototype.constructor = CommaToken
 function next (status, values) {
     var parserStatus = this.parserStatus
     if (status === 'SEPARATOR_FUNCTION') {
-        var fn = parserStatus.attr('fn')
+        var fn = parserStatus.get('fn')
         var arity = fn.arity
         if (values.length >= arity) {
-            throw new Error(incorrectArity(this, parserStatus.attr('fnName'), arity))
+            throw new Error(incorrectArity(this, parserStatus.get('fnName'), arity))
         }
     }
     return status.replace('SEPARATOR', 'ARGUMENT')
