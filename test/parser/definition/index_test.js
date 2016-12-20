@@ -14,7 +14,7 @@ var CommaToken = require('../../../src/parser/definition/comma-token.js')
 var ParenthesisRightToken = require('../../../src/parser/definition/parenthesis-right-token')
 var EndToken = require('../../../src/parser/definition/end-token')
 
-var parser = require('../../../src/parser/definition/')
+var parser = require('../../../src/parser/parser')
 
 var parserTokenClasses = {
     'function': FunctionToken,

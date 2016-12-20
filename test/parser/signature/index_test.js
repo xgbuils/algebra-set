@@ -14,7 +14,7 @@ var PowerToken = require('../../../src/parser/signature/power-token')
 var NumberToken = require('../../../src/parser/signature/number-token')
 var EndToken = require('../../../src/parser/signature/end-token')
 
-var parser = require('../../../src/parser/signature/')
+var parser = require('../../../src/parser/parser')
 
 var parserTokenClasses = {
     'set': SetToken,

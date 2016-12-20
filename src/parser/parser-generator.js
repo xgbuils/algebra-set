@@ -1,6 +1,6 @@
-function ParserStatus (lexerGenerator, parserTokenClasses) {
-    if (!(this instanceof ParserStatus)) {
-        return new ParserStatus(lexerGenerator, parserTokenClasses)
+function ParserGenerator (lexerGenerator, parserTokenClasses) {
+    if (!(this instanceof ParserGenerator)) {
+        return new ParserGenerator(lexerGenerator, parserTokenClasses)
     }
     this.parserTokenClasses = parserTokenClasses
     var iterator = lexerGenerator()
@@ -21,7 +21,7 @@ function ParserStatus (lexerGenerator, parserTokenClasses) {
     this.toPush = {}
 }
 
-ParserStatus.prototype.push = function (status) {
+ParserGenerator.prototype.push = function (status) {
     var stack = this.stack
     stack[this.pos].status = status
     stack.push({
@@ -32,7 +32,7 @@ ParserStatus.prototype.push = function (status) {
     ++this.pos
 }
 
-ParserStatus.prototype.pop = function () {
+ParserGenerator.prototype.pop = function () {
     var stack = this.stack
     var current = stack.pop()
     --this.pos
@@ -40,27 +40,27 @@ ParserStatus.prototype.pop = function () {
     return current.array
 }
 
-ParserStatus.prototype.prepare = function (obj) {
+ParserGenerator.prototype.prepare = function (obj) {
     extend(this.toPush, obj)
 }
 
-ParserStatus.prototype.prepared = function (key) {
+ParserGenerator.prototype.prepared = function (key) {
     return this.toPush[key]
 }
 
-ParserStatus.prototype.attr = function (key) {
+ParserGenerator.prototype.attr = function (key) {
     return currentStatus(this).attributes[key]
 }
 
-ParserStatus.prototype.addValue = function (value) {
+ParserGenerator.prototype.addValue = function (value) {
     currentStatus(this).array.push(value)
 }
 
-ParserStatus.prototype.currentStatus = function () {
+ParserGenerator.prototype.currentStatus = function () {
     return currentStatus(this).status
 }
 
-ParserStatus.prototype.next = function () {
+ParserGenerator.prototype.next = function () {
     var token = nextToken(this)
     var status
     if (token) {
@@ -122,4 +122,4 @@ function extend (source, obj) {
     return source
 }
 
-module.exports = ParserStatus
+module.exports = ParserGenerator
