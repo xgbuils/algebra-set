@@ -1,4 +1,4 @@
-var ParserToken = require('../parser-token')
+var ParserToken = require('parser.token')
 
 function ParenthesisRightToken (token) {
     ParserToken.call(this, token, [
@@ -13,8 +13,8 @@ ParenthesisRightToken.prototype.constructor = ParenthesisRightToken
 function next (status, values) {
     var parserStatus = this.parserStatus
     var value
-    if (status === 'SEPARATOR_FUNCTION') {
-        var fn = parserStatus.get('fn')
+    var fn = parserStatus.get('fn')
+    if (fn) {
         if (values.length < fn.arity) {
             throw new Error(incorrectArity(this, parserStatus.get('fnName'), fn.arity))
         }

@@ -1,4 +1,4 @@
-var ParserToken = require('../parser-token')
+var ParserToken = require('parser.token')
 
 function FunctionToken (token) {
     ParserToken.call(this, token, [

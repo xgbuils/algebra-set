@@ -1,4 +1,4 @@
-var ParserToken = require('../parser-token')
+var ParserToken = require('parser.token')
 
 function CommaToken (token) {
     ParserToken.call(this, token, [
@@ -12,8 +12,8 @@ CommaToken.prototype.constructor = CommaToken
 
 function next (status, values) {
     var parserStatus = this.parserStatus
-    if (status === 'SEPARATOR_FUNCTION') {
-        var fn = parserStatus.get('fn')
+    var fn = parserStatus.get('fn')
+    if (fn) {
         var arity = fn.arity
         if (values.length >= arity) {
             throw new Error(incorrectArity(this, parserStatus.get('fnName'), arity))

@@ -222,7 +222,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `<<END OF LINE>>` in column ' + column + '.')
             })
         })
 
@@ -241,7 +241,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
 
@@ -260,7 +260,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
 
@@ -279,7 +279,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
 
@@ -299,7 +299,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
 
@@ -316,7 +316,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `<<END OF LINE>>` in column ' + column + '.')
             })
         })
 
@@ -337,7 +337,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token <<END OF LINE>> in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `<<END OF LINE>>` in column ' + column + '.')
             })
         })
 
@@ -362,7 +362,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
 
@@ -386,7 +386,7 @@ describe('parser/definition', function () {
                     parser(parserIterator)
                 }
 
-                expect(test).to.throw('Unexpected token ' + key + ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + key + '` in column ' + column + '.')
             })
         })
     })

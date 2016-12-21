@@ -288,8 +288,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + endToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + endToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -307,8 +307,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + rightToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + rightToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -326,8 +326,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + commaToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + commaToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -345,8 +345,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + functionToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + functionToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -363,8 +363,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + endToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + endToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -388,8 +388,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + endToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + endToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -413,8 +413,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + endToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + endToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -440,8 +440,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + extraRightToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + extraRightToken.key +
+                    '` in column ' + column + '.')
             })
         })
 
@@ -474,8 +474,8 @@ describe('parser/definition', function () {
                     var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
                     parser(parserIterator)
                 }
-                expect(test).to.throw('Unexpected token ' + functionToken.key +
-                    ' in column ' + column + '.')
+                expect(test).to.throw('Unexpected token `' + functionToken.key +
+                    '` in column ' + column + '.')
             })
         })
     })

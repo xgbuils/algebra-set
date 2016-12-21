@@ -1,4 +1,4 @@
-var ParserToken = require('../parser-token')
+var ParserToken = require('parser.token')
 
 function ParenthesisLeftToken (token) {
     ParserToken.call(this, token, [
@@ -13,10 +13,10 @@ ParenthesisLeftToken.prototype.constructor = ParenthesisLeftToken
 
 function next (status) {
     var parserStatus = this.parserStatus
-    var fn = parserStatus.get.to.push('fn')
     var nextStatus = status === 'START_EXPR' ? 'END_EXPR' : status.replace('ARGUMENT', 'SEPARATOR')
-
     parserStatus.push(nextStatus)
+
+    var fn = parserStatus.get('fn')
     return fn ? 'ARGUMENT_FUNCTION' : 'ARGUMENT_TUPLE'
 }
 

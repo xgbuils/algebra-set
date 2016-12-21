@@ -1,4 +1,4 @@
-var ParserToken = require('../parser-token')
+var ParserToken = require('parser.token')
 
 function CartesianToken (token) {
     ParserToken.call(this, token, [
