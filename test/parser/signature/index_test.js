@@ -15,7 +15,7 @@ var NumberToken = require('../../../src/parser/signature/number-token')
 var EndToken = require('../../../src/parser/signature/end-token')
 
 var parserStatus = require('parser.status')
-var parserGenerator = require('../../../src/parser/parser-generator')
+var parserGenerator = require('parser.generator')
 var parser = require('../../../src/parser/parser')
 
 var parserTokenClasses = {

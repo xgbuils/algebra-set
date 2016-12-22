@@ -15,7 +15,7 @@ var ParenthesisRightToken = require('../../../src/parser/definition/parenthesis-
 var EndToken = require('../../../src/parser/definition/end-token')
 
 var parserStatus = require('parser.status')
-var parserGenerator = require('../../../src/parser/parser-generator')
+var parserGenerator = require('parser.generator')
 var parser = require('../../../src/parser/parser')
 
 var parserTokenClasses = {
