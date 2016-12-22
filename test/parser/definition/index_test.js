@@ -14,7 +14,7 @@ var CommaToken = require('../../../src/parser/definition/comma-token.js')
 var ParenthesisRightToken = require('../../../src/parser/definition/parenthesis-right-token')
 var EndToken = require('../../../src/parser/definition/end-token')
 
-var parserStatus = require('../../../src/parser/parser-status')
+var parserStatus = require('parser.status')
 var parserGenerator = require('../../../src/parser/parser-generator')
 var parser = require('../../../src/parser/parser')
 
@@ -65,7 +65,7 @@ describe('parser/definition', function () {
                     createToken(a, 'set'),
                     createEndToken()
                 ])
-                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 expect(result).to.be.deep.equal(a)
             })
@@ -87,7 +87,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var parserIterator = new parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = new parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 var expected = MSet('(3, 7)')
                 expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
@@ -108,7 +108,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 expect(result.map(rawSet)).to.be.deep.equal([rawSet(a), rawSet(b)])
             })
@@ -136,7 +136,7 @@ describe('parser/definition', function () {
                         createToken(')', ')'),
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
 
@@ -161,7 +161,7 @@ describe('parser/definition', function () {
                         createToken(')', ')', column, ')'),
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
 
@@ -197,7 +197,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 var expected = MSet('[14, 20)')
                 expect(rawSet(result)).to.be.deep.equal(rawSet(expected))
@@ -227,7 +227,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 expect(result).to.be.deep.equal([[a, [b, a]], c])
             })
@@ -263,7 +263,7 @@ describe('parser/definition', function () {
                     createToken(')', ')'),
                     createEndToken()
                 ])
-                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                 var result = parser(parserIterator)
                 var first = result[0]
                 var second = result[1]
@@ -285,7 +285,7 @@ describe('parser/definition', function () {
                         createToken('(', '('),
                         endToken
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + endToken.key +
@@ -304,7 +304,7 @@ describe('parser/definition', function () {
                         rightToken,
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + rightToken.key +
@@ -323,7 +323,7 @@ describe('parser/definition', function () {
                         commaToken,
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + commaToken.key +
@@ -342,7 +342,7 @@ describe('parser/definition', function () {
                         createToken(MFunction(sumFn), 'function'),
                         functionToken
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + functionToken.key +
@@ -360,7 +360,7 @@ describe('parser/definition', function () {
                     var lex = List([
                         endToken
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + endToken.key +
@@ -385,7 +385,7 @@ describe('parser/definition', function () {
                         createToken(b, 'set'),
                         createEndToken(column)
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + endToken.key +
@@ -410,7 +410,7 @@ describe('parser/definition', function () {
                         createToken(',', ','),
                         createEndToken(column)
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + endToken.key +
@@ -437,7 +437,7 @@ describe('parser/definition', function () {
                         extraRightToken,
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + extraRightToken.key +
@@ -471,7 +471,7 @@ describe('parser/definition', function () {
                         createToken(')', ')'),
                         createEndToken()
                     ])
-                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus())
+                    var parserIterator = parserGenerator(lex.build(), parserTokenClasses, parserStatus('START_EXPR'))
                     parser(parserIterator)
                 }
                 expect(test).to.throw('Unexpected token `' + functionToken.key +
