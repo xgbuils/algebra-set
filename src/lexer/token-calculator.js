@@ -31,11 +31,16 @@ TokenCalculator.prototype.calculate = function (column) {
     var creators = this.creators
     var string = this.string
     var regexp
+    var memoize = {}
     for (var i = 0; i < creators.length; ++i) {
         var creator = creators[i]
         regexp = creator.regexp
+        var source = regexp.source
         var builders = creator.builder
-        var key = this.key = exec(regexp, this.string, column - 1)
+        var key = memoize[source]
+        if (!key) {
+            memoize[source] = key = exec(regexp, this.string, column - 1)
+        }
         for (var j = 0; j < builders.length; ++j) {
             var token = builders[j]
                 .withKey(key)
