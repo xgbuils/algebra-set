@@ -1,21 +1,14 @@
 var chai = require('chai')
 var expect = chai.expect
 var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder')
-var repeat = require('../repeat')
 
 describe('SymbolTokenBuilder', function () {
-    var regexp
-    beforeEach(function () {
-        regexp = /[()x,^]*/
-    })
-    it('given a key builds a token with the same value and type as key', function () {
+    it('given a key, it builds a token with the same value and type as key', function () {
         var symbolTokenBuilder = new SymbolTokenBuilder()
         var key = ','
         var column = 11
-        var string = repeat(column - 1, '&') + key
         var token = symbolTokenBuilder
-            .withString(string)
-            .withRegExp(regexp)
+            .withKey(key)
             .withColumn(column)
             .build()
 
@@ -27,14 +20,12 @@ describe('SymbolTokenBuilder', function () {
         })
     })
 
-    it('with key that does not match with regexp builds an undefined value', function () {
+    it('with null key, it builds undefined', function () {
         var setTokenBuilder = new SymbolTokenBuilder()
         var column = 6
-        var key = '@@'
-        var string = repeat(column - 1, '&') + key
+        var key = null
         var token = setTokenBuilder
-            .withString(string)
-            .withRegExp(regexp)
+            .withKey(key)
             .withColumn(column)
             .build()
 

@@ -2,7 +2,6 @@ var Iterum = require('iterum')
 var Value = Iterum.Value
 
 var exec = require('./regexp-utils/exec')
-var checkMatch = require('./regexp-utils/check-match')
 var toGlobal = require('./regexp-utils/to-global')
 
 function lexer (string, ignore, tokenCalculator) {
@@ -16,7 +15,7 @@ function lexer (string, ignore, tokenCalculator) {
         return {
             next: function () {
                 var ignoreMatch = exec(ignore, string, column)
-                var start = checkMatch(ignoreMatch, ignore, column) ? ignore.lastIndex : column
+                var start = ignoreMatch ? ignore.lastIndex : column
                 var done = start === string.length
                 var token
                 if (!done) {
