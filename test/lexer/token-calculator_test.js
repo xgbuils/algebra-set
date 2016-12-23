@@ -1,10 +1,6 @@
 var chai = require('chai')
 var expect = chai.expect
 
-var ExpressionTokenBuilder = require('../../src/lexer/token-builder/expression-token-builder.js')
-var TransformTokenBuilder = require('../../src/lexer/token-builder/transform-token-builder.js')
-var SymbolTokenBuilder = require('../../src/lexer/token-builder/symbol-token-builder.js')
-
 var numToInterval = require('math.interval-utils').numToInterval
 var rawSet = require('math.set/src/raw-set')
 var MSet = require('math.set')
@@ -40,18 +36,20 @@ describe('lexer/TokenCalculator (definition)', function () {
         sets = {}
         creators = [{
             regexp: /\w+/,
-            builder: [
-                new ExpressionTokenBuilder(functions, 'function'),
-                new ExpressionTokenBuilder(sets, 'set')
-            ]
+            transform: functions,
+            type: 'function'
         }, {
-            regexp: /\d+\.\w*/,
-            builder: new TransformTokenBuilder(function (key) {
+            regexp: /\w+/,
+            transform: sets,
+            type: 'set'
+        }, {
+            regexp: /\d+(\.\w*)?/,
+            transform: function (key) {
                 return MSet(numToInterval(Number(key)))
-            }, 'set')
+            },
+            type: 'set'
         }, {
-            regexp: /[,()]/,
-            builder: new SymbolTokenBuilder()
+            regexp: /[,()]/
         }]
     })
 
@@ -127,18 +125,20 @@ describe('lexer/TokenCalculator (signature)', function () {
         }
         creators = [{
             regexp: /\w+/,
-            builder: new ExpressionTokenBuilder(sets, 'set')
+            transform: sets,
+            type: 'set'
         }, {
             regexp: /[\(\[\{][\w.,\s]+[\)\]\}](\s*U\s*[\(\[\{][\w.,\s]+[\)\]\}])*/,
-            builder: new TransformTokenBuilder(function (key) {
+            transform: function (key) {
                 return new MSet(key)
-            }, 'set')
+            },
+            type: 'set'
         }, {
             regexp: /\d+/,
-            builder: new TransformTokenBuilder(parseInt, 'integer')
+            transform: parseInt,
+            type: 'integer'
         }, {
-            regexp: /[x()^]/,
-            builder: new SymbolTokenBuilder()
+            regexp: /[x()^]/
         }]
     })
 

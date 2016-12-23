@@ -1,13 +1,28 @@
 var toGlobal = require('./regexp-utils/to-global')
 var exec = require('./regexp-utils/exec')
 
+var ExpressionTokenBuilder = require('./token-builder/expression-token-builder.js')
+var TransformTokenBuilder = require('./token-builder/transform-token-builder.js')
+var SymbolTokenBuilder = require('./token-builder/symbol-token-builder.js')
+
 function TokenCalculator (string, creators) {
     this.string = string
     this.creators = creators.map(function (creator) {
-        var builders = creator.builder
+        var type = creator.type
+        var transforms = creator.transform
+        transforms = Array.isArray(transforms) ? transforms : [transforms]
+        var builders = transforms.map(function (transform) {
+            if (typeof transform === 'function') {
+                return new TransformTokenBuilder(transform, type)
+            } else if (transform) {
+                return new ExpressionTokenBuilder(transform, type)
+            } else {
+                return new SymbolTokenBuilder()
+            }
+        })
         return {
             regexp: toGlobal(creator.regexp),
-            builder: Array.isArray(builders) ? builders : [builders]
+            builder: builders
         }
     })
 }

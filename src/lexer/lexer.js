@@ -1,15 +1,18 @@
 var Iterum = require('iterum')
 var Value = Iterum.Value
 
+var TokenCalculator = require('./token-calculator')
 var exec = require('./regexp-utils/exec')
 var toGlobal = require('./regexp-utils/to-global')
 
-function lexer (string, ignore, tokenCalculator) {
+function lexer (string, config) {
     var endToken = {
         type: 'end'
     }
-    ignore = toGlobal(ignore)
+
     return Iterum(function () {
+        var tokenCalculator = new TokenCalculator(string, config.creators)
+        var ignore = toGlobal(config.ignore)
         var column = 0
 
         return {

@@ -1,11 +1,7 @@
 var chai = require('chai')
 var expect = chai.expect
-var lexer = require('../../../src/lexer/signature/')
+var lexer = require('../../../src/lexer/lexer')
 var MSet = require('math.set')
-
-var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder.js')
-var TransformTokenBuilder = require('../../../src/lexer/token-builder/transform-token-builder.js')
-var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
 
 describe('lexer/signature', function () {
     describe('(R^3 x ((2, 4) U {5})^2) x S_5', function () {
@@ -21,18 +17,20 @@ describe('lexer/signature', function () {
                 ignore: /\s+/,
                 creators: [{
                     regexp: /\w+/,
-                    builder: new ExpressionTokenBuilder(sets, 'set')
+                    transform: sets,
+                    type: 'set'
                 }, {
                     regexp: /[\(\[\{][\w.,\s]+[\)\]\}](\s*U\s*[\(\[\{][\w.,\s]+[\)\]\}])*/,
-                    builder: new TransformTokenBuilder(function (key) {
+                    transform: function (key) {
                         return new MSet(key)
-                    }, 'set')
+                    },
+                    type: 'set'
                 }, {
                     regexp: /\d+/,
-                    builder: new TransformTokenBuilder(parseInt, 'integer')
+                    transform: parseInt,
+                    type: 'integer'
                 }, {
-                    regexp: /[x()^]/,
-                    builder: new SymbolTokenBuilder()
+                    regexp: /[x()^]/
                 }]
             }
             var result = lexer(string, config)

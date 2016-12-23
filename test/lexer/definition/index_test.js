@@ -1,12 +1,8 @@
 var chai = require('chai')
 var expect = chai.expect
-var lexer = require('../../../src/lexer/definition/')
+var lexer = require('../../../src/lexer/lexer')
 var numToInterval = require('math.interval-utils').numToInterval
 var MSet = require('math.set')
-
-var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder.js')
-var TransformTokenBuilder = require('../../../src/lexer/token-builder/transform-token-builder.js')
-var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
 
 describe('lexer/definition', function () {
     describe('(sum(a, b), mul(sum(c, a), c)', function () {
@@ -30,18 +26,20 @@ describe('lexer/definition', function () {
                 ignore: /\s+/,
                 creators: [{
                     regexp: /\w+/,
-                    builder: [
-                        new ExpressionTokenBuilder(functions, 'function'),
-                        new ExpressionTokenBuilder(sets, 'set')
-                    ]
+                    transform: functions,
+                    type: 'function'
+                }, {
+                    regexp: /\w+/,
+                    transform: sets,
+                    type: 'set'
                 }, {
                     regexp: /\d+(\.\w*)?/,
-                    builder: new TransformTokenBuilder(function (key) {
-                        return new MSet(numToInterval(Number(key)))
-                    }, 'set')
+                    transform: function (key) {
+                        return MSet(numToInterval(Number(key)))
+                    },
+                    type: 'set'
                 }, {
-                    regexp: /[,()]/,
-                    builder: new SymbolTokenBuilder()
+                    regexp: /[,()]/
                 }]
             }
             var result = lexer(string, config)
