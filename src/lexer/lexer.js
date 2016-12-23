@@ -1,22 +1,27 @@
 var Iterum = require('iterum')
 var Value = Iterum.Value
 
-function lexer (string, tokenCalculator, regexp) {
+var exec = require('./regexp-utils/exec')
+var checkMatch = require('./regexp-utils/check-match')
+var toGlobal = require('./regexp-utils/to-global')
+
+function lexer (string, ignore, tokenCalculator) {
     var endToken = {
         type: 'end'
     }
+    ignore = toGlobal(ignore)
     return Iterum(function () {
-        var column = 1
+        var column = 0
 
         return {
             next: function () {
-                var matches = regexp.exec(string)
-                var done = matches === null
+                var ignoreMatch = exec(ignore, string, column)
+                var start = checkMatch(ignoreMatch, ignore, column) ? ignore.lastIndex : column
+                var done = start === string.length
                 var token
                 if (!done) {
-                    checkError(matches[0], regexp, string, column)
-                    token = tokenCalculator.calculate(matches[2], column + matches[1].length)
-                    column += matches[0].length
+                    token = tokenCalculator.calculate(start + 1)
+                    column = start + token.key.length
                 }
                 return {
                     value: token,
@@ -26,13 +31,6 @@ function lexer (string, tokenCalculator, regexp) {
         }
     })
     .concat(Value(endToken))
-}
-
-function checkError (match, regexp, string, column) {
-    var startMatching = regexp.lastIndex - match.length + 1
-    if (startMatching !== column) {
-        throw new Error('error' + string.slice(column, startMatching))
-    }
 }
 
 module.exports = lexer

@@ -8,8 +8,6 @@ var SetTokenBuilder = require('../../../src/lexer/token-builder/set-token-builde
 var IntegerTokenBuilder = require('../../../src/lexer/token-builder/integer-token-builder.js')
 var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
 
-var TokenCalculator = require('../../../src/lexer/token-calculator')
-
 describe('lexer/signature', function () {
     describe('(R^3 x ((2, 4) U {5})^2) x S_5', function () {
         it('returns an iterum instance with correct values', function () {
@@ -20,13 +18,23 @@ describe('lexer/signature', function () {
                 R: R,
                 S_5: S_5
             }
-            var tokenCalculator = new TokenCalculator([
-                new ExpressionTokenBuilder(sets, 'set'),
-                new SetTokenBuilder(),
-                new IntegerTokenBuilder(),
-                new SymbolTokenBuilder()
-            ])
-            var result = lexer(string, tokenCalculator)
+            var config = {
+                ignore: /\s+/,
+                creators: [{
+                    regexp: /\w+/,
+                    builder: new ExpressionTokenBuilder(sets, 'set')
+                }, {
+                    regexp: /[\(\[\{][\w.,\s]+[\)\]\}](\s*U\s*[\(\[\{][\w.,\s]+[\)\]\}])*/,
+                    builder: new SetTokenBuilder()
+                }, {
+                    regexp: /\d+/,
+                    builder: new IntegerTokenBuilder()
+                }, {
+                    regexp: /[x()^]/,
+                    builder: new SymbolTokenBuilder()
+                }]
+            }
+            var result = lexer(string, config)
             expect(result.toArray()).to.be.deep.equal([{
                 value: '(',
                 key: '(',
