@@ -34,7 +34,6 @@
     "math.interval": "^0.1.0",
     "math.interval-utils": "^0.2.0",
     "math.set": "^0.2.0",
-    "parser.generator": "^0.1.0",
     "parser.token": "^0.1.0",
     "type-verify": "^0.3.0"
   },
@@ -42,6 +41,7 @@
     "chai": "^3.5.0",
     "eslint": "^3.9.1",
     "mocha": "^2.4.5",
+    "parser.generator": "^0.2.0",
     "parser.status": "^0.1.0"
   }
 }
