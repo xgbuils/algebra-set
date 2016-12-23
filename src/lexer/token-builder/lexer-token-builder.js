@@ -15,7 +15,11 @@ LexerTokenBuilder.prototype.withKey = function (key) {
 LexerTokenBuilder.prototype.build = function () {
     var key = this.key
     if (key) {
-        return this.cb(key, create.bind(this))
+        try {
+            return this.cb(key, create.bind(this))
+        } catch (e) {
+            return
+        }
     }
 }
 

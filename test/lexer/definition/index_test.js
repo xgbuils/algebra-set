@@ -5,7 +5,7 @@ var numToInterval = require('math.interval-utils').numToInterval
 var MSet = require('math.set')
 
 var ExpressionTokenBuilder = require('../../../src/lexer/token-builder/expression-token-builder.js')
-var NumberTokenBuilder = require('../../../src/lexer/token-builder/number-token-builder.js')
+var TransformTokenBuilder = require('../../../src/lexer/token-builder/transform-token-builder.js')
 var SymbolTokenBuilder = require('../../../src/lexer/token-builder/symbol-token-builder.js')
 
 describe('lexer/definition', function () {
@@ -36,7 +36,9 @@ describe('lexer/definition', function () {
                     ]
                 }, {
                     regexp: /\d+(\.\w*)?/,
-                    builder: new NumberTokenBuilder()
+                    builder: new TransformTokenBuilder(function (key) {
+                        return new MSet(numToInterval(Number(key)))
+                    }, 'set')
                 }, {
                     regexp: /[,()]/,
                     builder: new SymbolTokenBuilder()

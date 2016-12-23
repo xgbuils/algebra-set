@@ -2,10 +2,8 @@ var chai = require('chai')
 var expect = chai.expect
 
 var ExpressionTokenBuilder = require('../../src/lexer/token-builder/expression-token-builder.js')
-var NumberTokenBuilder = require('../../src/lexer/token-builder/number-token-builder.js')
+var TransformTokenBuilder = require('../../src/lexer/token-builder/transform-token-builder.js')
 var SymbolTokenBuilder = require('../../src/lexer/token-builder/symbol-token-builder.js')
-var SetTokenBuilder = require('../../src/lexer/token-builder/set-token-builder.js')
-var IntegerTokenBuilder = require('../../src/lexer/token-builder/integer-token-builder.js')
 
 var numToInterval = require('math.interval-utils').numToInterval
 var rawSet = require('math.set/src/raw-set')
@@ -48,7 +46,9 @@ describe('lexer/TokenCalculator (definition)', function () {
             ]
         }, {
             regexp: /\d+\.\w*/,
-            builder: new NumberTokenBuilder()
+            builder: new TransformTokenBuilder(function (key) {
+                return MSet(numToInterval(Number(key)))
+            }, 'set')
         }, {
             regexp: /[,()]/,
             builder: new SymbolTokenBuilder()
@@ -130,10 +130,12 @@ describe('lexer/TokenCalculator (signature)', function () {
             builder: new ExpressionTokenBuilder(sets, 'set')
         }, {
             regexp: /[\(\[\{][\w.,\s]+[\)\]\}](\s*U\s*[\(\[\{][\w.,\s]+[\)\]\}])*/,
-            builder: new SetTokenBuilder()
+            builder: new TransformTokenBuilder(function (key) {
+                return new MSet(key)
+            }, 'set')
         }, {
             regexp: /\d+/,
-            builder: new IntegerTokenBuilder()
+            builder: new TransformTokenBuilder(parseInt, 'integer')
         }, {
             regexp: /[x()^]/,
             builder: new SymbolTokenBuilder()
